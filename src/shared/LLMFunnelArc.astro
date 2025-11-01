@@ -1,0 +1,53 @@
+<svg viewBox="0 0 800 200" role="img" aria-label="Conversation arc: Context → Constraints → Options → Justification → Action, with citations shown at Justification" style="width:100%;height:auto">
+  <defs>
+    <style>
+      .stage{fill:#ffffff;stroke:#4a6fa5;stroke-width:2}
+      .stage-highlight{fill:#e3f2fd;stroke:#4a6fa5;stroke-width:2}
+      .text{font:600 13px system-ui;fill:#2c3e50}
+      .label{font:700 12px system-ui;fill:#546e7a}
+      .arrow{stroke:#4a6fa5;stroke-width:2;fill:none;marker-end:url(#arrowhead)}
+      .citation{fill:#4caf50;stroke:#2e7d32;stroke-width:1}
+      .citation-text{font:600 10px system-ui;fill:#ffffff}
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#4a6fa5"/>
+    </marker>
+  </defs>
+
+  <g transform="translate(20, 40)">
+    <rect class="stage" x="0" y="0" width="120" height="60" rx="6"/>
+    <text class="label" x="60" y="25" text-anchor="middle">Context</text>
+    <text class="text" x="60" y="45" text-anchor="middle" style="font-size:11px">Describe situation</text>
+  </g>
+
+  <g transform="translate(165, 40)">
+    <rect class="stage" x="0" y="0" width="120" height="60" rx="6"/>
+    <text class="label" x="60" y="25" text-anchor="middle">Constraints</text>
+    <text class="text" x="60" y="45" text-anchor="middle" style="font-size:11px">Add requirements</text>
+  </g>
+
+  <g transform="translate(310, 40)">
+    <rect class="stage" x="0" y="0" width="120" height="60" rx="6"/>
+    <text class="label" x="60" y="25" text-anchor="middle">Options</text>
+    <text class="text" x="60" y="45" text-anchor="middle" style="font-size:11px">Consider choices</text>
+  </g>
+
+  <g transform="translate(455, 40)">
+    <rect class="stage-highlight" x="0" y="0" width="120" height="60" rx="6"/>
+    <text class="label" x="60" y="25" text-anchor="middle">Justification</text>
+    <text class="text" x="60" y="45" text-anchor="middle" style="font-size:11px">Get verdict</text>
+    <rect class="citation" x="20" y="70" width="80" height="18" rx="4"/>
+    <text class="citation-text" x="60" y="82" text-anchor="middle">Citations</text>
+  </g>
+
+  <g transform="translate(600, 40)">
+    <rect class="stage" x="0" y="0" width="120" height="60" rx="6"/>
+    <text class="label" x="60" y="25" text-anchor="middle">Action</text>
+    <text class="text" x="60" y="45" text-anchor="middle" style="font-size:11px">Click & convert</text>
+  </g>
+
+  <line class="arrow" x1="140" y1="70" x2="160" y2="70"/>
+  <line class="arrow" x1="285" y1="70" x2="305" y2="70"/>
+  <line class="arrow" x1="430" y1="70" x2="450" y2="70"/>
+  <line class="arrow" x1="575" y1="70" x2="595" y2="70"/>
+</svg>

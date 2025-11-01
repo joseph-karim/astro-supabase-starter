@@ -1,13 +1,12 @@
 ---
 import JSONLD from '../shared/JSONLD.astro';
 import OpenWindow from '../shared/OpenWindow.astro';
-import LegacyVsAEO from '../shared/LegacyVsAEO.astro';
+import LLMFunnelArc from '../shared/LLMFunnelArc.astro';
 import Bullseye from '../shared/Bullseye.astro';
 import TokenMicroscope from '../shared/TokenMicroscope.astro';
 import PipelineDiagram from '../shared/PipelineDiagram.astro';
 import AnswerCard from '../shared/AnswerCard.astro';
 import ProofCard from '../shared/ProofCard.astro';
-import ScoreDial from '../shared/ScoreDial.astro';
 import GuaranteesStrip from '../shared/GuaranteesStrip.astro';
 
 export const prerender = false;
@@ -56,8 +55,9 @@ const siteGraph = [
       .hero{padding:60px 0 48px;background:linear-gradient(135deg, var(--surface) 0%, var(--highlight) 100%)}
       .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
       .h1{font-size:58px;line-height:1.1;margin:0 0 16px;font-weight:900;color:var(--ink)}
-      .subhead{font-size:24px;color:var(--muted);margin:0 0 32px}
-      .chips{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}
+      .subhead{font-size:24px;color:var(--muted);margin:0 0 12px}
+      .support{font-size:13px;color:var(--muted);margin:0 0 16px;text-transform:uppercase;letter-spacing:.1em}
+      .chips{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 32px}
       .chip{padding:8px 16px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:13px;color:var(--muted)}
       .bar{display:flex;gap:12px;flex-wrap:wrap}
       .section{padding:60px 0;border-bottom:1px solid var(--border)}
@@ -90,7 +90,7 @@ const siteGraph = [
   </head>
   <body>
     <div class="ribbon">
-      AEO is here: AI Overviews/AI Mode now sit on top of search, and brands are being judged by what AI answers say—not just where you rank.
+      AEO is here: AI answers now sit on top of search. Buyers are judged by what AI says—and who it cites.
     </div>
 
     <header class="hero">
@@ -98,11 +98,12 @@ const siteGraph = [
         <div>
           <h1 class="h1">Become the Answer.</h1>
           <p class="subhead">Own the claim. Win the click. Close the deal.</p>
+          <p class="support">Built-For</p>
           <div class="chips">
             <span class="chip">Consulting services</span>
             <span class="chip">Agencies</span>
-            <span class="chip">Niche B2B SaaS/AI</span>
-            <span class="chip">Professional influencers</span>
+            <span class="chip">B2B SaaS/AI</span>
+            <span class="chip">Authors/Professional Creators</span>
           </div>
           <div class="bar">
             <a href="/wizard" class="btn" data-cta>Get your Claim Dossier</a>
@@ -117,50 +118,83 @@ const siteGraph = [
 
     <section class="section">
       <div class="wrap">
-        <p class="kicker">Why the window is open</p>
-        <h2 class="h2">The short version</h2>
-        <p class="lead">Search is adding an AI answer layer (Google AI Overviews/AI Mode, ChatGPT, Perplexity). Those surfaces summarize the web and show a few citations. If you aren't the source they quote, you don't exist to the buyer—no matter how many "#1" rankings you used to hold.</p>
+        <h2 class="h2">Why "Become the Answer" = Become the Go-To Solution</h2>
+        <p class="lead">When buyers use LLMs, they're not typing one keyword and skimming ten links. They describe context, add constraints, and ask for a decision. To win, you must be the specific solution for specific people at the moment of intent to act.</p>
 
-        <div class="grid three">
-          <div class="card">
-            <h3>1. Depth beats breadth</h3>
-            <p>Answer engines reward specialized, info-dense expertise. Trying to cover "everything" makes you look like an aggregator.</p>
-          </div>
-          <div class="card">
-            <h3>2. Quotes beat volume</h3>
-            <p>LLMs prefer short, self-contained, information-dense sentences they can lift into an answer. Ten fluffy posts won't beat one precise page.</p>
-          </div>
-          <div class="card">
-            <h3>3. Moving mainstream (fast)</h3>
-            <p>Even analytics leaders now ship free AI-visibility tools, which means your competitors are getting their act together. Early movers become the canonical source models repeat.</p>
-          </div>
+        <div class="card" style="margin:32px 0">
+          <h3 style="margin-bottom:16px">What changes vs legacy search</h3>
+          <ul class="list">
+            <li><strong>Search</strong> = many short queries over days; bottom-of-funnel keywords are expensive and crowded.</li>
+            <li><strong>LLMs</strong> = one ongoing conversation with rich context; the model consolidates options and pins 1–3 sources.</li>
+            <li><strong>Goal</strong> = become the cited source when the buyer asks the Commercial Critical Question (CCQ): "Given my constraints, who should I pick and why?"</li>
+          </ul>
+        </div>
+
+        <LLMFunnelArc />
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">Commercial Intent</p>
+        <h2 class="h2">Legacy SEO vs AEO</h2>
+        <div style="overflow-x:auto;margin:24px 0">
+          <table style="width:100%;border-collapse:collapse;font-size:14px">
+            <thead>
+              <tr style="background:var(--highlight)">
+                <th style="padding:16px;text-align:left;border:1px solid var(--border)"></th>
+                <th style="padding:16px;text-align:left;border:1px solid var(--border)">Legacy SEO</th>
+                <th style="padding:16px;text-align:left;border:1px solid var(--border);background:var(--accent);color:#ffffff">AEO (Answer-Engine Optimization)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding:12px;border:1px solid var(--border);font-weight:700">Buyer behavior</td>
+                <td style="padding:12px;border:1px solid var(--border)">Many queries → compare links</td>
+                <td style="padding:12px;border:1px solid var(--border);background:var(--highlight)"><strong>One conversation → asks for a verdict</strong></td>
+              </tr>
+              <tr>
+                <td style="padding:12px;border:1px solid var(--border);font-weight:700">Your job</td>
+                <td style="padding:12px;border:1px solid var(--border)">Rank broadly</td>
+                <td style="padding:12px;border:1px solid var(--border);background:var(--highlight)"><strong>Be the quoted solution for a narrow CCQ</strong></td>
+              </tr>
+              <tr>
+                <td style="padding:12px;border:1px solid var(--border);font-weight:700">Content</td>
+                <td style="padding:12px;border:1px solid var(--border)">Topic clusters, long intros</td>
+                <td style="padding:12px;border:1px solid var(--border);background:var(--highlight)"><strong>One canonical Claim Page per idea</strong></td>
+              </tr>
+              <tr>
+                <td style="padding:12px;border:1px solid var(--border);font-weight:700">Structure</td>
+                <td style="padding:12px;border:1px solid var(--border)">Walls of text</td>
+                <td style="padding:12px;border:1px solid var(--border);background:var(--highlight)"><strong>≤18-token claim + proof near the top</strong></td>
+              </tr>
+              <tr>
+                <td style="padding:12px;border:1px solid var(--border);font-weight:700">Proof</td>
+                <td style="padding:12px;border:1px solid var(--border)">Opinions</td>
+                <td style="padding:12px;border:1px solid var(--border);background:var(--highlight)"><strong>Table + tiny CSV + JSON-LD (entity clean)</strong></td>
+              </tr>
+              <tr>
+                <td style="padding:12px;border:1px solid var(--border);font-weight:700">Metric</td>
+                <td style="padding:12px;border:1px solid var(--border)">Impressions, rank</td>
+                <td style="padding:12px;border:1px solid var(--border);background:var(--highlight)"><strong>Answer-Attributed Meetings (AAQM) & pipeline</strong></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="wrap">
-        <p class="kicker">Clear contrast</p>
-        <h2 class="h2">Legacy SEO vs AEO</h2>
-        <LegacyVsAEO />
-        <p style="margin-top:24px;color:var(--muted);font-size:14px;">
-          <strong>Note:</strong> AI features show links to sources, but those links aren't a copy of top Google results—they're whatever best supports the answer. Ranking helps, but info-dense, quote-ready sources can leapfrog incumbents.
-        </p>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <p class="kicker">Who this is for</p>
-        <h2 class="h2">And why you win</h2>
+        <h2 class="h2">Who this is for (specific people, specific solutions)</h2>
+        <p class="lead">Be the big fish in your defined pond.</p>
         <div class="grid two">
           <div>
             <ul class="list">
-              <li><strong>Consulting services & agencies:</strong> You already have deep POVs and case evidence—AEO makes them extractable and repeatable.</li>
-              <li><strong>Niche B2B SaaS/AI:</strong> You must own 1–2 definable concepts tied to your product.</li>
-              <li><strong>Professional influencers:</strong> Your best lines get lost in long posts; we turn them into citable assets.</li>
+              <li><strong>Consulting & agencies:</strong> "If you are X with Y constraint, hire us. Here's proof."</li>
+              <li><strong>Niche B2B SaaS/AI:</strong> "If you need feature/integration for industry, choose us. Here's ROI."</li>
+              <li><strong>Professional influencers:</strong> "If you're ICP, follow this method—then book the workshop."</li>
             </ul>
-            <p class="lead" style="margin-top:24px;"><strong>Principle:</strong> Focus over breadth. Too many topics pushes you into "generic aggregator" territory. Pick one niche idea and own it. Then another. Then another.</p>
           </div>
           <div class="card" style="display:flex;justify-content:center;align-items:center">
             <Bullseye />
@@ -171,40 +205,39 @@ const siteGraph = [
 
     <section class="section">
       <div class="wrap">
-        <p class="kicker">Under the hood</p>
-        <h2 class="h2">Just enough tech</h2>
-        <p class="lead">How an LLM chooses you: Models build answers from short passages. Give them compact, self-contained lines and nearby proof. Think ≈60-token windows: dense enough to be useful, short enough to quote.</p>
+        <h2 class="h2">Under the hood (just enough tech to win the verdict)</h2>
+        <p class="lead">LLMs lift short, self-contained, information-dense lines. Think ≈60-token windows: dense enough to answer, short enough to quote.</p>
 
         <div style="margin-top:32px">
           <TokenMicroscope />
         </div>
 
         <p style="margin-top:24px;color:var(--muted);">
-          <strong>Why short wins:</strong> Short, scoped claims survive summarization and keep your name/URL attached; long, hedged paragraphs get compressed and credit drifts.
+          <strong>Why it matters to revenue:</strong> Dense lines get attributed, your URL appears, and the buyer has a clear next step.
         </p>
       </div>
     </section>
 
     <section class="section">
       <div class="wrap">
-        <p class="kicker">The play</p>
-        <h2 class="h2">Claim → Cite → Close</h2>
-        <div class="grid three">
-          <div class="card">
-            <h3>Claim</h3>
-            <p>Pick one sharp idea (≤18 tokens), make it your H1, and put a 2-sentence TL;DR under it.</p>
-          </div>
-          <div class="card">
-            <h3>Cite</h3>
-            <p>Add a proof snapshot above the fold (table + tiny CSV) and JSON-LD (Org/Person/Article/Dataset) so engines can trust and align your identity.</p>
-            <ProofCard />
-          </div>
-          <div class="card">
-            <h3>Close</h3>
-            <p>"Answer-ready up top; buyer-ready throughout." Put a clear CTA and scheduler above the fold.</p>
-            <ScoreDial value={85} label="Cite→Close Score" />
-          </div>
+        <h2 class="h2">The strategy → tactics (in service of capturing intent)</h2>
+        <div class="card" style="margin-bottom:32px">
+          <p style="font-size:18px;margin:0"><strong>Strategy:</strong> Own the Commercial Critical Question (CCQ).</p>
+          <p style="color:var(--muted);margin:12px 0 0">"Given my situation and constraints, who should I pick and why?"</p>
+          <p style="color:var(--muted);margin:12px 0 0">Your page must answer that CCQ so well that AI cites it and the buyer clicks to act.</p>
         </div>
+
+        <h3 style="margin-bottom:16px">Tactics that serve the strategy</h3>
+        <ul class="list">
+          <li><strong>Claim (≤18 tokens):</strong> State the verdict you want the model to repeat.</li>
+          <li><strong>Proof snapshot:</strong> Above-fold table + tiny CSV with outcomes, integrations, constraints handled.</li>
+          <li><strong>Comparison row:</strong> One line that differentiates you on the CCQ (e.g., "SOC-2 + SSO in 7 days").</li>
+          <li><strong>Implementation readiness:</strong> Checklist that de-risks adoption.</li>
+          <li><strong>JSON-LD graph:</strong> Org/Person/Article/Dataset with sameAs to align identity.</li>
+          <li><strong>Cross-posting:</strong> Summary to Substack/Medium; dataset to GitHub; both link to the canonical page.</li>
+          <li><strong>CTA design:</strong> "Book a 15-min triage" or "Start trial" above the fold.</li>
+        </ul>
+
         <div style="margin-top:32px">
           <PipelineDiagram />
         </div>
@@ -213,42 +246,23 @@ const siteGraph = [
 
     <section class="section">
       <div class="wrap">
-        <p class="kicker">Proof this isn't theoretical</p>
-        <h2 class="h2">AEO is going mainstream</h2>
-        <div class="grid three">
-          <div class="card">
-            <p>Mainstream platforms (Google AI Overviews/AI Mode) now surface AI answers with links; being the quoted source is the new distribution.</p>
-          </div>
-          <div class="card">
-            <p>AEO is no longer fringe. Major players are publishing AEO guides and productizing it (Backlinko, Surfer, HubSpot).</p>
-          </div>
-          <div class="card">
-            <p>Tooling is catching up. Amplitude launched AI Visibility with a free report—proof that measurement is going mainstream.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <p class="kicker">What you get</p>
-        <h2 class="h2">Outcomes, not fluff</h2>
+        <h2 class="h2">What you get (one canonical page that captures action)</h2>
         <div class="grid two">
           <div>
-            <h3 style="margin-bottom:16px">One canonical "Claim Page" per idea:</h3>
+            <h3 style="margin-bottom:16px">Your Claim Page (per idea)</h3>
             <ul class="list">
-              <li>H1 ≤18 tokens, 2-sentence TL;DR, 3 pull-quotes</li>
-              <li>Proof table + CSV download</li>
-              <li>JSON-LD (Org/Person/Article/Dataset) validated</li>
-              <li>Cross-post summary to Substack/Medium + dataset to GitHub</li>
-              <li>Screenshots of "appeared/cited" tests, not hand-wavy reports</li>
+              <li>H1 ≤18 tokens • 2-sentence TL;DR • 3 pull-quotes</li>
+              <li>Proof table + CSV download (metrics, integrations, constraints)</li>
+              <li>JSON-LD validated (Org/Person/Article/Dataset)</li>
+              <li>Screenshots of "appeared/cited" tests on seeded CCQs</li>
+              <li>Conversion wiring: above-fold CTA + scheduler + "AI Answers" channel</li>
             </ul>
           </div>
           <div class="card">
-            <h3 style="margin-bottom:16px">Measurement we care about:</h3>
+            <h3 style="margin-bottom:16px">What we measure first:</h3>
             <p><strong>AAQM</strong> (Answer-Attributed Qualified Meetings) and <strong>AAP($)</strong> (pipeline).</p>
-            <p style="margin-top:16px;color:var(--muted);">Citations are inputs; meetings are outcomes.</p>
-            <AnswerCard />
+            <p style="margin-top:16px;color:var(--muted);">Citations are inputs. Meetings are outcomes.</p>
+            <ProofCard />
           </div>
         </div>
       </div>
@@ -256,8 +270,28 @@ const siteGraph = [
 
     <section class="section">
       <div class="wrap">
-        <p class="kicker">Productized, simple</p>
-        <h2 class="h2">Packages</h2>
+        <h2 class="h2">Examples of CCQs we engineer you to win</h2>
+        <div class="grid three">
+          <div class="card">
+            <p>"Which SOC-2-ready AI phone system works with HubSpot and SSO this quarter?"</p>
+          </div>
+          <div class="card">
+            <p>"Best FP&A AI for multi-entity SaaS with QuickBooks + NetSuite, &lt;$10k MRR?"</p>
+          </div>
+          <div class="card">
+            <p>"Which B2B positioning firm specializes in fintech workflows and has a 4-week sprint?"</p>
+          </div>
+        </div>
+        <div style="margin-top:32px">
+          <AnswerCard />
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">Packages</p>
+        <h2 class="h2">Three ways to work with us</h2>
         <div class="price-grid">
           <div class="price-card">
             <h3>BTA-01 — Claim Kit</h3>
@@ -266,7 +300,7 @@ const siteGraph = [
             <ul class="list" style="font-size:14px">
               <li>H1/TL;DR/quotes</li>
               <li>Proof table + CSV</li>
-              <li>JSON-LD, CTA copy</li>
+              <li>JSON-LD • CTA copy</li>
               <li>Design wire</li>
             </ul>
             <div class="bar" style="margin-top:24px">
@@ -278,10 +312,11 @@ const siteGraph = [
             <div class="amt">$7,500</div>
             <p style="color:var(--muted);margin-bottom:20px">3 weeks</p>
             <ul class="list" style="font-size:14px">
-              <li>Publish the page; cross-post</li>
-              <li>Answer tests with screenshots</li>
-              <li>Wire CTA & analytics</li>
-              <li>Draft 10 curator emails</li>
+              <li>Page live • cross-posts</li>
+              <li>GitHub dataset</li>
+              <li>Answer tests (screenshots)</li>
+              <li>CTA & analytics wired</li>
+              <li>10 curator drafts</li>
             </ul>
             <div class="bar" style="margin-top:24px">
               <a href="/wizard" class="btn" data-cta>Book the Sprint</a>
@@ -301,27 +336,26 @@ const siteGraph = [
             </div>
           </div>
         </div>
-        <p style="text-align:center;margin-top:32px;color:var(--muted)">Start with the Ownable Idea Wizard (your Wizard fee is credited to Sprint).</p>
       </div>
     </section>
 
     <section class="section">
       <div class="wrap">
-        <p class="kicker">Specific, real</p>
-        <h2 class="h2">Risk reversals</h2>
+        <p class="kicker">Risk reversals</p>
+        <h2 class="h2">We de-risk the outcome</h2>
         <GuaranteesStrip />
         <div class="grid three" style="margin-top:32px">
           <div class="card">
             <h3>Fit-or-Free (Wizard)</h3>
-            <p>If we can't produce 3 claims scoring ≥85 with 5+ credible sources for the top pick, we refund the Wizard fee. You keep the Dossier.</p>
+            <p>3 claims ≥85 with 5+ credible sources—or refund.</p>
           </div>
           <div class="card">
             <h3>Appearance Guarantee (Sprint)</h3>
-            <p>If you don't get at least one "appeared or cited" screenshot on a seeded prompt within 4 weeks, we work one extra week free and add an extra proof asset.</p>
+            <p>At least one "appeared or cited" screenshot on a seeded CCQ in 4 weeks—or an extra week free + added proof.</p>
           </div>
           <div class="card">
             <h3>Meeting-Backed Credit (Compound)</h3>
-            <p>If AAQM = 0 after 60 days and you approved changes within 48 hours, we credit the next month.</p>
+            <p>AAQM = 0 after 60 days (with timely approvals)—credit next month.</p>
           </div>
         </div>
       </div>
@@ -332,14 +366,14 @@ const siteGraph = [
         <p class="kicker">FAQ</p>
         <h2 class="h2">Straight answers</h2>
         <dl class="faq">
-          <dt>How is this different from SEO?</dt>
-          <dd>Legacy SEO optimizes for lists of links. AEO optimizes for being the source AI answers cite—and making that citation click.</dd>
+          <dt>Isn't ranking #1 on Google enough?</dt>
+          <dd>Not when buyers ask LLMs for a verdict. AEO puts you where the decision happens.</dd>
 
-          <dt>What's the typical timeline?</dt>
-          <dd>You'll usually see early movement in 2–6 weeks if you have any authority at all. We show before/after screenshots.</dd>
+          <dt>Do we need lots of content?</dt>
+          <dd>No. You need one canonical page per idea with proof near the top, refreshed monthly.</dd>
 
-          <dt>Do we need to produce more content?</dt>
-          <dd>No. You need one canonical page per idea, with proof near the top. Then keep it fresh monthly.</dd>
+          <dt>How fast can we see movement?</dt>
+          <dd>Typically 2–6 weeks if you have any authority. You get before/after screenshots.</dd>
         </dl>
       </div>
     </section>
@@ -349,9 +383,11 @@ const siteGraph = [
         <div class="card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;padding:40px">
           <div>
             <h2 class="h2" style="margin:0 0 12px">Own the claim. Win the click. Close the deal.</h2>
-            <p style="color:var(--muted);margin:0">We optimize for meetings, not vanity citations.</p>
+            <div class="bar">
+              <a href="/wizard" class="btn" data-cta style="flex-shrink:0">Get your Claim Dossier</a>
+              <a href="/guarantees" class="btn btn--outline">See our Guarantees</a>
+            </div>
           </div>
-          <a href="/wizard" class="btn" data-cta style="flex-shrink:0">Get your Claim Dossier</a>
         </div>
       </div>
     </section>
