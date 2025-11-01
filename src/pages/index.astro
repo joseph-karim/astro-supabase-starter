@@ -1,7 +1,10 @@
 ---
-import Layout from "../components/Layout.astro";
-import Hero from "../components/Hero.astro";
-import JSONLD from "../components/JSONLD.astro";
+import JSONLD from '../shared/JSONLD.astro';
+import PipelineDiagram from '../shared/PipelineDiagram.astro';
+import AnswerCard from '../shared/AnswerCard.astro';
+import ScoreDial from '../shared/ScoreDial.astro';
+import ProofCard from '../shared/ProofCard.astro';
+import GuaranteesStrip from '../shared/GuaranteesStrip.astro';
 
 export const prerender = false;
 
@@ -10,42 +13,228 @@ const siteGraph = [
     "@type": "Organization",
     "name": "Become The Answer",
     "url": "https://becometheanswer.ai",
-    "description": "AEO - AI Visibility & Conversion Services",
-    "contactPoint": [
-      {
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "email": "hello@becometheanswer.ai"
-      }
-    ]
+    "logo": "https://becometheanswer.ai/og-logo.png",
+    "sameAs": ["https://www.linkedin.com/company/becometheanswer"]
   },
   {
-    "@type": "WebSite",
-    "url": "https://becometheanswer.ai",
-    "name": "Become The Answer"
+    "@type": "Service",
+    "name": "AEO — AI Visibility & Conversion",
+    "provider": {"@type":"Organization","name":"Become The Answer"},
+    "description": "Claim → Cite → Close for challenger brands: claim page, evidence + schema, conversion-first design.",
+    "areaServed": "Global",
+    "url": "https://becometheanswer.ai"
   }
 ];
 ---
 
-<Layout title="Become the Answer — AEO: AI Visibility & Conversion">
-  <JSONLD graph={siteGraph} />
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Become the Answer — AEO: AI Visibility & Conversion for Challenger Brands</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Turn one sharp claim into answer-engine visibility that clicks and converts. Claim → Cite → Close. Risk-reversed." />
+    <link rel="canonical" href="https://becometheanswer.ai/" />
+    <JSONLD graph={siteGraph} />
+    <style>
+      :root{
+        --bg:#0a0b0d; --panel:#111319; --ink:#e9eef5; --muted:#9aa6b2; --accent:#31d0c6;
+        --ok:#20c997; --warn:#ffb02e; --danger:#ff6b6b; --stroke:#1b1f29;
+      }
+      *{box-sizing:border-box}
+      html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial}
+      a{color:var(--ink);text-decoration:none}
+      .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+      .btn{display:inline-flex;gap:10px;align-items:center;border-radius:12px;padding:12px 18px;border:1px solid transparent;background:var(--ink);color:#0b0c10;font-weight:700}
+      .btn--ghost{background:transparent;border-color:#2b303b;color:var(--ink)}
+      .btn:hover{filter:brightness(0.96)}
+      .tag{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+      .h1{font-size:56px;line-height:1.04;margin:10px 0 8px;font-weight:900}
+      .sub{font-size:22px;color:#c7d2de;margin:0 0 18px}
+      .grid{display:grid;gap:24px}
+      .hero{padding:56px 0 32px;border-bottom:1px solid var(--stroke);background:
+        radial-gradient(900px 400px at 70% -10%, rgba(49,208,198,.18), transparent 60%)}
+      .hero-panel{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
+      .bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+      .check{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;background:#0e1118;border:1px solid var(--stroke);border-radius:999px;color:#cfe9e7}
+      .section{padding:56px 0;border-bottom:1px solid var(--stroke)}
+      .kicker{font-size:13px;color:var(--muted);margin:0 0 8px;text-transform:uppercase;letter-spacing:.14em}
+      .h2{font-size:32px;font-weight:800;margin:0 0 8px}
+      .lead{color:#cbd5e1;margin:0 0 18px}
+      .card{background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:18px}
+      .three{grid-template-columns:repeat(3,1fr)}
+      .two{grid-template-columns:repeat(2,1fr)}
+      .muted{color:var(--muted)}
+      .list{margin:0;padding:0 0 0 20px}
+      .list li{margin:6px 0}
+      .price{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+      .price .p{padding:22px;border:1px solid var(--stroke);border-radius:16px;background:var(--panel)}
+      .p h3{margin:0 0 6px;font-size:20px}
+      .p .amt{font-size:28px;font-weight:800;margin:6px 0 12px}
+      .guarantee{display:flex;gap:12px;align-items:center;}
+      .faq dt{font-weight:800;margin:18px 0 6px}
+      .footer{padding:28px 0;color:#9aa6b2}
+      @media (max-width:980px){ .hero-panel{grid-template-columns:1fr} .price{grid-template-columns:1fr} .three,.two{grid-template-columns:1fr} .h1{font-size:44px} }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="wrap hero-panel">
+        <div>
+          <div class="tag">AEO — AI Visibility & Conversion Services</div>
+          <h1 class="h1">Become the Answer.</h1>
+          <p class="sub">Own the claim. Win the click. Close the deal.</p>
+          <div class="bar">
+            <a href="/wizard" class="btn" data-cta>Get your Claim Dossier</a>
+            <a href="/guarantees" class="btn btn--ghost">See our guarantees</a>
+          </div>
+          <div class="bar" aria-label="Trust statements">
+            <span class="check">• Answer-Attributed Meetings over vanity citations</span>
+            <span class="check">• One canonical claim page, not content spam</span>
+            <span class="check">• Evidence + JSON-LD + real screenshots</span>
+          </div>
+        </div>
+        <div class="card" aria-labelledby="how-works">
+          <h2 id="how-works" class="kicker">How it works</h2>
+          <PipelineDiagram />
+        </div>
+      </div>
+    </header>
 
-  <Hero />
+    <section class="section">
+      <div class="wrap grid two">
+        <div>
+          <p class="kicker">The problem</p>
+          <h2 class="h2">Thought leadership that can't be <i>cited</i> won't be clicked.</h2>
+          <p class="lead">Models pick one source. If your idea isn't extractable — short, provable, entity-clean — you won't appear. If your page isn't built to win the click, you won't convert.</p>
+          <ul class="list">
+            <li><b>Too long to extract:</b> vague, hedged headlines that never get quoted.</li>
+            <li><b>Proof missing:</b> no table/CSV near the top; nothing to anchor the claim.</li>
+            <li><b>Entity blind:</b> no JSON-LD, no <code>sameAs</code>, weak disambiguation.</li>
+          </ul>
+        </div>
+        <div class="card" aria-labelledby="answer-card">
+          <h3 id="answer-card" class="kicker">What a "clickable citation" looks like</h3>
+          <AnswerCard />
+        </div>
+      </div>
+    </section>
 
-  <section class="mx-auto max-w-5xl px-6 py-8 space-y-6">
-    <h2 class="text-2xl font-bold">The 3-step challenger play</h2>
-    <ul class="list-disc ml-6 space-y-2 text-gray-700">
-      <li><strong>Claim</strong>: one idea, ≤18 tokens, one URL.</li>
-      <li><strong>Cite</strong>: table + tiny CSV + JSON-LD that engines can trust.</li>
-      <li><strong>Close</strong>: answer-ready up top; buyer-ready CTA above the fold.</li>
-    </ul>
-    <a class="inline-block underline text-blue-600 hover:text-blue-800" href="/claim/18-token-rule">
-      See the 18-Token Rule
-    </a>
-  </section>
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">The solution</p>
+        <h2 class="h2">Claim → Cite → Close</h2>
+        <p class="lead">One sharp claim (≤18 tokens). Evidence engines can trust. A page designed to book meetings.</p>
+        <div class="grid three">
+          <div class="card">
+            <h3>Claim</h3>
+            <p class="muted">One idea. One URL. One owner. H1 ≤18 tokens + TL;DR + 3 pull-quotes.</p>
+          </div>
+          <div class="card">
+            <h3>Cite</h3>
+            <p class="muted">Proof snapshot (table + tiny CSV) + validated JSON-LD (Org/Person/Article/Dataset).</p>
+            <ProofCard />
+          </div>
+          <div class="card">
+            <h3>Close</h3>
+            <p class="muted">Answer-ready up top; buyer-ready throughout. Above-fold CTA + scheduler + screenshots to prove it.</p>
+            <ScoreDial value={72} label="Cite→Close Score" />
+          </div>
+        </div>
+        <div class="bar" style="margin-top:22px">
+          <a href="/claim/18-token-rule" class="btn btn--ghost">See the 18-Token Rule</a>
+          <a href="/wizard" class="btn" data-cta>Start with the Wizard</a>
+        </div>
+      </div>
+    </section>
 
-  <script>
-    (function() {
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">Productized services</p>
+        <h2 class="h2">Built for challenger brands</h2>
+        <div class="price">
+          <div class="p">
+            <h3>BTA-01 — Claim Kit</h3>
+            <div class="amt">$1,500 • 5 days</div>
+            <ul class="list">
+              <li>≤18-token H1, TL;DR, 3 pull-quotes</li>
+              <li>Proof table + tiny CSV</li>
+              <li>JSON-LD + design wire + CTA copy</li>
+            </ul>
+            <div class="bar"><a href="/wizard" class="btn" data-cta>Order Claim Kit</a></div>
+          </div>
+          <div class="p" style="border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset">
+            <h3>BTA-02 — Challenger Sprint</h3>
+            <div class="amt">$7,500 • 3 weeks</div>
+            <ul class="list">
+              <li>Claim Page live + cross-posts + GitHub dataset</li>
+              <li>Answer tests with screenshots + analytics</li>
+              <li>CTA + scheduler + 10 curator drafts</li>
+            </ul>
+            <div class="bar"><a href="/wizard" class="btn" data-cta>Book the Sprint</a></div>
+          </div>
+          <div class="p">
+            <h3>BTA-03 — Compound Plan</h3>
+            <div class="amt">$2,500 / mo</div>
+            <ul class="list">
+              <li>1 micro-update + 1 support post / month</li>
+              <li>Weekly tests + 3 curator follow-ups</li>
+              <li>Monthly report (AAQM, AAP$, AAS, EIR, CMR)</li>
+            </ul>
+            <div class="bar"><a href="/wizard" class="btn btn--ghost">Start compounding</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">Risk reversals</p>
+        <h2 class="h2">We de-risk the outcome</h2>
+        <GuaranteesStrip />
+        <div class="bar" style="margin-top:16px">
+          <a href="/guarantees" class="btn btn--ghost">Read guarantees</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">FAQ</p>
+        <h2 class="h2">Straight answers</h2>
+        <dl class="faq">
+          <dt>How is this different from SEO?</dt>
+          <dd class="muted">We optimize for answer-engine <b>citability</b> and <b>click-through</b>: short claims, proof near the top, entity/schema, and above-fold conversion—measured by meetings.</dd>
+          <dt>How fast can I see movement?</dt>
+          <dd class="muted">2–6 weeks if you have any authority at all. You'll get before/after screenshots, not hand-waving.</dd>
+          <dt>What do you need from me?</dt>
+          <dd class="muted">Your strongest proof (data, deck, talk). We turn it into a canonical claim page and seed it where engines and editors look.</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section" style="border-bottom:none">
+      <div class="wrap card" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <div>
+          <p class="kicker">Next step</p>
+          <h2 class="h2" style="margin:0">Own the claim. Win the click. Close the deal.</h2>
+          <p class="muted">Start with the Wizard. Your fee is credited to the Sprint.</p>
+        </div>
+        <a href="/wizard" class="btn" data-cta>Get your Claim Dossier</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+        <small>© {new Date().getFullYear()} Become The Answer</small>
+        <nav class="bar">
+          <a href="/wizard" class="muted">Services</a>
+          <a href="/claim/18-token-rule" class="muted">Resources</a>
+          <a href="/wizard" class="muted">Contact</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script>
       const ref = document.referrer || '';
       fetch('/api/events', {
         method: 'POST',
@@ -57,6 +246,20 @@ const siteGraph = [
           event_type: 'session'
         })
       }).catch(() => {});
-    })();
-  </script>
-</Layout>
+
+      document.querySelectorAll('[data-cta]').forEach(el => {
+        el.addEventListener('click', () => {
+          fetch('/api/events', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              claim_slug: 'home',
+              page: '/',
+              event_type: 'cta_click'
+            })
+          }).catch(() => {});
+        });
+      });
+    </script>
+  </body>
+</html>

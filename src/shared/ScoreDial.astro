@@ -1,0 +1,25 @@
+---
+const { value = 72, label = 'Cite→Close Score' } = Astro.props;
+const pct = Math.max(0, Math.min(100, value));
+const angle = (pct / 100) * 270 - 135;
+const needleX = Math.cos(angle * Math.PI / 180) * 70;
+const needleY = Math.sin(angle * Math.PI / 180) * -70;
+---
+<svg viewBox="0 0 220 120" role="img" aria-label={`${label}: ${pct}`}>
+  <defs>
+    <style>
+      .ring{fill:none;stroke:#1b1f29;stroke-width:12}
+      .tick{stroke:#2a2f3a;stroke-width:2}
+      .needle{stroke:#31d0c6;stroke-width:4}
+      .t{font:600 12px system-ui;fill:#9aa6b2}
+      .v{font:800 22px system-ui;fill:#e9eef5}
+    </style>
+  </defs>
+  <g transform="translate(110,110)">
+    <path class="ring" d="M -90 0 A 90 90 0 1 1 90 0" />
+    <line class="needle" x1="0" y1="0" x2={needleX} y2={needleY}/>
+  </g>
+  <text class="t" x="110" y="24" text-anchor="middle">{label}</text>
+  <text class="v" x="110" y="50" text-anchor="middle">{pct}</text>
+  <text class="t" x="110" y="70" text-anchor="middle">Goal: ≥85 before scale</text>
+</svg>
