@@ -1,5 +1,58 @@
-<footer class="max-w-4xl mx-auto mt-12">
-  <a href="https://docs.netlify.com/frameworks/astro/" class="text-base underline">
-    Astro on Netlify
-  </a>
+<style>
+  .footer-container {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 2rem;
+    border-top: 1px solid #1B1F29;
+  }
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .footer-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #9EA3C7;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #9EA3C7;
+    text-decoration: none;
+    transition: color 0.2s cubic-bezier(.2,.6,.2,1);
+  }
+
+  .footer-link:hover {
+    color: #7A5CFF;
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
+    .footer-content {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>
+
+<footer class="footer-container">
+  <div class="footer-content">
+    <p class="footer-text">© 2025 Become the Answer. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="/guarantees" class="footer-link">Guarantees</a>
+      <a href="/wizard" class="footer-link">Get Started</a>
+    </div>
+  </div>
 </footer>

@@ -1,9 +1,49 @@
-<header class="max-w-4xl mx-auto mt-6 mb-16">
-  <nav class="flex justify-between">
-    <a
-      href="/"
-      class="text-2xl font-bold hover:underline hover:underline-offset-4 hover:decoration-green-500"
-      ><span class="text-green-500">&#10022;</span> Astro Supabase Starter
+<style>
+  .header-nav {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .brand-link {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #F3F1FF;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(.2,.6,.2,1);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .brand-link:hover {
+    color: #7A5CFF;
+    text-decoration: none;
+  }
+
+  .brand-icon {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #5A3AF5 0%, #7A5CFF 100%);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #F3F1FF;
+  }
+</style>
+
+<header>
+  <nav class="header-nav">
+    <a href="/" class="brand-link">
+      <span class="brand-icon">⚡</span>
+      Become the Answer
     </a>
   </nav>
 </header>
