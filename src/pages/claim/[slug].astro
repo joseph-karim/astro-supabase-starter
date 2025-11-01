@@ -33,27 +33,32 @@ const quotes: string[] = data.pull_quotes ?? [];
   <JSONLD graph={graph} />
 
   <div class="mx-auto max-w-3xl px-6 py-12">
-    <p class="text-xs uppercase tracking-wide text-gray-500">Claim</p>
-    <h1 class="text-4xl font-extrabold mt-2">{data.h1}</h1>
-    <p class="mt-3 text-lg text-gray-700">{data.tl_dr}</p>
+    <div class="bg-white p-10 rounded-2xl shadow-xl border-2 border-slate-200">
+      <p class="text-xs uppercase tracking-wider text-blue-600 font-bold mb-3">Claim</p>
+      <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">{data.h1}</h1>
+      <p class="mt-4 text-xl text-slate-600 leading-relaxed">{data.tl_dr}</p>
+    </div>
 
-    <section class="mt-8">
-      <h2 class="text-xl font-bold">Proof snapshot</h2>
+    <section class="mt-10">
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">Proof snapshot</h2>
       <ProofTable rows={rows} />
       {data.csv_url && (
         <a
-          class="inline-block mt-2 text-blue-600 hover:text-blue-800 underline text-sm"
+          class="inline-flex items-center gap-2 mt-4 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors"
           href={data.csv_url}
           download
         >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+          </svg>
           Download CSV
         </a>
       )}
     </section>
 
-    <section class="mt-8">
-      <h2 class="text-xl font-bold">How to use it</h2>
-      <ol class="list-decimal ml-6 mt-3 space-y-2 text-gray-700">
+    <section class="mt-10 bg-white p-8 rounded-2xl shadow-lg border-2 border-slate-200">
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">How to use it</h2>
+      <ol class="list-decimal ml-6 space-y-3 text-slate-700 text-base leading-relaxed">
         <li>State the claim in ≤18 tokens up top.</li>
         <li>Attach the data (table + CSV).</li>
         <li>Add JSON-LD and keep it fresh monthly.</li>
@@ -61,11 +66,11 @@ const quotes: string[] = data.pull_quotes ?? [];
     </section>
 
     {quotes.length > 0 && (
-      <aside class="mt-8 p-6 bg-gray-50 rounded-lg space-y-4">
+      <aside class="mt-10 p-8 bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl border-2 border-blue-200 shadow-md space-y-6">
         {quotes.map(quote => (
-          <blockquote class="border-l-4 border-gray-400 pl-4 italic text-gray-700">
+          <blockquote class="border-l-4 border-blue-600 pl-6 italic text-slate-700 text-base leading-relaxed">
             "{quote}"
-            <footer class="text-sm text-gray-600 mt-1 not-italic">
+            <footer class="text-sm text-slate-600 mt-2 not-italic font-medium">
               — Joseph Karim, Founder, Become the Answer (2025)
             </footer>
           </blockquote>
@@ -73,10 +78,10 @@ const quotes: string[] = data.pull_quotes ?? [];
       </aside>
     )}
 
-    <div class="mt-10">
+    <div class="mt-12 text-center">
       <a
         href="/wizard"
-        class="inline-block bg-black text-white rounded-lg px-5 py-3 font-medium hover:bg-gray-800 transition-colors"
+        class="inline-block bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl px-8 py-4 font-semibold text-base hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
         data-cta
       >
         Get your Claim Dossier

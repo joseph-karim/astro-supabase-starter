@@ -3,7 +3,7 @@
 
 @layer base {
   a {
-    @apply hover:underline hover:underline-offset-2 hover:decoration-green-500;
+    @apply text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-2 transition-colors duration-150;
   }
   td {
     @apply pt-4 pb-6;
@@ -12,6 +12,18 @@
     @apply py-4;
   }
   img {
-    @apply border rounded-sm border-neutral-500;
+    @apply border-2 rounded-lg border-slate-200 shadow-sm;
+  }
+  h1 {
+    @apply text-slate-900 font-bold tracking-tight;
+  }
+  h2 {
+    @apply text-slate-900 font-bold tracking-tight;
+  }
+  h3 {
+    @apply text-slate-900 font-semibold;
+  }
+  p {
+    @apply text-slate-700 leading-relaxed;
   }
 }

@@ -1,28 +1,43 @@
-<svg viewBox="0 0 800 450" role="img" aria-label="Window showing how a sharp claim turns into citations and booked meetings" style="width:100%;height:auto">
+<svg viewBox="0 0 800 450" role="img" aria-label="Window showing how a sharp claim turns into citations and booked meetings" style="width:100%;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.08))">
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#b8d4e8"/>
-      <stop offset="100%" stop-color="#dae9f4"/>
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
     </linearGradient>
+    <linearGradient id="frameGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#f8fafc" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="nodeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+    <filter id="nodeShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
     <style>
-      .frame{fill:#2c3e50;stroke:#1a252f;stroke-width:3}
-      .glass{fill:#f0f4f8;opacity:0.85}
-      .sea{fill:#8fb8d4}
-      .text{font:600 13px system-ui;fill:#2c3e50}
-      .node{fill:#ffffff;stroke:#4a6fa5;stroke-width:2}
-      .arrow{stroke:#4a6fa5;stroke-width:2;fill:none;marker-end:url(#arrowhead)}
+      .frame{fill:url(#frameGrad);stroke:#0f172a;stroke-width:2}
+      .glass{fill:url(#glassGrad)}
+      .sea{fill:#93c5fd;opacity:0.4}
+      .text{font:600 14px -apple-system,BlinkMacSystemFont,'Inter',sans-serif;fill:#0f172a;letter-spacing:-0.01em}
+      .node{fill:url(#nodeGrad);stroke:#2563eb;stroke-width:2;filter:url(#nodeShadow)}
+      .arrow{stroke:#2563eb;stroke-width:2.5;fill:none;marker-end:url(#arrowhead)}
     </style>
     <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-      <polygon points="0 0, 10 3, 0 6" fill="#4a6fa5"/>
+      <polygon points="0 0, 10 3, 0 6" fill="#2563eb"/>
     </marker>
   </defs>
 
-  <rect width="800" height="450" fill="url(#sky)"/>
+  <rect width="800" height="450" fill="url(#sky)" rx="12"/>
 
   <ellipse cx="400" cy="380" rx="300" ry="40" class="sea"/>
 
-  <rect class="frame" x="50" y="50" width="700" height="350" rx="8"/>
-  <rect class="glass" x="60" y="60" width="680" height="330"/>
+  <rect class="frame" x="50" y="50" width="700" height="350" rx="12"/>
+  <rect class="glass" x="58" y="58" width="684" height="334" rx="10"/>
 
   <g transform="translate(120, 150)">
     <rect class="node" x="0" y="0" width="90" height="50" rx="6"/>

@@ -1,26 +1,41 @@
-<svg viewBox="0 0 300 300" role="img" aria-label="Focus over breadth targeting" style="width:100%;height:auto">
+<svg viewBox="0 0 300 300" role="img" aria-label="Focus over breadth targeting" style="width:100%;height:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.06))">
   <defs>
     <radialGradient id="focus" cx="50%" cy="50%">
-      <stop offset="0%" stop-color="#4a6fa5" stop-opacity="1"/>
-      <stop offset="40%" stop-color="#7ba3cc" stop-opacity="0.6"/>
-      <stop offset="100%" stop-color="#dae9f4" stop-opacity="0.2"/>
+      <stop offset="0%" stop-color="#2563eb" stop-opacity="1"/>
+      <stop offset="35%" stop-color="#3b82f6" stop-opacity="0.7"/>
+      <stop offset="65%" stop-color="#60a5fa" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#dbeafe" stop-opacity="0.15"/>
     </radialGradient>
+    <linearGradient id="ringGrad1" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#2563eb" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="ringGrad2" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#60a5fa" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="ringGrad3" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.15"/>
+    </linearGradient>
     <style>
-      .ring{fill:none;stroke:#b0bec5;stroke-width:2;opacity:0.4}
-      .center{fill:url(#focus)}
-      .text{font:700 13px system-ui;fill:#2c3e50}
-      .label{font:600 11px system-ui;fill:#546e7a}
+      .ring1{fill:none;stroke:url(#ringGrad1);stroke-width:3}
+      .ring2{fill:none;stroke:url(#ringGrad2);stroke-width:2.5}
+      .ring3{fill:none;stroke:url(#ringGrad3);stroke-width:2}
+      .center{fill:url(#focus);filter:drop-shadow(0 2px 8px rgba(37,99,235,0.3))}
+      .text{font:700 14px -apple-system,BlinkMacSystemFont,'Inter',sans-serif;fill:#0f172a;letter-spacing:-0.01em}
+      .label{font:600 12px -apple-system,BlinkMacSystemFont,'Inter',sans-serif;fill:#64748b;letter-spacing:-0.01em}
     </style>
   </defs>
 
-  <circle class="ring" cx="150" cy="150" r="130"/>
-  <circle class="ring" cx="150" cy="150" r="100"/>
-  <circle class="ring" cx="150" cy="150" r="70"/>
-  <circle class="center" cx="150" cy="150" r="40"/>
+  <circle class="ring3" cx="150" cy="150" r="130"/>
+  <circle class="ring2" cx="150" cy="150" r="100"/>
+  <circle class="ring1" cx="150" cy="150" r="70"/>
+  <circle class="center" cx="150" cy="150" r="42"/>
 
-  <text class="text" x="150" y="155" text-anchor="middle">Your niche</text>
+  <text class="text" x="150" y="156" text-anchor="middle">Your niche</text>
 
-  <text class="label" x="150" y="100" text-anchor="middle">Specialized</text>
+  <text class="label" x="150" y="98" text-anchor="middle">Specialized</text>
   <text class="label" x="150" y="230" text-anchor="middle">Generic coverage</text>
   <text class="label" x="150" y="265" text-anchor="middle">(fades out)</text>
 </svg>

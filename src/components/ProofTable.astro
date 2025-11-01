@@ -3,12 +3,12 @@ const rows: Array<Record<string, string | number>> = Astro.props.rows || [];
 if (rows.length === 0) return;
 const headers = Object.keys(rows[0]);
 ---
-<div class="overflow-x-auto">
-  <table class="w-full border border-gray-300 mt-4 text-sm">
+<div class="overflow-x-auto rounded-xl border-2 border-slate-200 shadow-md mt-6">
+  <table class="w-full text-sm">
     <thead>
-      <tr class="bg-gray-50">
+      <tr class="bg-gradient-to-r from-blue-50 to-blue-100 border-b-2 border-blue-200">
         {headers.map(header => (
-          <th class="text-left p-3 border-b border-gray-300 font-semibold capitalize">
+          <th class="text-left p-4 font-bold capitalize text-slate-900 tracking-tight">
             {header.replace(/_/g, ' ')}
           </th>
         ))}
@@ -16,9 +16,9 @@ const headers = Object.keys(rows[0]);
     </thead>
     <tbody>
       {rows.map((row, idx) => (
-        <tr class={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+        <tr class={`transition-colors duration-150 ${idx % 2 === 0 ? 'bg-white hover:bg-blue-50' : 'bg-slate-50 hover:bg-blue-50'} border-b border-slate-200 last:border-b-0`}>
           {headers.map(header => (
-            <td class="p-3 border-b border-gray-200">{String(row[header])}</td>
+            <td class="p-4 text-slate-700">{String(row[header])}</td>
           ))}
         </tr>
       ))}

@@ -1,11 +1,15 @@
-<svg viewBox="0 0 700 220" role="img" aria-label="AI answer citing your page" style="width:100%;height:auto">
+<svg viewBox="0 0 700 220" role="img" aria-label="AI answer citing your page" style="width:100%;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.06))">
   <defs>
+    <linearGradient id="panelG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
     <style>
-      .panel{fill:#ffffff;stroke:#4a6fa5;stroke-width:2}
-      .h{font:700 14px system-ui;fill:#2c3e50}
-      .p{font:13px system-ui;fill:#455a64}
-      .chip{fill:#f5f5f5;stroke:#b0bec5}
-      .link{fill:#1976d2}
+      .panel{fill:url(#panelG);stroke:#2563eb;stroke-width:2}
+      .h{font:700 15px -apple-system,BlinkMacSystemFont,'Inter',sans-serif;fill:#0f172a;letter-spacing:-0.01em}
+      .p{font:14px -apple-system,BlinkMacSystemFont,'Inter',sans-serif;fill:#334155;letter-spacing:-0.01em;line-height:1.6}
+      .chip{fill:#eff6ff;stroke:#cbd5e1}
+      .link{fill:#2563eb;font-weight:600}
     </style>
   </defs>
   <rect class="panel" x="0.5" y="0.5" rx="12" ry="12" width="699" height="219"/>

@@ -1,11 +1,15 @@
-<svg viewBox="0 0 320 140" role="img" aria-label="Proof table + CSV" style="width:100%;height:auto">
+<svg viewBox="0 0 320 140" role="img" aria-label="Proof table + CSV" style="width:100%;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.06))">
   <defs>
+    <linearGradient id="panelGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
     <style>
-      .panel{fill:#ffffff;stroke:#4a6fa5;stroke-width:2}
-      .th{fill:#f5f5f5}
-      .t{font:600 11px system-ui;fill:#546e7a}
-      .v{font:600 11px system-ui;fill:#2c3e50}
-      .csv{fill:#4a6fa5}
+      .panel{fill:url(#panelGrad);stroke:#2563eb;stroke-width:2}
+      .th{fill:#eff6ff}
+      .t{font:600 12px -apple-system,BlinkMacSystemFont,'Inter',sans-serif;fill:#64748b;letter-spacing:-0.01em}
+      .v{font:600 12px -apple-system,BlinkMacSystemFont,'Inter',sans-serif;fill:#0f172a;letter-spacing:-0.01em}
+      .csv{fill:#2563eb}
     </style>
   </defs>
   <rect class="panel" x="0.5" y="0.5" rx="10" ry="10" width="319" height="139"/>

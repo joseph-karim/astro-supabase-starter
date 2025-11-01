@@ -1,16 +1,24 @@
-<svg viewBox="0 0 800 200" role="img" aria-label="Conversation arc: Context → Constraints → Options → Justification → Action, with citations shown at Justification" style="width:100%;height:auto">
+<svg viewBox="0 0 800 200" role="img" aria-label="Conversation arc: Context → Constraints → Options → Justification → Action, with citations shown at Justification" style="width:100%;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.06))">
   <defs>
+    <linearGradient id="stageGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+    <linearGradient id="citGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
     <style>
-      .stage{fill:#ffffff;stroke:#4a6fa5;stroke-width:2}
-      .stage-highlight{fill:#e3f2fd;stroke:#4a6fa5;stroke-width:2}
-      .text{font:600 13px system-ui;fill:#2c3e50}
-      .label{font:700 12px system-ui;fill:#546e7a}
-      .arrow{stroke:#4a6fa5;stroke-width:2;fill:none;marker-end:url(#arrowhead)}
-      .citation{fill:#4caf50;stroke:#2e7d32;stroke-width:1}
-      .citation-text{font:600 10px system-ui;fill:#ffffff}
+      .stage{fill:url(#stageGrad);stroke:#2563eb;stroke-width:2}
+      .stage-highlight{fill:#eff6ff;stroke:#2563eb;stroke-width:2.5}
+      .text{font:600 13px -apple-system,BlinkMacSystemFont,'Inter',sans-serif;fill:#334155;letter-spacing:-0.01em}
+      .label{font:700 13px -apple-system,BlinkMacSystemFont,'Inter',sans-serif;fill:#0f172a;letter-spacing:-0.01em}
+      .arrow{stroke:#2563eb;stroke-width:2.5;fill:none;marker-end:url(#arrowhead)}
+      .citation{fill:url(#citGrad)}
+      .citation-text{font:600 11px -apple-system,BlinkMacSystemFont,'Inter',sans-serif;fill:#ffffff;letter-spacing:0.02em}
     </style>
     <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-      <polygon points="0 0, 10 3, 0 6" fill="#4a6fa5"/>
+      <polygon points="0 0, 10 3, 0 6" fill="#2563eb"/>
     </marker>
   </defs>
 
