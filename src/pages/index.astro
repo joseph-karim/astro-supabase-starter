@@ -1,13 +1,10 @@
 ---
 import JSONLD from '../shared/JSONLD.astro';
-import OpenWindow from '../shared/OpenWindow.astro';
-import LLMFunnelArc from '../shared/LLMFunnelArc.astro';
-import Bullseye from '../shared/Bullseye.astro';
-import TokenMicroscope from '../shared/TokenMicroscope.astro';
-import PipelineDiagram from '../shared/PipelineDiagram.astro';
-import AnswerCard from '../shared/AnswerCard.astro';
-import ProofCard from '../shared/ProofCard.astro';
-import GuaranteesStrip from '../shared/GuaranteesStrip.astro';
+import AnswerBeam from '../shared/AnswerBeam.astro';
+import PipelineFlow from '../shared/PipelineFlow.astro';
+import TargetRings from '../shared/TargetRings.astro';
+import TokenComparison from '../shared/TokenComparison.astro';
+import ConversationArc from '../shared/ConversationArc.astro';
 
 export const prerender = false;
 
@@ -37,95 +34,86 @@ const siteGraph = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Own the claim. Win the click. Close the deal. Turn your expertise into answer-engine visibility that books meetings." />
     <link rel="canonical" href="https://becometheanswer.ai/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <JSONLD graph={siteGraph} />
     <style>
       :root{
-        --bg:#fafbfc;
-        --surface:#ffffff;
-        --ink:#0f172a;
-        --ink-light:#334155;
-        --muted:#64748b;
-        --muted-light:#94a3b8;
-        --accent:#2563eb;
-        --accent-hover:#1d4ed8;
-        --accent-light:#3b82f6;
-        --highlight:#eff6ff;
-        --highlight-alt:#f0f9ff;
-        --success:#10b981;
-        --border:#e2e8f0;
-        --border-light:#f1f5f9;
-        --shadow:rgba(15,23,42,0.08);
-        --shadow-md:rgba(15,23,42,0.12);
-        --shadow-lg:rgba(15,23,42,0.16);
+        --violet-900:#1A1033;--violet-800:#241445;--violet-700:#39206B;--violet-600:#5A3AF5;--violet-500:#7A5CFF;--violet-400:#A08BFF;
+        --teal-500:#31D0C6;--magenta-500:#FF4D9D;
+        --bg-950:#0A0B0D;--bg-900:#101322;--panel-800:#111319;--stroke-700:#1B1F29;
+        --ink-100:#F3F1FF;--ink-300:#D7D2FF;--ink-500:#9EA3C7;
+        --ok:#20C997;--warn:#FFB02E;--danger:#FF6B6B;
+        --grad-answer:linear-gradient(135deg,var(--violet-600) 0%,var(--violet-400) 55%,var(--teal-500) 100%);
+        --grad-iris:linear-gradient(160deg,#2B1A47 0%,#39206B 60%,#5A3AF5 100%);
+        --shadow:0 10px 30px rgba(0,0,0,.35);
+        --font-h:'Space Grotesk',ui-sans-serif,system-ui;
+        --font-b:'Inter',ui-sans-serif,system-ui;
       }
       *{box-sizing:border-box;margin:0;padding:0}
       html{scroll-behavior:smooth}
-      body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-      a{color:var(--accent);text-decoration:none;transition:all 0.2s cubic-bezier(0.4,0,0.2,1)}
-      a:hover{color:var(--accent-hover)}
-      .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
-      .btn{display:inline-flex;gap:10px;align-items:center;justify-content:center;border-radius:10px;padding:16px 28px;border:2px solid var(--accent);background:var(--accent);color:#ffffff;font-weight:600;font-size:15px;letter-spacing:-0.01em;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);cursor:pointer;box-shadow:0 4px 12px rgba(37,99,235,0.2);position:relative;overflow:hidden}
-      .btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.15);transform:translate(-50%,-50%);transition:width 0.5s,height 0.5s}
-      .btn:hover{background:var(--accent-hover);border-color:var(--accent-hover);transform:translateY(-2px);box-shadow:0 8px 20px rgba(37,99,235,0.3)}
-      .btn:hover::before{width:300px;height:300px}
-      .btn:active{transform:translateY(0);box-shadow:0 2px 8px rgba(37,99,235,0.2)}
-      .btn--outline{background:transparent;color:var(--accent);box-shadow:none;border-color:var(--border)}
-      .btn--outline:hover{background:var(--highlight);border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 12px var(--shadow)}
-      .ribbon{background:linear-gradient(135deg,var(--highlight) 0%,var(--highlight-alt) 100%);border-bottom:1px solid var(--border);padding:14px 0;text-align:center;font-size:14px;line-height:1.5;color:var(--ink-light);font-weight:500;letter-spacing:-0.01em}
-      .hero{padding:80px 0 60px;background:linear-gradient(135deg,#ffffff 0%,var(--highlight) 50%,var(--highlight-alt) 100%);position:relative;overflow:hidden}
-      .hero::before{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(37,99,235,0.08) 0%,transparent 70%);border-radius:50%;animation:pulse 8s ease-in-out infinite}
-      @keyframes pulse{0%,100%{transform:scale(1);opacity:0.5}50%{transform:scale(1.1);opacity:0.3}}
+      body{margin:0;padding:0;background:var(--bg-950);color:var(--ink-300);font:17px/1.6 var(--font-b);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+      a{color:var(--teal-500);text-decoration:none;transition:all 0.2s cubic-bezier(.2,.6,.2,1)}
+      a:hover{color:var(--ink-100)}
+      .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+      .btn{display:inline-flex;gap:10px;align-items:center;padding:14px 24px;border-radius:12px;border:1px solid transparent;font:700 15px var(--font-b);letter-spacing:-0.01em;transition:all 0.2s cubic-bezier(.2,.6,.2,1);cursor:pointer}
+      .btn-primary{background:var(--grad-answer);color:#0B0C10;box-shadow:0 0 0 0 rgba(122,92,255,0.4)}
+      .btn-primary:hover{filter:brightness(1.1);box-shadow:0 0 0 8px rgba(122,92,255,0.15);transform:translateY(-2px)}
+      .btn-secondary{background:transparent;border-color:var(--stroke-700);color:var(--ink-100)}
+      .btn-secondary:hover{border-color:var(--violet-500);background:rgba(122,92,255,0.1)}
+      .ribbon{background:var(--grad-iris);border-bottom:1px solid var(--stroke-700);padding:14px 0;text-align:center;font-size:14px;line-height:1.5;color:var(--ink-300);font-weight:500}
+      .hero{padding:80px 0 60px;background:var(--bg-950);position:relative;overflow:hidden;border-bottom:1px solid var(--stroke-700)}
+      .hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(90,58,245,0.15) 0%,transparent 70%);border-radius:50%;animation:pulse 12s ease-in-out infinite}
+      @keyframes pulse{0%,100%{transform:scale(1) rotate(0deg);opacity:0.4}50%{transform:scale(1.2) rotate(180deg);opacity:0.6}}
       .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center;position:relative;z-index:1}
-      .h1{font-size:62px;line-height:1.1;margin:0 0 20px;font-weight:800;color:var(--ink);letter-spacing:-0.03em}
-      .subhead{font-size:26px;color:var(--muted);margin:0 0 16px;line-height:1.4;font-weight:500;letter-spacing:-0.02em}
-      .support{font-size:12px;color:var(--muted);margin:0 0 12px;text-transform:uppercase;letter-spacing:.12em;font-weight:700}
-      .chips{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 36px}
-      .chip{padding:10px 18px;background:var(--surface);border:1px solid var(--border);border-radius:24px;font-size:13px;color:var(--muted);font-weight:500;letter-spacing:-0.01em;transition:all 0.2s ease;cursor:default}
-      .chip:hover{background:var(--highlight);border-color:var(--accent-light);color:var(--accent);transform:translateY(-1px)}
-      .bar{display:flex;gap:14px;flex-wrap:wrap}
-      .section{padding:80px 0;border-bottom:1px solid var(--border-light)}
-      .kicker{font-size:12px;color:var(--accent);margin:0 0 10px;text-transform:uppercase;letter-spacing:.15em;font-weight:700}
-      .h2{font-size:40px;font-weight:800;margin:0 0 18px;color:var(--ink);letter-spacing:-0.02em;line-height:1.2}
-      .lead{font-size:19px;color:var(--muted);margin:0 0 28px;line-height:1.7;max-width:800px;letter-spacing:-0.01em}
-      .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:0 4px 12px var(--shadow);transition:all 0.3s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden}
-      .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent) 0%,var(--accent-light) 100%);opacity:0;transition:opacity 0.3s ease}
-      .card:hover{box-shadow:0 12px 28px var(--shadow-md);transform:translateY(-4px)}
-      .card:hover::before{opacity:1}
-      .grid{display:grid;gap:36px}
+      .h1{font:800 56px/1.05 var(--font-h);letter-spacing:-0.02em;color:var(--ink-100);margin:0 0 16px}
+      .h2{font:800 40px/1.15 var(--font-h);color:var(--ink-100);letter-spacing:-0.02em;margin:0 0 16px}
+      .h3{font:700 24px/1.3 var(--font-h);color:var(--ink-100);margin:0 0 12px}
+      .subhead{font:500 24px/1.4 var(--font-b);color:var(--ink-300);margin:0 0 12px;letter-spacing:-0.01em}
+      .kicker{font:700 12px/1.5 var(--font-b);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-500);margin:0 0 10px}
+      .lead{font:400 18px/1.7 var(--font-b);color:var(--ink-300);margin:0 0 24px;max-width:800px}
+      .chips{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 32px}
+      .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#0E1118;border:1px solid var(--stroke-700);color:#CFE9E7;font-size:13px;font-weight:500;transition:all 0.2s ease}
+      .chip:hover{border-color:var(--teal-500);background:rgba(49,208,198,0.1);transform:translateY(-1px)}
+      .bar{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0}
+      .section{padding:80px 0;border-bottom:1px solid var(--stroke-700)}
+      .card{background:var(--panel-800);border:1px solid var(--stroke-700);border-radius:16px;padding:24px;transition:all 0.3s cubic-bezier(.2,.6,.2,1);box-shadow:0 1px 0 var(--stroke-700) inset}
+      .card:hover{border-color:var(--violet-600);box-shadow:0 1px 0 var(--stroke-700) inset,var(--shadow);transform:translateY(-4px)}
+      .grid{display:grid;gap:32px}
       .two{grid-template-columns:repeat(2,1fr)}
       .three{grid-template-columns:repeat(3,1fr)}
-      .list{margin:0;padding:0 0 0 26px;line-height:1.9}
-      .list li{margin:12px 0;color:var(--ink-light)}
-      .list li strong{color:var(--ink);font-weight:600}
-      .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:40px}
-      .price-card{padding:36px;border:2px solid var(--border);border-radius:16px;background:var(--surface);transition:all 0.3s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden}
-      .price-card::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(37,99,235,0.05) 0%,transparent 70%);opacity:0;transition:opacity 0.4s ease;pointer-events:none}
-      .price-card:hover{border-color:var(--accent-light);transform:translateY(-6px);box-shadow:0 16px 32px var(--shadow-md)}
-      .price-card:hover::after{opacity:1}
-      .price-card.featured{border-color:var(--accent);box-shadow:0 8px 24px var(--shadow-lg);background:linear-gradient(135deg,var(--surface) 0%,var(--highlight) 100%)}
-      .price-card.featured::before{content:'MOST POPULAR';position:absolute;top:20px;right:-30px;background:var(--accent);color:white;padding:4px 40px;font-size:10px;font-weight:700;letter-spacing:0.1em;transform:rotate(45deg);box-shadow:0 2px 8px var(--shadow)}
-      .price-card h3{margin:0 0 10px;font-size:24px;color:var(--ink);font-weight:700;letter-spacing:-0.01em}
-      .price-card .amt{font-size:38px;font-weight:800;margin:14px 0 28px;color:var(--accent);letter-spacing:-0.02em}
-      .faq dt{font-weight:700;margin:28px 0 10px;font-size:19px;color:var(--ink);letter-spacing:-0.01em}
-      .faq dd{margin:0 0 18px;color:var(--muted);line-height:1.7}
-      .footer{padding:40px 0;background:var(--surface);border-top:1px solid var(--border);color:var(--muted)}
-      .footer-flex{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
-      .footer nav{display:flex;gap:24px}
-      .footer a{color:var(--muted);font-weight:500;transition:color 0.2s ease}
-      .footer a:hover{color:var(--accent)}
+      .list{margin:0;padding:0 0 0 24px;line-height:1.9}
+      .list li{margin:12px 0;color:var(--ink-300)}
+      .list li strong{color:var(--ink-100);font-weight:600}
+      .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
+      .price-card{padding:32px;border:2px solid var(--stroke-700);border-radius:16px;background:var(--panel-800);transition:all 0.3s ease;position:relative}
+      .price-card:hover{border-color:var(--violet-500);transform:translateY(-6px);box-shadow:var(--shadow)}
+      .price-card.featured{border-color:var(--violet-600);background:var(--grad-iris)}
+      .price-card.featured::before{content:'MOST POPULAR';position:absolute;top:16px;right:-30px;background:var(--grad-answer);color:#0B0C10;padding:4px 40px;font-size:10px;font-weight:700;letter-spacing:0.1em;transform:rotate(45deg)}
+      .price-card h3{margin:0 0 8px;font-size:22px;color:var(--ink-100);font-weight:700}
+      .price-card .amt{font-size:36px;font-weight:800;margin:12px 0 24px;background:var(--grad-answer);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+      .faq dt{font-weight:700;margin:24px 0 8px;font-size:18px;color:var(--ink-100)}
+      .faq dd{margin:0 0 16px;color:var(--ink-300);line-height:1.7}
+      .footer{padding:40px 0;background:var(--bg-900);border-top:1px solid var(--stroke-700);color:var(--ink-500)}
+      .footer-flex{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+      .footer nav{display:flex;gap:20px}
+      .footer a{color:var(--ink-500);font-weight:500;transition:color 0.2s ease}
+      .footer a:hover{color:var(--teal-500)}
+      .divider{height:6px;background:var(--grad-answer);border-radius:999px;margin:24px 0}
       table{border-collapse:collapse;font-size:15px;width:100%}
-      table thead tr{background:linear-gradient(135deg,var(--highlight) 0%,var(--highlight-alt) 100%)}
-      table th{padding:18px;text-align:left;border:1px solid var(--border);font-weight:600;color:var(--ink);letter-spacing:-0.01em}
-      table td{padding:16px;border:1px solid var(--border-light);color:var(--ink-light);letter-spacing:-0.01em;line-height:1.6}
-      table tbody tr{background:var(--surface);transition:background 0.2s ease}
-      table tbody tr:hover{background:var(--highlight)}
-      table tbody tr td strong{color:var(--ink);font-weight:600}
-      @media (max-width:980px){
+      table thead tr{background:var(--grad-iris)}
+      table th{padding:16px;text-align:left;border:1px solid var(--stroke-700);font-weight:600;color:var(--ink-100)}
+      table td{padding:14px;border:1px solid var(--stroke-700);color:var(--ink-300);line-height:1.6}
+      table tbody tr{background:var(--panel-800);transition:background 0.2s ease}
+      table tbody tr:hover{background:rgba(90,58,245,0.1)}
+      table tbody tr td strong{color:var(--ink-100);font-weight:600}
+      @media(prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+      @media(max-width:980px){
         .hero-grid,.two,.three,.price-grid{grid-template-columns:1fr}
-        .h1{font-size:44px}
+        .h1{font-size:42px}
         .h2{font-size:32px}
         .subhead{font-size:20px}
-        .lead{font-size:17px}
         .hero{padding:50px 0 40px}
         .section{padding:50px 0}
       }
@@ -139,22 +127,22 @@ const siteGraph = [
     <header class="hero">
       <div class="wrap hero-grid">
         <div>
+          <p class="kicker">AEO — AI VISIBILITY & CONVERSION SERVICES</p>
           <h1 class="h1">Become the Answer.</h1>
           <p class="subhead">Own the claim. Win the click. Close the deal.</p>
-          <p class="support">Built-For</p>
+          <div class="bar">
+            <a href="/wizard" class="btn btn-primary" data-cta>Get your Claim Dossier</a>
+            <a href="/guarantees" class="btn btn-secondary">See our Guarantees</a>
+          </div>
           <div class="chips">
             <span class="chip">Consulting services</span>
             <span class="chip">Agencies</span>
             <span class="chip">B2B SaaS/AI</span>
-            <span class="chip">Authors/Professional Creators</span>
-          </div>
-          <div class="bar">
-            <a href="/wizard" class="btn" data-cta>Get your Claim Dossier</a>
-            <a href="/guarantees" class="btn btn--outline">See our Guarantees</a>
+            <span class="chip">Professional Creators</span>
           </div>
         </div>
         <div>
-          <OpenWindow />
+          <AnswerBeam />
         </div>
       </div>
     </header>
@@ -165,7 +153,7 @@ const siteGraph = [
         <p class="lead">When buyers use LLMs, they're not typing one keyword and skimming ten links. They describe context, add constraints, and ask for a decision. To win, you must be the specific solution for specific people at the moment of intent to act.</p>
 
         <div class="card" style="margin:32px 0">
-          <h3 style="margin-bottom:16px">What changes vs legacy search</h3>
+          <h3 class="h3">What changes vs legacy search</h3>
           <ul class="list">
             <li><strong>Search</strong> = many short queries over days; bottom-of-funnel keywords are expensive and crowded.</li>
             <li><strong>LLMs</strong> = one ongoing conversation with rich context; the model consolidates options and pins 1–3 sources.</li>
@@ -173,7 +161,7 @@ const siteGraph = [
           </ul>
         </div>
 
-        <LLMFunnelArc />
+        <ConversationArc />
       </div>
     </section>
 
@@ -182,44 +170,44 @@ const siteGraph = [
         <p class="kicker">Commercial Intent</p>
         <h2 class="h2">Legacy SEO vs AEO</h2>
         <div style="overflow-x:auto;margin:24px 0">
-          <table style="width:100%;border-collapse:collapse;font-size:14px">
+          <table>
             <thead>
-              <tr style="background:var(--highlight)">
-                <th style="padding:16px;text-align:left;border:1px solid var(--border)"></th>
-                <th style="padding:16px;text-align:left;border:1px solid var(--border)">Legacy SEO</th>
-                <th style="padding:16px;text-align:left;border:1px solid var(--border);background:var(--accent);color:#ffffff">AEO (Answer-Engine Optimization)</th>
+              <tr>
+                <th></th>
+                <th>Legacy SEO</th>
+                <th style="background:var(--grad-answer);color:#0B0C10">AEO (Answer-Engine Optimization)</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style="padding:12px;border:1px solid var(--border);font-weight:700">Buyer behavior</td>
-                <td style="padding:12px;border:1px solid var(--border)">Many queries → compare links</td>
-                <td style="padding:12px;border:1px solid var(--border);background:var(--highlight)"><strong>One conversation → asks for a verdict</strong></td>
+                <td style="font-weight:700;color:var(--ink-100)">Buyer behavior</td>
+                <td>Many queries → compare links</td>
+                <td><strong>One conversation → asks for a verdict</strong></td>
               </tr>
               <tr>
-                <td style="padding:12px;border:1px solid var(--border);font-weight:700">Your job</td>
-                <td style="padding:12px;border:1px solid var(--border)">Rank broadly</td>
-                <td style="padding:12px;border:1px solid var(--border);background:var(--highlight)"><strong>Be the quoted solution for a narrow CCQ</strong></td>
+                <td style="font-weight:700;color:var(--ink-100)">Your job</td>
+                <td>Rank broadly</td>
+                <td><strong>Be the quoted solution for a narrow CCQ</strong></td>
               </tr>
               <tr>
-                <td style="padding:12px;border:1px solid var(--border);font-weight:700">Content</td>
-                <td style="padding:12px;border:1px solid var(--border)">Topic clusters, long intros</td>
-                <td style="padding:12px;border:1px solid var(--border);background:var(--highlight)"><strong>One canonical Claim Page per idea</strong></td>
+                <td style="font-weight:700;color:var(--ink-100)">Content</td>
+                <td>Topic clusters, long intros</td>
+                <td><strong>One canonical Claim Page per idea</strong></td>
               </tr>
               <tr>
-                <td style="padding:12px;border:1px solid var(--border);font-weight:700">Structure</td>
-                <td style="padding:12px;border:1px solid var(--border)">Walls of text</td>
-                <td style="padding:12px;border:1px solid var(--border);background:var(--highlight)"><strong>≤18-token claim + proof near the top</strong></td>
+                <td style="font-weight:700;color:var(--ink-100)">Structure</td>
+                <td>Walls of text</td>
+                <td><strong>≤18-token claim + proof near the top</strong></td>
               </tr>
               <tr>
-                <td style="padding:12px;border:1px solid var(--border);font-weight:700">Proof</td>
-                <td style="padding:12px;border:1px solid var(--border)">Opinions</td>
-                <td style="padding:12px;border:1px solid var(--border);background:var(--highlight)"><strong>Table + tiny CSV + JSON-LD (entity clean)</strong></td>
+                <td style="font-weight:700;color:var(--ink-100)">Proof</td>
+                <td>Opinions</td>
+                <td><strong>Table + tiny CSV + JSON-LD (entity clean)</strong></td>
               </tr>
               <tr>
-                <td style="padding:12px;border:1px solid var(--border);font-weight:700">Metric</td>
-                <td style="padding:12px;border:1px solid var(--border)">Impressions, rank</td>
-                <td style="padding:12px;border:1px solid var(--border);background:var(--highlight)"><strong>Answer-Attributed Meetings (AAQM) & pipeline</strong></td>
+                <td style="font-weight:700;color:var(--ink-100)">Metric</td>
+                <td>Impressions, rank</td>
+                <td><strong>Answer-Attributed Meetings (AAQM) & pipeline</strong></td>
               </tr>
             </tbody>
           </table>
@@ -240,7 +228,7 @@ const siteGraph = [
             </ul>
           </div>
           <div class="card" style="display:flex;justify-content:center;align-items:center">
-            <Bullseye />
+            <TargetRings />
           </div>
         </div>
       </div>
@@ -250,13 +238,11 @@ const siteGraph = [
       <div class="wrap">
         <h2 class="h2">Under the hood (just enough tech to win the verdict)</h2>
         <p class="lead">LLMs lift short, self-contained, information-dense lines. Think ≈60-token windows: dense enough to answer, short enough to quote.</p>
-
         <div style="margin-top:32px">
-          <TokenMicroscope />
+          <TokenComparison />
         </div>
-
-        <p style="margin-top:24px;color:var(--muted);">
-          <strong>Why it matters to revenue:</strong> Dense lines get attributed, your URL appears, and the buyer has a clear next step.
+        <p style="margin-top:24px;color:var(--ink-300);">
+          <strong style="color:var(--ink-100)">Why it matters to revenue:</strong> Dense lines get attributed, your URL appears, and the buyer has a clear next step.
         </p>
       </div>
     </section>
@@ -265,12 +251,12 @@ const siteGraph = [
       <div class="wrap">
         <h2 class="h2">The strategy → tactics (in service of capturing intent)</h2>
         <div class="card" style="margin-bottom:32px">
-          <p style="font-size:18px;margin:0"><strong>Strategy:</strong> Own the Commercial Critical Question (CCQ).</p>
-          <p style="color:var(--muted);margin:12px 0 0">"Given my situation and constraints, who should I pick and why?"</p>
-          <p style="color:var(--muted);margin:12px 0 0">Your page must answer that CCQ so well that AI cites it and the buyer clicks to act.</p>
+          <p style="font-size:18px;margin:0;color:var(--ink-100)"><strong>Strategy:</strong> Own the Commercial Critical Question (CCQ).</p>
+          <p style="color:var(--ink-300);margin:12px 0 0">"Given my situation and constraints, who should I pick and why?"</p>
+          <p style="color:var(--ink-300);margin:12px 0 0">Your page must answer that CCQ so well that AI cites it and the buyer clicks to act.</p>
         </div>
 
-        <h3 style="margin-bottom:16px">Tactics that serve the strategy</h3>
+        <h3 class="h3">Tactics that serve the strategy</h3>
         <ul class="list">
           <li><strong>Claim (≤18 tokens):</strong> State the verdict you want the model to repeat.</li>
           <li><strong>Proof snapshot:</strong> Above-fold table + tiny CSV with outcomes, integrations, constraints handled.</li>
@@ -282,51 +268,7 @@ const siteGraph = [
         </ul>
 
         <div style="margin-top:32px">
-          <PipelineDiagram />
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <h2 class="h2">What you get (one canonical page that captures action)</h2>
-        <div class="grid two">
-          <div>
-            <h3 style="margin-bottom:16px">Your Claim Page (per idea)</h3>
-            <ul class="list">
-              <li>H1 ≤18 tokens • 2-sentence TL;DR • 3 pull-quotes</li>
-              <li>Proof table + CSV download (metrics, integrations, constraints)</li>
-              <li>JSON-LD validated (Org/Person/Article/Dataset)</li>
-              <li>Screenshots of "appeared/cited" tests on seeded CCQs</li>
-              <li>Conversion wiring: above-fold CTA + scheduler + "AI Answers" channel</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3 style="margin-bottom:16px">What we measure first:</h3>
-            <p><strong>AAQM</strong> (Answer-Attributed Qualified Meetings) and <strong>AAP($)</strong> (pipeline).</p>
-            <p style="margin-top:16px;color:var(--muted);">Citations are inputs. Meetings are outcomes.</p>
-            <ProofCard />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <h2 class="h2">Examples of CCQs we engineer you to win</h2>
-        <div class="grid three">
-          <div class="card">
-            <p>"Which SOC-2-ready AI phone system works with HubSpot and SSO this quarter?"</p>
-          </div>
-          <div class="card">
-            <p>"Best FP&A AI for multi-entity SaaS with QuickBooks + NetSuite, &lt;$10k MRR?"</p>
-          </div>
-          <div class="card">
-            <p>"Which B2B positioning firm specializes in fintech workflows and has a 4-week sprint?"</p>
-          </div>
-        </div>
-        <div style="margin-top:32px">
-          <AnswerCard />
+          <PipelineFlow />
         </div>
       </div>
     </section>
@@ -339,7 +281,7 @@ const siteGraph = [
           <div class="price-card">
             <h3>BTA-01 — Claim Kit</h3>
             <div class="amt">$1,500</div>
-            <p style="color:var(--muted);margin-bottom:20px">5 days</p>
+            <p style="color:var(--ink-500);margin-bottom:20px">5 days</p>
             <ul class="list" style="font-size:14px">
               <li>H1/TL;DR/quotes</li>
               <li>Proof table + CSV</li>
@@ -347,13 +289,13 @@ const siteGraph = [
               <li>Design wire</li>
             </ul>
             <div class="bar" style="margin-top:24px">
-              <a href="/wizard" class="btn" data-cta>Order Claim Kit</a>
+              <a href="/wizard" class="btn btn-primary" data-cta>Order Claim Kit</a>
             </div>
           </div>
           <div class="price-card featured">
             <h3>BTA-02 — Challenger Sprint</h3>
             <div class="amt">$7,500</div>
-            <p style="color:var(--muted);margin-bottom:20px">3 weeks</p>
+            <p style="color:var(--ink-300);margin-bottom:20px">3 weeks</p>
             <ul class="list" style="font-size:14px">
               <li>Page live • cross-posts</li>
               <li>GitHub dataset</li>
@@ -362,20 +304,20 @@ const siteGraph = [
               <li>10 curator drafts</li>
             </ul>
             <div class="bar" style="margin-top:24px">
-              <a href="/wizard" class="btn" data-cta>Book the Sprint</a>
+              <a href="/wizard" class="btn btn-primary" data-cta>Book the Sprint</a>
             </div>
           </div>
           <div class="price-card">
             <h3>BTA-03 — Compound Plan</h3>
             <div class="amt">$2,500/mo</div>
-            <p style="color:var(--muted);margin-bottom:20px">Ongoing</p>
+            <p style="color:var(--ink-500);margin-bottom:20px">Ongoing</p>
             <ul class="list" style="font-size:14px">
               <li>1 micro-update + 1 support post/month</li>
               <li>Weekly tests + 3 curator follow-ups</li>
               <li>Monthly AAQM/AAP report</li>
             </ul>
             <div class="bar" style="margin-top:24px">
-              <a href="/wizard" class="btn btn--outline">Start compounding</a>
+              <a href="/wizard" class="btn btn-secondary">Start compounding</a>
             </div>
           </div>
         </div>
@@ -386,18 +328,17 @@ const siteGraph = [
       <div class="wrap">
         <p class="kicker">Risk reversals</p>
         <h2 class="h2">We de-risk the outcome</h2>
-        <GuaranteesStrip />
         <div class="grid three" style="margin-top:32px">
           <div class="card">
-            <h3>Fit-or-Free (Wizard)</h3>
+            <h3 class="h3">Fit-or-Free (Wizard)</h3>
             <p>3 claims ≥85 with 5+ credible sources—or refund.</p>
           </div>
           <div class="card">
-            <h3>Appearance Guarantee (Sprint)</h3>
+            <h3 class="h3">Appearance Guarantee (Sprint)</h3>
             <p>At least one "appeared or cited" screenshot on a seeded CCQ in 4 weeks—or an extra week free + added proof.</p>
           </div>
           <div class="card">
-            <h3>Meeting-Backed Credit (Compound)</h3>
+            <h3 class="h3">Meeting-Backed Credit (Compound)</h3>
             <p>AAQM = 0 after 60 days (with timely approvals)—credit next month.</p>
           </div>
         </div>
@@ -423,13 +364,12 @@ const siteGraph = [
 
     <section class="section" style="border-bottom:none">
       <div class="wrap">
-        <div class="card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;padding:40px">
-          <div>
-            <h2 class="h2" style="margin:0 0 12px">Own the claim. Win the click. Close the deal.</h2>
-            <div class="bar">
-              <a href="/wizard" class="btn" data-cta style="flex-shrink:0">Get your Claim Dossier</a>
-              <a href="/guarantees" class="btn btn--outline">See our Guarantees</a>
-            </div>
+        <div class="card" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px;padding:48px">
+          <h2 class="h2" style="margin:0">Own the claim. Win the click. Close the deal.</h2>
+          <div class="divider" style="width:100%;max-width:600px"></div>
+          <div class="bar" style="margin:0">
+            <a href="/wizard" class="btn btn-primary" data-cta>Get your Claim Dossier</a>
+            <a href="/guarantees" class="btn btn-secondary">See our Guarantees</a>
           </div>
         </div>
       </div>

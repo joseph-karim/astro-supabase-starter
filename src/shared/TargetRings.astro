@@ -1,0 +1,61 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Focus on your niche - precision targeting" style="width:100%;height:auto">
+  <defs>
+    <radialGradient id="centerGrad" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#7A5CFF" stop-opacity="1"/>
+      <stop offset="40%" stop-color="#5A3AF5" stop-opacity="0.7"/>
+      <stop offset="80%" stop-color="#39206B" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <linearGradient id="ring1" x1="0" x2="1">
+      <stop offset="0" stop-color="#5A3AF5"/>
+      <stop offset="1" stop-color="#7A5CFF"/>
+    </linearGradient>
+    <linearGradient id="ring2" x1="0" x2="1">
+      <stop offset="0" stop-color="#7A5CFF"/>
+      <stop offset="1" stop-color="#A08BFF"/>
+    </linearGradient>
+    <filter id="ringGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <circle cx="200" cy="200" r="150" fill="none" stroke="#1B1F29" stroke-width="2" opacity="0.3">
+    <animate attributeName="r" values="150;152;150" dur="4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.2;0.4;0.2" dur="4s" repeatCount="indefinite"/>
+  </circle>
+
+  <circle cx="200" cy="200" r="110" fill="none" stroke="url(#ring2)" stroke-width="3" opacity="0.6" filter="url(#ringGlow)">
+    <animate attributeName="r" values="110;112;110" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0.7;0.5" dur="3s" repeatCount="indefinite"/>
+  </circle>
+
+  <circle cx="200" cy="200" r="75" fill="none" stroke="url(#ring1)" stroke-width="4" opacity="0.8" filter="url(#ringGlow)">
+    <animate attributeName="r" values="75;77;75" dur="2.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.7;0.9;0.7" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+
+  <circle cx="200" cy="200" r="50" fill="url(#centerGrad)">
+    <animate attributeName="r" values="50;54;50" dur="2s" repeatCount="indefinite"/>
+  </circle>
+
+  <circle cx="200" cy="200" r="50" fill="none" stroke="#31D0C6" stroke-width="3" opacity="0.8">
+    <animate attributeName="r" values="50;54;50" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="stroke-width" values="3;4;3" dur="2s" repeatCount="indefinite"/>
+  </circle>
+
+  <text x="200" y="210" text-anchor="middle" fill="#F3F1FF" font-family="'Space Grotesk',sans-serif" font-size="22" font-weight="800">Your Niche</text>
+
+  <text x="200" y="110" text-anchor="middle" fill="#A08BFF" font-family="'Inter',sans-serif" font-size="14" font-weight="600">Specialized</text>
+
+  <text x="200" y="295" text-anchor="middle" fill="#9EA3C7" font-family="'Inter',sans-serif" font-size="13" font-weight="500">Generic coverage</text>
+  <text x="200" y="315" text-anchor="middle" fill="#9EA3C7" font-family="'Inter',sans-serif" font-size="12" font-weight="500" opacity="0.7">(fades out)</text>
+
+  <g opacity="0">
+    <animate attributeName="opacity" values="0;0.8;0" dur="4s" repeatCount="indefinite"/>
+    <circle cx="200" cy="200" r="70" fill="none" stroke="#31D0C6" stroke-width="2" stroke-dasharray="4,4"/>
+  </g>
+</svg>

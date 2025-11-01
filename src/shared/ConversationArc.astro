@@ -1,0 +1,86 @@
+<svg viewBox="0 0 1000 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LLM conversation flow from context to action" style="width:100%;height:auto">
+  <defs>
+    <linearGradient id="stageGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#111319"/>
+      <stop offset="1" stop-color="#0E1016"/>
+    </linearGradient>
+    <linearGradient id="highlightGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#39206B"/>
+      <stop offset="1" stop-color="#241445"/>
+    </linearGradient>
+    <linearGradient id="citGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#20C997"/>
+      <stop offset="1" stop-color="#10B981"/>
+    </linearGradient>
+    <linearGradient id="flowLine" x1="0" x2="1">
+      <stop offset="0" stop-color="#5A3AF5"/>
+      <stop offset="1" stop-color="#31D0C6"/>
+    </linearGradient>
+    <marker id="arrowh" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="url(#flowLine)"/>
+    </marker>
+  </defs>
+
+  <g transform="translate(20,30)">
+    <rect x="0" y="0" width="140" height="90" rx="12" fill="url(#stageGrad)" stroke="#1B1F29" stroke-width="2">
+      <animate attributeName="stroke" values="#1B1F29;#5A3AF5;#1B1F29" dur="8s" repeatCount="indefinite"/>
+    </rect>
+    <text x="70" y="35" text-anchor="middle" fill="#7A5CFF" font-family="'Space Grotesk',sans-serif" font-size="15" font-weight="700">Context</text>
+    <text x="70" y="60" text-anchor="middle" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="13" font-weight="500">Describe</text>
+    <text x="70" y="78" text-anchor="middle" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="13" font-weight="500">situation</text>
+  </g>
+
+  <g transform="translate(185,30)">
+    <rect x="0" y="0" width="140" height="90" rx="12" fill="url(#stageGrad)" stroke="#1B1F29" stroke-width="2">
+      <animate attributeName="stroke" values="#1B1F29;#5A3AF5;#1B1F29" dur="8s" begin="0.8s" repeatCount="indefinite"/>
+    </rect>
+    <text x="70" y="35" text-anchor="middle" fill="#7A5CFF" font-family="'Space Grotesk',sans-serif" font-size="15" font-weight="700">Constraints</text>
+    <text x="70" y="60" text-anchor="middle" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="13" font-weight="500">Add</text>
+    <text x="70" y="78" text-anchor="middle" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="13" font-weight="500">requirements</text>
+  </g>
+
+  <g transform="translate(350,30)">
+    <rect x="0" y="0" width="140" height="90" rx="12" fill="url(#stageGrad)" stroke="#1B1F29" stroke-width="2">
+      <animate attributeName="stroke" values="#1B1F29;#5A3AF5;#1B1F29" dur="8s" begin="1.6s" repeatCount="indefinite"/>
+    </rect>
+    <text x="70" y="35" text-anchor="middle" fill="#7A5CFF" font-family="'Space Grotesk',sans-serif" font-size="15" font-weight="700">Options</text>
+    <text x="70" y="60" text-anchor="middle" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="13" font-weight="500">Consider</text>
+    <text x="70" y="78" text-anchor="middle" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="13" font-weight="500">choices</text>
+  </g>
+
+  <g transform="translate(515,30)">
+    <rect x="0" y="0" width="160" height="90" rx="12" fill="url(#highlightGrad)" stroke="#7A5CFF" stroke-width="3">
+      <animate attributeName="stroke" values="#7A5CFF;#31D0C6;#7A5CFF" dur="4s" repeatCount="indefinite"/>
+    </rect>
+    <text x="80" y="35" text-anchor="middle" fill="#F3F1FF" font-family="'Space Grotesk',sans-serif" font-size="15" font-weight="800">Justification</text>
+    <text x="80" y="60" text-anchor="middle" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="13" font-weight="600">Get verdict</text>
+    <rect x="30" y="100" width="100" height="24" rx="6" fill="url(#citGrad)">
+      <animate attributeName="opacity" values="1;0.7;1" dur="2s" repeatCount="indefinite"/>
+    </rect>
+    <text x="80" y="117" text-anchor="middle" fill="#0B0C10" font-family="'Inter',sans-serif" font-size="12" font-weight="700">Citations</text>
+  </g>
+
+  <g transform="translate(700,30)">
+    <rect x="0" y="0" width="140" height="90" rx="12" fill="url(#stageGrad)" stroke="#1B1F29" stroke-width="2">
+      <animate attributeName="stroke" values="#1B1F29;#31D0C6;#1B1F29" dur="8s" begin="2.4s" repeatCount="indefinite"/>
+    </rect>
+    <text x="70" y="35" text-anchor="middle" fill="#31D0C6" font-family="'Space Grotesk',sans-serif" font-size="15" font-weight="700">Action</text>
+    <text x="70" y="60" text-anchor="middle" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="13" font-weight="500">Click &</text>
+    <text x="70" y="78" text-anchor="middle" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="13" font-weight="500">convert</text>
+  </g>
+
+  <g opacity="0.9">
+    <path d="M 165 75 L 180 75" stroke="url(#flowLine)" stroke-width="3" marker-end="url(#arrowh)">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 330 75 L 345 75" stroke="url(#flowLine)" stroke-width="3" marker-end="url(#arrowh)">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 495 75 L 510 75" stroke="url(#flowLine)" stroke-width="3" marker-end="url(#arrowh)">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 680 75 L 695 75" stroke="url(#flowLine)" stroke-width="3" marker-end="url(#arrowh)">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" begin="0.9s" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

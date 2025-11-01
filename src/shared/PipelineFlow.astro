@@ -1,0 +1,78 @@
+<svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Claim to Close pipeline flow" style="width:100%;height:auto">
+  <defs>
+    <linearGradient id="cardGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#111319"/>
+      <stop offset="1" stop-color="#0E1016"/>
+    </linearGradient>
+    <linearGradient id="flowGrad" x1="0" x2="1">
+      <stop offset="0" stop-color="#5A3AF5"/>
+      <stop offset="1" stop-color="#31D0C6"/>
+    </linearGradient>
+    <filter id="cardGlow">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <g transform="translate(20,40)">
+    <rect x="0" y="0" rx="12" ry="12" width="160" height="120" fill="url(#cardGrad)" stroke="#1B1F29" stroke-width="2" filter="url(#cardGlow)">
+      <animate attributeName="stroke" values="#1B1F29;#5A3AF5;#1B1F29" dur="6s" repeatCount="indefinite"/>
+    </rect>
+    <text x="16" y="30" fill="#7A5CFF" font-family="'Inter',sans-serif" font-size="12" font-weight="700" letter-spacing="1.5">CLAIM</text>
+    <text x="16" y="60" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="14" font-weight="600">≤18-token H1</text>
+    <text x="16" y="85" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="14" font-weight="600">TL;DR</text>
+    <text x="16" y="110" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="14" font-weight="600">3 pull-quotes</text>
+  </g>
+
+  <g transform="translate(205,40)">
+    <rect x="0" y="0" rx="12" ry="12" width="170" height="120" fill="url(#cardGrad)" stroke="#1B1F29" stroke-width="2" filter="url(#cardGlow)">
+      <animate attributeName="stroke" values="#1B1F29;#5A3AF5;#1B1F29" dur="6s" begin="0.6s" repeatCount="indefinite"/>
+    </rect>
+    <text x="16" y="30" fill="#7A5CFF" font-family="'Inter',sans-serif" font-size="12" font-weight="700" letter-spacing="1.5">EVIDENCE</text>
+    <text x="16" y="60" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="14" font-weight="600">Proof table</text>
+    <text x="16" y="85" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="14" font-weight="600">CSV download</text>
+    <text x="16" y="110" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="14" font-weight="600">JSON-LD</text>
+  </g>
+
+  <g transform="translate(400,40)">
+    <rect x="0" y="0" rx="12" ry="12" width="170" height="120" fill="url(#cardGrad)" stroke="#1B1F29" stroke-width="2" filter="url(#cardGlow)">
+      <animate attributeName="stroke" values="#1B1F29;#5A3AF5;#1B1F29" dur="6s" begin="1.2s" repeatCount="indefinite"/>
+    </rect>
+    <text x="16" y="30" fill="#7A5CFF" font-family="'Inter',sans-serif" font-size="12" font-weight="700" letter-spacing="1.5">ENGINES</text>
+    <text x="16" y="60" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="14" font-weight="600">ChatGPT</text>
+    <text x="16" y="85" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="14" font-weight="600">Perplexity</text>
+    <text x="16" y="110" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="14" font-weight="600">Brave • You</text>
+  </g>
+
+  <g transform="translate(595,40)">
+    <rect x="0" y="0" rx="12" ry="12" width="160" height="120" fill="url(#cardGrad)" stroke="#1B1F29" stroke-width="2" filter="url(#cardGlow)">
+      <animate attributeName="stroke" values="#1B1F29;#5A3AF5;#1B1F29" dur="6s" begin="1.8s" repeatCount="indefinite"/>
+    </rect>
+    <text x="16" y="30" fill="#31D0C6" font-family="'Inter',sans-serif" font-size="12" font-weight="700" letter-spacing="1.5">ACTION</text>
+    <text x="16" y="60" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="14" font-weight="600">Click CTA</text>
+    <text x="16" y="85" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="14" font-weight="600">Book meeting</text>
+    <text x="16" y="110" fill="#D7D2FF" font-family="'Inter',sans-serif" font-size="14" font-weight="600">Convert</text>
+  </g>
+
+  <g opacity="0.8">
+    <path d="M 185 100 L 200 100" stroke="url(#flowGrad)" stroke-width="3" stroke-linecap="round">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="192" cy="100" r="5" fill="#31D0C6">
+      <animate attributeName="cx" values="185;200;185" dur="2s" repeatCount="indefinite"/>
+    </circle>
+
+    <path d="M 380 100 L 395 100" stroke="url(#flowGrad)" stroke-width="3" stroke-linecap="round">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="387" cy="100" r="5" fill="#31D0C6">
+      <animate attributeName="cx" values="380;395;380" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+    </circle>
+
+    <path d="M 575 100 L 590 100" stroke="url(#flowGrad)" stroke-width="3" stroke-linecap="round">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="582" cy="100" r="5" fill="#31D0C6">
+      <animate attributeName="cx" values="575;590;575" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>
