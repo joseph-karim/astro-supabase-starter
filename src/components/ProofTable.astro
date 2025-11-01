@@ -3,22 +3,78 @@ const rows: Array<Record<string, string | number>> = Astro.props.rows || [];
 if (rows.length === 0) return;
 const headers = Object.keys(rows[0]);
 ---
-<div class="overflow-x-auto rounded-xl border-2 border-slate-200 shadow-md mt-6">
-  <table class="w-full text-sm">
+<style>
+  .proof-table-container {
+    overflow-x: auto;
+    background: #111319;
+    border: 1px solid #1B1F29;
+    border-radius: 12px;
+    margin-top: 16px;
+    box-shadow: 0 1px 0 #1B1F29 inset, 0 10px 30px rgba(0,0,0,.35);
+  }
+
+  .proof-table {
+    width: 100%;
+    font-size: 14px;
+    border-collapse: collapse;
+  }
+
+  .proof-table thead tr {
+    background: linear-gradient(135deg, rgba(90,58,245,0.12) 0%, rgba(122,92,255,0.08) 100%);
+    border-bottom: 1px solid #39206B;
+  }
+
+  .proof-table th {
+    text-align: left;
+    padding: 16px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    text-transform: capitalize;
+    color: #F3F1FF;
+    letter-spacing: -0.01em;
+  }
+
+  .proof-table tbody tr {
+    transition: all 0.2s cubic-bezier(.2,.6,.2,1);
+    border-bottom: 1px solid #1B1F29;
+  }
+
+  .proof-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .proof-table tbody tr:nth-child(even) {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .proof-table tbody tr:hover {
+    background: rgba(90,58,245,0.08);
+  }
+
+  .proof-table td {
+    padding: 16px;
+    font-family: 'Inter', sans-serif;
+    color: #D7D2FF;
+    line-height: 1.5;
+  }
+</style>
+
+<div class="proof-table-container">
+  <table class="proof-table">
     <thead>
-      <tr class="bg-gradient-to-r from-blue-50 to-blue-100 border-b-2 border-blue-200">
+      <tr>
         {headers.map(header => (
-          <th class="text-left p-4 font-bold capitalize text-slate-900 tracking-tight">
+          <th>
             {header.replace(/_/g, ' ')}
           </th>
         ))}
       </tr>
     </thead>
     <tbody>
-      {rows.map((row, idx) => (
-        <tr class={`transition-colors duration-150 ${idx % 2 === 0 ? 'bg-white hover:bg-blue-50' : 'bg-slate-50 hover:bg-blue-50'} border-b border-slate-200 last:border-b-0`}>
+      {rows.map((row) => (
+        <tr>
           {headers.map(header => (
-            <td class="p-4 text-slate-700">{String(row[header])}</td>
+            <td>{String(row[header])}</td>
           ))}
         </tr>
       ))}

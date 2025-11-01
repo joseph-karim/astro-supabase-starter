@@ -50,112 +50,253 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout title="Ownable Idea Wizard — Become the Answer">
+  <style>
+    .form-container {
+      background: #111319;
+      border: 1px solid #1B1F29;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 1px 0 #1B1F29 inset, 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    .input-field, .textarea-field {
+      width: 100%;
+      background: #0E1016;
+      border: 2px solid #1B1F29;
+      color: #F3F1FF;
+      padding: 14px 16px;
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      transition: all 0.2s cubic-bezier(.2,.6,.2,1);
+    }
+
+    .input-field::placeholder, .textarea-field::placeholder {
+      color: #9EA3C7;
+      opacity: 0.6;
+    }
+
+    .input-field:focus, .textarea-field:focus {
+      outline: none;
+      border-color: #5A3AF5;
+      background: #111319;
+      box-shadow: 0 0 0 3px rgba(90,58,245,0.15);
+    }
+
+    .input-field:hover:not(:focus), .textarea-field:hover:not(:focus) {
+      border-color: #39206B;
+    }
+
+    .label {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #D7D2FF;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .field-group {
+      margin-bottom: 24px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #5A3AF5 0%, #7A5CFF 55%, #31D0C6 100%);
+      color: #0B0C10;
+      padding: 16px 24px;
+      border-radius: 12px;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(.2,.6,.2,1);
+      box-shadow: 0 0 0 0 rgba(122,92,255,0.4);
+    }
+
+    .btn-submit:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 0 0 8px rgba(122,92,255,0.15);
+      transform: translateY(-2px);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .kicker {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9EA3C7;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: #F3F1FF;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .subhead {
+      font-family: 'Inter', sans-serif;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      color: #D7D2FF;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .footer-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #9EA3C7;
+      text-align: center;
+      margin-top: 24px;
+      line-height: 1.6;
+    }
+
+    .divider {
+      height: 6px;
+      background: linear-gradient(135deg, #5A3AF5 0%, #7A5CFF 55%, #31D0C6 100%);
+      border-radius: 999px;
+      margin: 32px 0;
+      opacity: 0.6;
+    }
+
+    @media (max-width: 768px) {
+      .h1 {
+        font-size: 36px;
+      }
+      .subhead {
+        font-size: 18px;
+      }
+      .form-container {
+        padding: 28px 20px;
+      }
+    }
+  </style>
+
   <div class="mx-auto max-w-3xl px-6 py-12">
-    <div class="text-center mb-10">
-      <h1 class="text-4xl font-bold text-slate-900 tracking-tight">Ownable Idea Wizard</h1>
-      <p class="mt-3 text-lg text-slate-600">Pick one claim you can own, prove, and monetize.</p>
+    <div class="mb-12">
+      <p class="kicker">CLAIM DOSSIER</p>
+      <h1 class="h1">Ownable Idea Wizard</h1>
+      <p class="subhead">Pick one claim you can own, prove, and monetize.</p>
     </div>
 
-    <form method="post" class="mt-8 space-y-6 bg-white p-8 rounded-2xl shadow-lg border border-slate-200">
-      <div>
-        <label for="email" class="block text-sm font-semibold text-slate-900 mb-2">Work email *</label>
+    <form method="post" class="form-container">
+      <div class="field-group">
+        <label for="email" class="label">Work email *</label>
         <input
           type="email"
           id="email"
           name="email"
           required
           placeholder="you@company.com"
-          class="w-full border-2 border-slate-200 p-3.5 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-slate-50 focus:bg-white hover:border-slate-300 text-slate-900 placeholder:text-slate-400"
+          class="input-field"
         />
       </div>
 
-      <div>
-        <label for="company" class="block text-sm font-semibold text-slate-900 mb-2">Company</label>
+      <div class="field-group">
+        <label for="company" class="label">Company</label>
         <input
           type="text"
           id="company"
           name="company"
           placeholder="Acme Inc."
-          class="w-full border-2 border-slate-200 p-3.5 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-slate-50 focus:bg-white hover:border-slate-300 text-slate-900 placeholder:text-slate-400"
+          class="input-field"
         />
       </div>
 
-      <div>
-        <label for="industry" class="block text-sm font-semibold text-slate-900 mb-2">Industry</label>
+      <div class="field-group">
+        <label for="industry" class="label">Industry</label>
         <input
           type="text"
           id="industry"
           name="industry"
-          placeholder="B2B SaaS"
-          class="w-full border-2 border-slate-200 p-3.5 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-slate-50 focus:bg-white hover:border-slate-300 text-slate-900 placeholder:text-slate-400"
+          placeholder="B2B SaaS, Professional Services, etc."
+          class="input-field"
         />
       </div>
 
-      <div>
-        <label for="acv" class="block text-sm font-semibold text-slate-900 mb-2">Typical ACV</label>
+      <div class="field-group">
+        <label for="acv" class="label">Typical ACV</label>
         <input
           type="text"
           id="acv"
           name="acv"
           placeholder="$50k - $200k"
-          class="w-full border-2 border-slate-200 p-3.5 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-slate-50 focus:bg-white hover:border-slate-300 text-slate-900 placeholder:text-slate-400"
+          class="input-field"
         />
       </div>
 
-      <div>
-        <label for="buyers" class="block text-sm font-semibold text-slate-900 mb-2">Buyer titles (comma-separated)</label>
+      <div class="field-group">
+        <label for="buyers" class="label">Buyer titles (comma-separated)</label>
         <input
           type="text"
           id="buyers"
           name="buyers"
           placeholder="VP Sales, CRO, Director of Marketing"
-          class="w-full border-2 border-slate-200 p-3.5 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-slate-50 focus:bg-white hover:border-slate-300 text-slate-900 placeholder:text-slate-400"
+          class="input-field"
         />
       </div>
 
-      <div>
-        <label for="pains" class="block text-sm font-semibold text-slate-900 mb-2">Top 3 pains (one per line)</label>
+      <div class="divider"></div>
+
+      <div class="field-group">
+        <label for="pains" class="label">Top 3 pains (one per line)</label>
         <textarea
           id="pains"
           name="pains"
           rows="4"
           placeholder="Can't track pipeline velocity&#10;Lead quality is declining&#10;Sales cycle too long"
-          class="w-full border-2 border-slate-200 p-3.5 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-slate-50 focus:bg-white hover:border-slate-300 text-slate-900 placeholder:text-slate-400"
+          class="textarea-field"
         ></textarea>
       </div>
 
-      <div>
-        <label for="proof" class="block text-sm font-semibold text-slate-900 mb-2">Links to talks, data, decks (one per line)</label>
+      <div class="field-group">
+        <label for="proof" class="label">Links to talks, data, decks (one per line)</label>
         <textarea
           id="proof"
           name="proof"
           rows="4"
           placeholder="https://example.com/deck.pdf&#10;https://example.com/case-study"
-          class="w-full border-2 border-slate-200 p-3.5 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-slate-50 focus:bg-white hover:border-slate-300 text-slate-900 placeholder:text-slate-400"
+          class="textarea-field"
         ></textarea>
       </div>
 
-      <div>
-        <label for="competitors" class="block text-sm font-semibold text-slate-900 mb-2">Competitor URLs (one per line)</label>
+      <div class="field-group">
+        <label for="competitors" class="label">Competitor URLs (one per line)</label>
         <textarea
           id="competitors"
           name="competitors"
           rows="3"
           placeholder="https://competitor1.com&#10;https://competitor2.com"
-          class="w-full border-2 border-slate-200 p-3.5 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-slate-50 focus:bg-white hover:border-slate-300 text-slate-900 placeholder:text-slate-400"
+          class="textarea-field"
         ></textarea>
       </div>
 
-      <button
-        type="submit"
-        class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl px-6 py-4 font-semibold text-base hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
-      >
+      <button type="submit" class="btn-submit">
         Get my Claim Dossier
       </button>
     </form>
 
-    <p class="text-sm text-slate-600 mt-6 text-center">
-      You'll get 5–7 claim options, a proof table + CSV, and a launch spec.
+    <p class="footer-text">
+      You'll get 5–7 claim options scored ≥85, a proof table + CSV, and a launch spec.<br>
+      <strong style="color: #F3F1FF">Fit-or-Free:</strong> 3 claims ≥85 with 5+ sources—or refund.
     </p>
   </div>
 </Layout>

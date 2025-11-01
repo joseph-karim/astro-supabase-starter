@@ -32,19 +32,201 @@ const quotes: string[] = data.pull_quotes ?? [];
 <Layout title={`${data.h1} — Become the Answer`}>
   <JSONLD graph={graph} />
 
+  <style>
+    .claim-card {
+      background: #111319;
+      border: 1px solid #1B1F29;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 1px 0 #1B1F29 inset, 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    .kicker {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9EA3C7;
+      margin-bottom: 12px;
+    }
+
+    .claim-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #F3F1FF;
+      margin-bottom: 16px;
+    }
+
+    .claim-summary {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      color: #D7D2FF;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #F3F1FF;
+      margin-bottom: 16px;
+    }
+
+    .usage-card {
+      background: #111319;
+      border: 1px solid #1B1F29;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 1px 0 #1B1F29 inset, 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    .usage-list {
+      list-style: none;
+      counter-reset: usage-counter;
+      margin-left: 0;
+      padding-left: 0;
+    }
+
+    .usage-list li {
+      counter-increment: usage-counter;
+      position: relative;
+      padding-left: 44px;
+      margin-bottom: 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #D7D2FF;
+    }
+
+    .usage-list li::before {
+      content: counter(usage-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #5A3AF5 0%, #7A5CFF 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: #F3F1FF;
+    }
+
+    .quote-card {
+      background: linear-gradient(135deg, rgba(90,58,245,0.08) 0%, rgba(122,92,255,0.05) 100%);
+      border: 1px solid #39206B;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 1px 0 rgba(90,58,245,0.1) inset;
+    }
+
+    .quote-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      font-style: italic;
+      line-height: 1.6;
+      color: #D7D2FF;
+      border-left: 3px solid #7A5CFF;
+      padding-left: 24px;
+      margin-bottom: 16px;
+    }
+
+    .quote-footer {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      color: #9EA3C7;
+      padding-left: 24px;
+    }
+
+    .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 12px 20px;
+      background: rgba(90,58,245,0.1);
+      border: 1px solid #39206B;
+      border-radius: 10px;
+      color: #7A5CFF;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(.2,.6,.2,1);
+    }
+
+    .download-link:hover {
+      background: rgba(90,58,245,0.15);
+      border-color: #5A3AF5;
+      color: #9B7FFF;
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+
+    .btn-cta {
+      display: inline-block;
+      background: linear-gradient(135deg, #5A3AF5 0%, #7A5CFF 55%, #31D0C6 100%);
+      color: #0B0C10;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(.2,.6,.2,1);
+      box-shadow: 0 0 0 0 rgba(122,92,255,0.4);
+    }
+
+    .btn-cta:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 0 0 8px rgba(122,92,255,0.15);
+      transform: translateY(-2px);
+      text-decoration: none;
+    }
+
+    .btn-cta:active {
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .claim-title {
+        font-size: 32px;
+      }
+      .claim-card {
+        padding: 28px 20px;
+      }
+      .usage-card, .quote-card {
+        padding: 24px 20px;
+      }
+    }
+  </style>
+
   <div class="mx-auto max-w-3xl px-6 py-12">
-    <div class="bg-white p-10 rounded-2xl shadow-xl border-2 border-slate-200">
-      <p class="text-xs uppercase tracking-wider text-blue-600 font-bold mb-3">Claim</p>
-      <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">{data.h1}</h1>
-      <p class="mt-4 text-xl text-slate-600 leading-relaxed">{data.tl_dr}</p>
+    <div class="claim-card">
+      <p class="kicker">CLAIM</p>
+      <h1 class="claim-title">{data.h1}</h1>
+      <p class="claim-summary">{data.tl_dr}</p>
     </div>
 
     <section class="mt-10">
-      <h2 class="text-2xl font-bold text-slate-900 mb-2">Proof snapshot</h2>
+      <h2 class="section-title">Proof snapshot</h2>
       <ProofTable rows={rows} />
       {data.csv_url && (
         <a
-          class="inline-flex items-center gap-2 mt-4 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors"
+          class="download-link"
           href={data.csv_url}
           download
         >
@@ -56,9 +238,9 @@ const quotes: string[] = data.pull_quotes ?? [];
       )}
     </section>
 
-    <section class="mt-10 bg-white p-8 rounded-2xl shadow-lg border-2 border-slate-200">
-      <h2 class="text-2xl font-bold text-slate-900 mb-4">How to use it</h2>
-      <ol class="list-decimal ml-6 space-y-3 text-slate-700 text-base leading-relaxed">
+    <section class="mt-10 usage-card">
+      <h2 class="section-title">How to use it</h2>
+      <ol class="usage-list">
         <li>State the claim in ≤18 tokens up top.</li>
         <li>Attach the data (table + CSV).</li>
         <li>Add JSON-LD and keep it fresh monthly.</li>
@@ -66,24 +248,22 @@ const quotes: string[] = data.pull_quotes ?? [];
     </section>
 
     {quotes.length > 0 && (
-      <aside class="mt-10 p-8 bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl border-2 border-blue-200 shadow-md space-y-6">
+      <aside class="mt-10 quote-card space-y-6">
         {quotes.map(quote => (
-          <blockquote class="border-l-4 border-blue-600 pl-6 italic text-slate-700 text-base leading-relaxed">
-            "{quote}"
-            <footer class="text-sm text-slate-600 mt-2 not-italic font-medium">
+          <div>
+            <blockquote class="quote-text">
+              "{quote}"
+            </blockquote>
+            <footer class="quote-footer">
               — Joseph Karim, Founder, Become the Answer (2025)
             </footer>
-          </blockquote>
+          </div>
         ))}
       </aside>
     )}
 
     <div class="mt-12 text-center">
-      <a
-        href="/wizard"
-        class="inline-block bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl px-8 py-4 font-semibold text-base hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
-        data-cta
-      >
+      <a href="/wizard" class="btn-cta" data-cta>
         Get your Claim Dossier
       </a>
     </div>
