@@ -1,0 +1,56 @@
+<svg viewBox="0 0 800 450" role="img" aria-label="Window showing how a sharp claim turns into citations and booked meetings" style="width:100%;height:auto">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b8d4e8"/>
+      <stop offset="100%" stop-color="#dae9f4"/>
+    </linearGradient>
+    <style>
+      .frame{fill:#2c3e50;stroke:#1a252f;stroke-width:3}
+      .glass{fill:#f0f4f8;opacity:0.85}
+      .sea{fill:#8fb8d4}
+      .text{font:600 13px system-ui;fill:#2c3e50}
+      .node{fill:#ffffff;stroke:#4a6fa5;stroke-width:2}
+      .arrow{stroke:#4a6fa5;stroke-width:2;fill:none;marker-end:url(#arrowhead)}
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#4a6fa5"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#sky)"/>
+
+  <ellipse cx="400" cy="380" rx="300" ry="40" class="sea"/>
+
+  <rect class="frame" x="50" y="50" width="700" height="350" rx="8"/>
+  <rect class="glass" x="60" y="60" width="680" height="330"/>
+
+  <g transform="translate(120, 150)">
+    <rect class="node" x="0" y="0" width="90" height="50" rx="6"/>
+    <text class="text" x="45" y="30" text-anchor="middle">Claim</text>
+  </g>
+
+  <g transform="translate(245, 150)">
+    <rect class="node" x="0" y="0" width="100" height="50" rx="6"/>
+    <text class="text" x="50" y="30" text-anchor="middle">Evidence</text>
+  </g>
+
+  <g transform="translate(380, 150)">
+    <rect class="node" x="0" y="0" width="90" height="50" rx="6"/>
+    <text class="text" x="45" y="30" text-anchor="middle">Engines</text>
+  </g>
+
+  <g transform="translate(505, 150)">
+    <rect class="node" x="0" y="0" width="70" height="50" rx="6"/>
+    <text class="text" x="35" y="30" text-anchor="middle">Click</text>
+  </g>
+
+  <g transform="translate(610, 150)">
+    <rect class="node" x="0" y="0" width="90" height="50" rx="6"/>
+    <text class="text" x="45" y="30" text-anchor="middle">Meeting</text>
+  </g>
+
+  <line class="arrow" x1="210" y1="175" x2="240" y2="175"/>
+  <line class="arrow" x1="345" y1="175" x2="375" y2="175"/>
+  <line class="arrow" x1="470" y1="175" x2="500" y2="175"/>
+  <line class="arrow" x1="575" y1="175" x2="605" y2="175"/>
+</svg>

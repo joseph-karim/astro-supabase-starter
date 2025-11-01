@@ -1,0 +1,38 @@
+<svg viewBox="0 0 720 200" role="img" aria-label="Dense vs diffuse token examples" style="width:100%;height:auto">
+  <defs>
+    <style>
+      .box{fill:#ffffff;stroke:#4a6fa5;stroke-width:2}
+      .box-fade{fill:#f5f5f5;stroke:#b0bec5;stroke-width:2}
+      .dense{font:600 12px/1.4 system-ui;fill:#2c3e50}
+      .diffuse{font:600 12px/1.4 system-ui;fill:#90a4ae}
+      .badge{fill:#4caf50;stroke:#2e7d32;stroke-width:1}
+      .badge-text{font:700 10px system-ui;fill:#ffffff}
+      .label{font:700 13px system-ui;fill:#2c3e50}
+    </style>
+  </defs>
+
+  <g>
+    <rect class="box" x="10" y="10" width="340" height="180" rx="8"/>
+    <text class="label" x="20" y="35">Dense (quote-ready, ~30-40 tokens)</text>
+    <text class="dense" x="20" y="60" style="font-size:11px">
+      <tspan x="20" dy="0">"Answer-engine optimization means one</tspan>
+      <tspan x="20" dy="16">canonical page with a ≤18-token claim, a</tspan>
+      <tspan x="20" dy="16">table-backed proof, and JSON-LD so ChatGPT</tspan>
+      <tspan x="20" dy="16">and Perplexity can cite you."</tspan>
+    </text>
+    <rect class="badge" x="220" y="155" width="100" height="20" rx="4"/>
+    <text class="badge-text" x="270" y="169" text-anchor="middle">✓ Cited</text>
+  </g>
+
+  <g>
+    <rect class="box-fade" x="370" y="10" width="340" height="180" rx="8"/>
+    <text class="label" x="380" y="35">Diffuse (gets summarized, ~90+ tokens)</text>
+    <text class="diffuse" x="380" y="60" style="font-size:11px">
+      <tspan x="380" dy="0">"In today's rapidly evolving digital</tspan>
+      <tspan x="380" dy="16">landscape, brands should consider multiple</tspan>
+      <tspan x="380" dy="16">strategies to improve how AI systems might</tspan>
+      <tspan x="380" dy="16">potentially surface their content..."</tspan>
+    </text>
+    <text class="diffuse" x="490" y="169" text-anchor="middle">No attribution</text>
+  </g>
+</svg>

@@ -1,0 +1,26 @@
+<svg viewBox="0 0 300 300" role="img" aria-label="Focus over breadth targeting" style="width:100%;height:auto">
+  <defs>
+    <radialGradient id="focus" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#4a6fa5" stop-opacity="1"/>
+      <stop offset="40%" stop-color="#7ba3cc" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#dae9f4" stop-opacity="0.2"/>
+    </radialGradient>
+    <style>
+      .ring{fill:none;stroke:#b0bec5;stroke-width:2;opacity:0.4}
+      .center{fill:url(#focus)}
+      .text{font:700 13px system-ui;fill:#2c3e50}
+      .label{font:600 11px system-ui;fill:#546e7a}
+    </style>
+  </defs>
+
+  <circle class="ring" cx="150" cy="150" r="130"/>
+  <circle class="ring" cx="150" cy="150" r="100"/>
+  <circle class="ring" cx="150" cy="150" r="70"/>
+  <circle class="center" cx="150" cy="150" r="40"/>
+
+  <text class="text" x="150" y="155" text-anchor="middle">Your niche</text>
+
+  <text class="label" x="150" y="100" text-anchor="middle">Specialized</text>
+  <text class="label" x="150" y="230" text-anchor="middle">Generic coverage</text>
+  <text class="label" x="150" y="265" text-anchor="middle">(fades out)</text>
+</svg>
