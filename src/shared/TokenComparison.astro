@@ -11,6 +11,12 @@
     <filter id="boxGlow">
       <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.4"/>
     </filter>
+    <linearGradient id="scanGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="40%" stop-color="rgba(122,92,255,0.15)"/>
+      <stop offset="60%" stop-color="rgba(122,92,255,0.15)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
   </defs>
 
   <g>
@@ -28,6 +34,23 @@
       <animate attributeName="opacity" values="1;0.8;1" dur="2s" repeatCount="indefinite"/>
     </rect>
     <text x="340" y="200" text-anchor="middle" fill="#0B0C10" font-family="'Inter',sans-serif" font-size="14" font-weight="700">✓ Cited</text>
+
+    <rect x="25" y="55" width="400" height="40" fill="url(#scanGrad)" opacity="0.8">
+      <animate attributeName="y" values="55;65;140;55" dur="5s" repeatCount="indefinite"/>
+    </rect>
+
+    <circle cx="35" cy="85" r="3" fill="#31D0C6" opacity="0">
+      <animate attributeName="opacity" values="0;1;0" dur="0.5s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="35" cy="105" r="3" fill="#31D0C6" opacity="0">
+      <animate attributeName="opacity" values="0;1;0" dur="0.5s" begin="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="35" cy="125" r="3" fill="#31D0C6" opacity="0">
+      <animate attributeName="opacity" values="0;1;0" dur="0.5s" begin="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="35" cy="145" r="3" fill="#31D0C6" opacity="0">
+      <animate attributeName="opacity" values="0;1;0" dur="0.5s" begin="3.5s" repeatCount="indefinite"/>
+    </circle>
   </g>
 
   <g>

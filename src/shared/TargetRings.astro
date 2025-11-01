@@ -58,4 +58,37 @@
     <animate attributeName="opacity" values="0;0.8;0" dur="4s" repeatCount="indefinite"/>
     <circle cx="200" cy="200" r="70" fill="none" stroke="#31D0C6" stroke-width="2" stroke-dasharray="4,4"/>
   </g>
+
+  <circle cx="200" cy="200" r="50" fill="none" stroke="#7A5CFF" stroke-width="3" opacity="0">
+    <animate attributeName="r" values="50;180" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;0" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="stroke-width" values="3;0.5" dur="3s" repeatCount="indefinite"/>
+  </circle>
+
+  <circle cx="200" cy="200" r="50" fill="none" stroke="#31D0C6" stroke-width="3" opacity="0">
+    <animate attributeName="r" values="50;180" dur="3s" begin="1s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;0" dur="3s" begin="1s" repeatCount="indefinite"/>
+    <animate attributeName="stroke-width" values="3;0.5" dur="3s" begin="1s" repeatCount="indefinite"/>
+  </circle>
+
+  <circle cx="200" cy="200" r="50" fill="none" stroke="#A08BFF" stroke-width="3" opacity="0">
+    <animate attributeName="r" values="50;180" dur="3s" begin="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;0" dur="3s" begin="2s" repeatCount="indefinite"/>
+    <animate attributeName="stroke-width" values="3;0.5" dur="3s" begin="2s" repeatCount="indefinite"/>
+  </circle>
+
+  <circle cx="200" cy="125" r="5" fill="#31D0C6" opacity="0.8">
+    <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="360 200 200" dur="8s" repeatCount="indefinite"/>
+    <animate attributeName="r" values="5;7;5" dur="2s" repeatCount="indefinite"/>
+  </circle>
+
+  <circle cx="200" cy="125" r="4" fill="#7A5CFF" opacity="0.8">
+    <animateTransform attributeName="transform" type="rotate" from="180 200 200" to="540 200 200" dur="10s" repeatCount="indefinite"/>
+    <animate attributeName="r" values="4;6;4" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+
+  <circle cx="200" cy="155" r="4" fill="#A08BFF" opacity="0.6">
+    <animateTransform attributeName="transform" type="rotate" from="90 200 200" to="450 200 200" dur="12s" repeatCount="indefinite"/>
+    <animate attributeName="r" values="4;5;4" dur="3s" repeatCount="indefinite"/>
+  </circle>
 </svg>

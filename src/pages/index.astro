@@ -73,9 +73,13 @@ const siteGraph = [
       .subhead{font:500 24px/1.4 var(--font-b);color:var(--ink-300);margin:0 0 12px;letter-spacing:-0.01em}
       .kicker{font:700 12px/1.5 var(--font-b);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-500);margin:0 0 10px}
       .lead{font:400 18px/1.7 var(--font-b);color:var(--ink-300);margin:0 0 24px;max-width:800px}
+      .chips-label{font:600 13px var(--font-b);letter-spacing:0.05em;text-transform:uppercase;color:var(--teal-500);margin:0 0 12px;display:flex;align-items:center;gap:8px}
+      .chips-label::before{content:'';width:20px;height:2px;background:var(--grad-answer);border-radius:999px}
       .chips{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 32px}
-      .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#0E1118;border:1px solid var(--stroke-700);color:#CFE9E7;font-size:13px;font-weight:500;transition:all 0.2s ease}
-      .chip:hover{border-color:var(--teal-500);background:rgba(49,208,198,0.1);transform:translateY(-1px)}
+      .chip{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;background:#0E1118;border:1px solid var(--stroke-700);color:#CFE9E7;font-size:14px;font-weight:600;transition:all 0.3s cubic-bezier(.2,.6,.2,1);position:relative;overflow:hidden}
+      .chip::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(49,208,198,0.2),transparent);transition:left 0.5s ease}
+      .chip:hover{border-color:var(--teal-500);background:rgba(49,208,198,0.15);transform:translateY(-2px) scale(1.05);box-shadow:0 4px 12px rgba(49,208,198,0.2)}
+      .chip:hover::before{left:100%}
       .bar{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0}
       .section{padding:80px 0;border-bottom:1px solid var(--stroke-700)}
       .card{background:var(--panel-800);border:1px solid var(--stroke-700);border-radius:16px;padding:24px;transition:all 0.3s cubic-bezier(.2,.6,.2,1);box-shadow:0 1px 0 var(--stroke-700) inset}
@@ -134,6 +138,7 @@ const siteGraph = [
             <a href="/wizard" class="btn btn-primary" data-cta>Get your Claim Dossier</a>
             <a href="/guarantees" class="btn btn-secondary">See our Guarantees</a>
           </div>
+          <p class="chips-label">Tailor Made For</p>
           <div class="chips">
             <span class="chip">Consulting services</span>
             <span class="chip">Agencies</span>
