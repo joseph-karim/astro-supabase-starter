@@ -9,6 +9,78 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      claims: {
+        Row: {
+          id: string;
+          slug: string;
+          h1: string;
+          tl_dr: string;
+          pull_quotes: string[];
+          proof_table: Json | null;
+          csv_url: string | null;
+          jsonld: Json | null;
+          updated_at: string;
+          published: boolean;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          h1: string;
+          tl_dr: string;
+          pull_quotes?: string[];
+          proof_table?: Json | null;
+          csv_url?: string | null;
+          jsonld?: Json | null;
+          updated_at?: string;
+          published?: boolean;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          h1?: string;
+          tl_dr?: string;
+          pull_quotes?: string[];
+          proof_table?: Json | null;
+          csv_url?: string | null;
+          jsonld?: Json | null;
+          updated_at?: string;
+          published?: boolean;
+        };
+        Relationships: [];
+      };
+      events: {
+        Row: {
+          id: string;
+          claim_slug: string;
+          referrer: string | null;
+          is_ai_referrer: boolean;
+          page: string;
+          event_type: string;
+          meta: Json | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          claim_slug: string;
+          referrer?: string | null;
+          is_ai_referrer?: boolean;
+          page: string;
+          event_type: string;
+          meta?: Json | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          claim_slug?: string;
+          referrer?: string | null;
+          is_ai_referrer?: boolean;
+          page?: string;
+          event_type?: string;
+          meta?: Json | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
       frameworks: {
         Row: {
           description: string;
@@ -38,6 +110,83 @@ export type Database = {
           likes?: number;
         };
         Relationships: [];
+      };
+      leads: {
+        Row: {
+          id: string;
+          email: string;
+          company: string | null;
+          icp: Json | null;
+          pains: string[];
+          proof_links: string[];
+          competitors: string[];
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          company?: string | null;
+          icp?: Json | null;
+          pains?: string[];
+          proof_links?: string[];
+          competitors?: string[];
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          company?: string | null;
+          icp?: Json | null;
+          pains?: string[];
+          proof_links?: string[];
+          competitors?: string[];
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      tests: {
+        Row: {
+          id: string;
+          claim_id: string | null;
+          engine: string;
+          query: string;
+          appeared: boolean;
+          cited: boolean;
+          clickable: boolean;
+          screenshot_url: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          claim_id?: string | null;
+          engine: string;
+          query: string;
+          appeared?: boolean;
+          cited?: boolean;
+          clickable?: boolean;
+          screenshot_url?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          claim_id?: string | null;
+          engine?: string;
+          query?: string;
+          appeared?: boolean;
+          cited?: boolean;
+          clickable?: boolean;
+          screenshot_url?: string | null;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tests_claim_id_fkey";
+            columns: ["claim_id"];
+            isOneToOne: false;
+            referencedRelation: "claims";
+            referencedColumns: ["id"];
+          }
+        ];
       };
     };
     Views: {

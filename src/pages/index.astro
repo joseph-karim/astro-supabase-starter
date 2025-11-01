@@ -1,71 +1,62 @@
 ---
-import { getEntry } from "astro:content";
-import Alert from "../components/Alert.astro";
-import Guide from "../components/Guide.astro";
 import Layout from "../components/Layout.astro";
-import TableRow from "../components/TableRow.astro";
-import { supabase } from "../utils/database";
+import Hero from "../components/Hero.astro";
+import JSONLD from "../components/JSONLD.astro";
 
 export const prerender = false;
 
-let frameworks;
-let frameworksError;
-
-// Fetch frameworks data from Supabase if connection is set up
-if (supabase) {
-  const { data, error } = await supabase
-    .from("frameworks")
-    .select("*")
-    .order("likes", { ascending: false });
-  frameworks = data;
-  frameworksError = error;
-}
-
-// Get guides
-const connectGuide = await getEntry("guides", "guide-connect-supabase");
-const fetchDataGuide = await getEntry("guides", "guide-fetch-data");
+const siteGraph = [
+  {
+    "@type": "Organization",
+    "name": "Become The Answer",
+    "url": "https://becometheanswer.ai",
+    "description": "AEO - AI Visibility & Conversion Services",
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "email": "hello@becometheanswer.ai"
+      }
+    ]
+  },
+  {
+    "@type": "WebSite",
+    "url": "https://becometheanswer.ai",
+    "name": "Become The Answer"
+  }
+];
 ---
 
-<Layout title="Web Frameworks">
-  {
-    supabase ? (
-      frameworks ? (
-        <>
-          <h1 class="mb-8 text-4xl font-bold">
-            Vote for Your Favorite Web Framework
-          </h1>
-          <table class="w-full text-left">
-            <thead>
-              <tr class="font-mono text-base border-t border-b">
-                <th>Name</th>
-                <th>Logo</th>
-                <th>Likes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {frameworks?.map((framework) => (
-                <TableRow framework={framework} />
-              ))}
-            </tbody>
-          </table>
-        </>
-      ) : (
-        <>
-          {frameworksError && (
-            <Alert
-              title={frameworksError.code}
-              text={frameworksError.message}
-              variant="error"
-            />
-          )}
-          {fetchDataGuide && <Guide guide={fetchDataGuide} />}
-        </>
-      )
-    ) : (
-      <>
-        <Alert title="Finish setting up your new site" text="Before your website is ready, you must complete the steps from the guide below to create, populate, and connect your Supabase database."/>
-        {connectGuide && <Guide guide={connectGuide} />}
-      </>
-    )
-  }
+<Layout title="Become the Answer — AEO: AI Visibility & Conversion">
+  <JSONLD graph={siteGraph} />
+
+  <Hero />
+
+  <section class="mx-auto max-w-5xl px-6 py-8 space-y-6">
+    <h2 class="text-2xl font-bold">The 3-step challenger play</h2>
+    <ul class="list-disc ml-6 space-y-2 text-gray-700">
+      <li><strong>Claim</strong>: one idea, ≤18 tokens, one URL.</li>
+      <li><strong>Cite</strong>: table + tiny CSV + JSON-LD that engines can trust.</li>
+      <li><strong>Close</strong>: answer-ready up top; buyer-ready CTA above the fold.</li>
+    </ul>
+    <a class="inline-block underline text-blue-600 hover:text-blue-800" href="/claim/18-token-rule">
+      See the 18-Token Rule
+    </a>
+  </section>
+
+  <script>
+    (function() {
+      const ref = document.referrer || '';
+      fetch('/api/events', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          claim_slug: 'home',
+          page: '/',
+          referrer: ref,
+          event_type: 'session'
+        })
+      }).catch(() => {});
+    })();
+  </script>
 </Layout>

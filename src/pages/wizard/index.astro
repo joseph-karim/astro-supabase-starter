@@ -1,0 +1,159 @@
+---
+import Layout from "../../components/Layout.astro";
+import { supabase } from "../../utils/database";
+
+export const prerender = false;
+
+if (Astro.request.method === "POST") {
+  const formData = await Astro.request.formData();
+
+  const email = String(formData.get("email") || "");
+  const company = String(formData.get("company") || "");
+  const industry = String(formData.get("industry") || "");
+  const acv = String(formData.get("acv") || "");
+  const buyers = String(formData.get("buyers") || "");
+
+  const icp = {
+    industry,
+    acv,
+    buyers: buyers.split(",").map(s => s.trim()).filter(Boolean)
+  };
+
+  const pains = String(formData.get("pains") || "")
+    .split("\n")
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  const proof_links = String(formData.get("proof") || "")
+    .split("\n")
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  const competitors = String(formData.get("competitors") || "")
+    .split("\n")
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  if (supabase) {
+    await supabase.from("leads").insert({
+      email,
+      company,
+      icp,
+      pains,
+      proof_links,
+      competitors
+    });
+  }
+
+  return Astro.redirect("/wizard/submit");
+}
+---
+
+<Layout title="Ownable Idea Wizard — Become the Answer">
+  <div class="mx-auto max-w-3xl px-6 py-12">
+    <h1 class="text-3xl font-bold">Ownable Idea Wizard</h1>
+    <p class="mt-2 text-gray-700">Pick one claim you can own, prove, and monetize.</p>
+
+    <form method="post" class="mt-6 space-y-4">
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Work email *</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          placeholder="you@company.com"
+          class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+      </div>
+
+      <div>
+        <label for="company" class="block text-sm font-medium text-gray-700 mb-1">Company</label>
+        <input
+          type="text"
+          id="company"
+          name="company"
+          placeholder="Acme Inc."
+          class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+      </div>
+
+      <div>
+        <label for="industry" class="block text-sm font-medium text-gray-700 mb-1">Industry</label>
+        <input
+          type="text"
+          id="industry"
+          name="industry"
+          placeholder="B2B SaaS"
+          class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+      </div>
+
+      <div>
+        <label for="acv" class="block text-sm font-medium text-gray-700 mb-1">Typical ACV</label>
+        <input
+          type="text"
+          id="acv"
+          name="acv"
+          placeholder="$50k - $200k"
+          class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+      </div>
+
+      <div>
+        <label for="buyers" class="block text-sm font-medium text-gray-700 mb-1">Buyer titles (comma-separated)</label>
+        <input
+          type="text"
+          id="buyers"
+          name="buyers"
+          placeholder="VP Sales, CRO, Director of Marketing"
+          class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+      </div>
+
+      <div>
+        <label for="pains" class="block text-sm font-medium text-gray-700 mb-1">Top 3 pains (one per line)</label>
+        <textarea
+          id="pains"
+          name="pains"
+          rows="4"
+          placeholder="Can't track pipeline velocity&#10;Lead quality is declining&#10;Sales cycle too long"
+          class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        ></textarea>
+      </div>
+
+      <div>
+        <label for="proof" class="block text-sm font-medium text-gray-700 mb-1">Links to talks, data, decks (one per line)</label>
+        <textarea
+          id="proof"
+          name="proof"
+          rows="4"
+          placeholder="https://example.com/deck.pdf&#10;https://example.com/case-study"
+          class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        ></textarea>
+      </div>
+
+      <div>
+        <label for="competitors" class="block text-sm font-medium text-gray-700 mb-1">Competitor URLs (one per line)</label>
+        <textarea
+          id="competitors"
+          name="competitors"
+          rows="3"
+          placeholder="https://competitor1.com&#10;https://competitor2.com"
+          class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-black text-white rounded-lg px-5 py-3 font-medium hover:bg-gray-800 transition-colors"
+      >
+        Get my Claim Dossier
+      </button>
+    </form>
+
+    <p class="text-sm text-gray-500 mt-4">
+      You'll get 5–7 claim options, a proof table + CSV, and a launch spec.
+    </p>
+  </div>
+</Layout>

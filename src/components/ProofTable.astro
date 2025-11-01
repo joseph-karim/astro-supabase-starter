@@ -1,0 +1,27 @@
+---
+const rows: Array<Record<string, string | number>> = Astro.props.rows || [];
+if (rows.length === 0) return;
+const headers = Object.keys(rows[0]);
+---
+<div class="overflow-x-auto">
+  <table class="w-full border border-gray-300 mt-4 text-sm">
+    <thead>
+      <tr class="bg-gray-50">
+        {headers.map(header => (
+          <th class="text-left p-3 border-b border-gray-300 font-semibold capitalize">
+            {header.replace(/_/g, ' ')}
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row, idx) => (
+        <tr class={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+          {headers.map(header => (
+            <td class="p-3 border-b border-gray-200">{String(row[header])}</td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
