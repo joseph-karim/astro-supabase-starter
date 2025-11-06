@@ -1,10 +1,6 @@
 ---
 import JSONLD from '../shared/JSONLD.astro';
-import AnswerBeam from '../shared/AnswerBeam.astro';
 import PipelineFlow from '../shared/PipelineFlow.astro';
-import TargetRings from '../shared/TargetRings.astro';
-import TokenComparison from '../shared/TokenComparison.astro';
-import ConversationArc from '../shared/ConversationArc.astro';
 
 export const prerender = false;
 
@@ -30,9 +26,9 @@ const siteGraph = [
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Become the Answer — AI Visibility, Content Operations & Conversion Services</title>
+    <title>Become the Answer — AI Search Visibility for E-commerce</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Be the person buyers trust—and the page they click when it's time to choose. AI Visibility, Content Operations, and Conversion services." />
+    <meta name="description" content="Make your products visible, quotable, and purchasable inside AI answers. We help e-commerce stores win AI-shopping with agent-ready data and content." />
     <link rel="canonical" href="https://becometheanswer.ai/" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,6 +76,9 @@ const siteGraph = [
       .chip::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(49,208,198,0.2),transparent);transition:left 0.5s ease}
       .chip:hover{border-color:var(--teal-500);background:rgba(49,208,198,0.15);transform:translateY(-2px) scale(1.05);box-shadow:0 4px 12px rgba(49,208,198,0.2)}
       .chip:hover::before{left:100%}
+      .trust-strip{display:flex;gap:32px;align-items:center;justify-content:center;flex-wrap:wrap;margin:48px 0 0;padding:24px;opacity:0.6;filter:grayscale(1)}
+      .trust-badge{font:600 14px var(--font-b);color:var(--ink-500);display:flex;align-items:center;gap:8px}
+      .trust-badge::before{content:'✓';color:var(--ok);font-size:16px}
       .bar{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0}
       .section{padding:80px 0;border-bottom:1px solid var(--stroke-700)}
       .card{background:var(--panel-800);border:1px solid var(--stroke-700);border-radius:16px;padding:24px;transition:all 0.3s cubic-bezier(.2,.6,.2,1);box-shadow:0 1px 0 var(--stroke-700) inset}
@@ -124,252 +123,151 @@ const siteGraph = [
     </style>
   </head>
   <body>
-    <div class="ribbon">
-      AEO is here: AI answers now sit on top of search. Buyers are judged by what AI says—and who it cites.
-    </div>
-
     <header class="hero">
-      <div class="wrap hero-grid">
-        <div>
-          <p class="kicker">AEO — AI VISIBILITY, CONTENT OPERATIONS & CONVERSION SERVICES</p>
-          <h1 class="h1">Become the Answer.</h1>
-          <p class="subhead">Be the person buyers trust—and the page they click when it's time to choose.</p>
-          <div class="bar">
-            <a href="#services" class="btn btn-primary" data-cta>Talk to us</a>
-            <a href="/guarantees" class="btn btn-secondary">See our Guarantees</a>
+      <div class="wrap">
+        <div style="text-align:center;max-width:900px;margin:0 auto">
+          <p class="kicker">AI SEARCH VISIBILITY, CONTENT OPERATIONS AND CONVERSION SERVICES FOR E-COMMERCE</p>
+          <h1 class="h1">Become the Answer shoppers click then buy.</h1>
+          <p class="subhead">We make your products visible, quotable, and purchasable inside AI answers (ChatGPT, Perplexity, Google AI)—so long-tail, high-intent queries land on your PDPs.</p>
+          <div class="bar" style="justify-content:center">
+            <a href="#audit" class="btn btn-primary" data-cta>Get your Free Audit</a>
+            <a href="#contact" class="btn btn-secondary">Talk to a human</a>
           </div>
-          <p class="chips-label">Tailor Made For</p>
-          <div class="chips">
-            <span class="chip">Consulting services</span>
-            <span class="chip">Agencies</span>
-            <span class="chip">B2B SaaS/AI</span>
-            <span class="chip">Professional Creators</span>
+          <div class="trust-strip">
+            <span class="trust-badge">Shopify</span>
+            <span class="trust-badge">Stripe/PayPal compatible</span>
+            <span class="trust-badge">OpenAI/ACP-ready</span>
           </div>
         </div>
-        <div>
-          <AnswerBeam />
+        <div style="margin-top:48px">
+          <PipelineFlow />
         </div>
       </div>
     </header>
 
     <section class="section">
       <div class="wrap">
-        <div style="text-align:center;margin-bottom:48px">
-          <PipelineFlow />
-        </div>
-      </div>
-    </section>
+        <h2 class="h2" style="text-align:center">There's a Generational Opportunity to win AI-Shopping, but most stores don't show up</h2>
+        <p class="lead" style="text-align:center;max-width:800px;margin:0 auto 48px">Buyers now ask AI specific, high-intent questions; the model returns a short list and one link gets the click, at no cost to you.</p>
 
-    <section class="section">
-      <div class="wrap">
-        <h2 class="h2">Why this matters now</h2>
-        <p class="lead">People don't type one keyword anymore. They ask AI a <strong>long, specific question</strong> with context and constraints. The model answers and shows <strong>a few sources</strong>. If you're not the one it cites, you're invisible—even with great Google rankings.</p>
-
-        <div class="card" style="margin:32px 0">
-          <h3 class="h3">What changed</h3>
-          <ul class="list">
-            <li><strong>Search:</strong> many short queries; BoF keywords are crowded and pricey.</li>
-            <li><strong>LLMs:</strong> one ongoing conversation; the model consolidates and <strong>pins 1–3 sources</strong>.</li>
-            <li><strong>Your goal:</strong> be the cited source when buyers ask, "<strong>Given my constraints, who should I pick—and why?</strong>"</li>
-          </ul>
-        </div>
-
-        <ConversationArc />
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <p class="kicker">Commercial Intent</p>
-        <h2 class="h2">Legacy SEO vs AEO</h2>
-        <div style="overflow-x:auto;margin:24px 0">
-          <table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>Legacy SEO</th>
-                <th style="background:var(--grad-answer);color:#0B0C10">AEO (Answer-Engine Optimization)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="font-weight:700;color:var(--ink-100)">Buyer behavior</td>
-                <td>Many queries → compare links</td>
-                <td><strong>One conversation → asks for a verdict</strong></td>
-              </tr>
-              <tr>
-                <td style="font-weight:700;color:var(--ink-100)">Your job</td>
-                <td>Rank broadly</td>
-                <td><strong>Be the quoted solution</strong> for a narrow question</td>
-              </tr>
-              <tr>
-                <td style="font-weight:700;color:var(--ink-100)">Content</td>
-                <td>Topic clusters, long intros</td>
-                <td><strong>One canonical page per idea</strong></td>
-              </tr>
-              <tr>
-                <td style="font-weight:700;color:var(--ink-100)">Structure</td>
-                <td>Walls of text</td>
-                <td>≤18-word claim + <strong>proof near the top</strong></td>
-              </tr>
-              <tr>
-                <td style="font-weight:700;color:var(--ink-100)">Proof</td>
-                <td>Opinions</td>
-                <td><strong>Table + tiny CSV + JSON-LD (entity clean)</strong></td>
-              </tr>
-              <tr>
-                <td style="font-weight:700;color:var(--ink-100)">Metric</td>
-                <td>Impressions, rank</td>
-                <td><strong>Answer-Attributed Meetings (AAQM) & pipeline</strong></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="services">
-      <div class="wrap">
-        <p class="kicker">Services (three levels)</p>
-        <h2 class="h2">1) AI Visibility — Become the cited source</h2>
-        <p class="lead">Make your best ideas <strong>quote-ready</strong> and <strong>click-worthy</strong> so AI answers point to you.</p>
-
-        <div class="grid two" style="margin-top:32px">
-          <div>
-            <h3 class="h3">Outcomes</h3>
-            <ul class="list">
-              <li>One canonical <strong>Answer Page</strong> per idea (≤18-word claim, proof up top, JSON-LD)</li>
-              <li>Early <strong>"appeared/cited"</strong> screenshots on seeded buyer questions</li>
-            </ul>
-
-            <h3 class="h3" style="margin-top:32px">Deliverables (10 days)</h3>
-            <ul class="list">
-              <li>Tightened <strong>headline ≤18</strong>, TL;DR, and 3 pull-quotes</li>
-              <li><strong>Proof table + tiny CSV</strong> (we build from your materials)</li>
-              <li><strong>JSON-LD</strong> (Org/Person/Article/Dataset) validated</li>
-              <li>Cross-post summary (Substack/Medium) + dataset (GitHub)</li>
-              <li>Before/after screenshots + next actions</li>
-            </ul>
-
-            <div class="bar" style="margin-top:24px">
-              <a href="#pricing" class="btn btn-primary" data-cta>Get AI Visibility</a>
-            </div>
+        <div class="grid two" style="gap:24px">
+          <div class="card">
+            <h3 class="h3" style="color:var(--danger)">❌ Product data isn't agent-readable</h3>
+            <p>Missing attributes, messy variants, no clean feed → the AI can't match your SKUs to the query.</p>
           </div>
-          <div class="card" style="display:flex;justify-content:center;align-items:center;min-height:400px">
-            <TargetRings />
+          <div class="card">
+            <h3 class="h3" style="color:var(--danger)">❌ Pages aren't quotable</h3>
+            <p>Long, vague copy gets summarized; dense answers and FAQs get cited.</p>
+          </div>
+          <div class="card">
+            <h3 class="h3" style="color:var(--danger)">❌ Proof is buried</h3>
+            <p>Reviews, specs, and ship-by promises aren't near the top, so credit (and clicks) go elsewhere.</p>
+          </div>
+          <div class="card">
+            <h3 class="h3" style="color:var(--danger)">❌ No "answer" content</h3>
+            <p>There's no canonical page for the exact question shoppers ask (age/theme/constraint).</p>
           </div>
         </div>
-      </div>
-    </section>
 
-    <section class="section">
-      <div class="wrap">
-        <h2 class="h2">2) Content Operations — Ship more, every week, everywhere</h2>
-        <p class="lead">Stand up a <strong>weekly content machine</strong> that turns one recording into posts, clips, and pages—<strong>all pointing to your Answer Pages</strong>.</p>
-
-        <div class="card" style="margin:32px 0">
-          <h3 class="h3">Outcomes</h3>
-          <ul class="list">
-            <li>A repeatable weekly cadence that compounds familiarity <strong>and</strong> feeds AEO</li>
-            <li>Multi-platform distribution (site, newsletter, LinkedIn/X, YouTube/Shorts)</li>
-          </ul>
-
-          <h3 class="h3" style="margin-top:32px">Deliverables (3 weeks)</h3>
-          <ul class="list">
-            <li>Boards: <strong>Guest/Topic CRM</strong> + <strong>Content board</strong> (Notion/Airtable)</li>
-            <li>Automation (n8n/Lindy): <strong>Transcribe → Nugget → Clips → Posts → Publish</strong></li>
-            <li><strong>Episode/Article page</strong> templates (Astro) with JSON-LD</li>
-            <li>First batch shipped: 1 long post, 1 short post, <strong>5–10 clips</strong>, Answer Page update</li>
-            <li>Analytics bucket: <strong>AAS / EIR / CMR</strong> ("AI Answers" channel)</li>
-          </ul>
+        <div class="card" style="margin:32px auto;max-width:600px;text-align:center;background:rgba(255,107,107,0.1);border-color:#FF6B6B">
+          <h3 class="h3" style="color:#FF6B6B">❌ Measurement stops at sessions</h3>
+          <p>You're not tracking AI-attributed visits, citation CTR, or downstream orders.</p>
         </div>
 
-        <div class="card" style="margin:32px 0;background:var(--grad-iris)">
-          <h3 class="h3">Weekly rhythm (what you'll actually do)</h3>
-          <ul class="list">
-            <li><strong>Record once</strong> (30–45 min)</li>
-            <li>Approve <strong>nuggets/clips/posts</strong></li>
-            <li>Update <strong>one Answer Page</strong></li>
-            <li>Distribute to <strong>multiple channels</strong></li>
-          </ul>
-        </div>
-
-        <div class="bar">
-          <a href="#pricing" class="btn btn-primary" data-cta>Set up my Content OS</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <h2 class="h2">3) Conversion & Agentic Funnel — All-bound engagement</h2>
-        <p class="lead">Tie it together: <strong>inbound + de-anonymization + triggered outbound</strong> that only fires for <strong>fit + intent</strong>.</p>
-
-        <div class="grid two" style="margin-top:32px">
-          <div>
-            <h3 class="h3">Outcomes</h3>
-            <ul class="list">
-              <li>Visitors from answers and content turn into <strong>booked meetings</strong></li>
-              <li>Founder-friendly outreach that references what people actually watched/read</li>
-            </ul>
-
-            <h3 class="h3" style="margin-top:32px">Deliverables (setup + 1st month)</h3>
-            <ul class="list">
-              <li>De-anon + enrichment (company-level) and <strong>fit scoring</strong></li>
-              <li><strong>Triggers:</strong> episode → Answer Page → pricing + ≥45s watch or 2 scrolls</li>
-              <li>Drafted <strong>founder DMs</strong> (episode-led) + <strong>SDR 3-step</strong> sequence (value-first)</li>
-              <li>Light <strong>retargeting</strong> to Answer Page viewers</li>
-              <li>AAQM/AAP dashboard + "iterate/kill" rules</li>
-            </ul>
-
-            <div class="bar" style="margin-top:24px">
-              <a href="#pricing" class="btn btn-primary" data-cta>Build my Conversion Engine</a>
-            </div>
-          </div>
-          <div class="card" style="display:flex;justify-content:center;align-items:center;min-height:400px">
-            <AnswerBeam />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <h2 class="h2">Under the hood (just enough to win the verdict)</h2>
-        <p class="lead">LLMs lift <strong>short, self-contained, information-dense</strong> lines.</p>
-        <div style="margin-top:32px">
-          <TokenComparison />
-        </div>
-        <p style="margin-top:24px;color:var(--ink-300);">
-          <strong style="color:var(--ink-100)">Why it matters:</strong> Dense lines <strong>keep your name attached</strong>, a link appears, and a <strong>clear CTA</strong> converts.
+        <p style="text-align:center;font-size:20px;font-weight:600;color:var(--ink-100);margin-top:48px">
+          If you're not structured, quotable, and in-feed, you're invisible no matter your Google rankings.
         </p>
       </div>
     </section>
 
     <section class="section">
       <div class="wrap">
-        <h2 class="h2">What we measure (no vanity)</h2>
-        <div class="grid three" style="margin-top:32px">
+        <h2 class="h2" style="text-align:center">Agentic Commerce, done right</h2>
+        <p class="lead" style="text-align:center;max-width:800px;margin:0 auto 48px">We make your catalog agent-ready across three layers—Visibility, Answers, Conversion—so AI can find you, cite you, and send qualified shoppers to checkout.</p>
+
+        <div class="grid three" style="margin-top:48px">
           <div class="card">
-            <h3 class="h3" style="color:var(--teal-500)">AAQM</h3>
-            <p><strong>Answer-Attributed Qualified Meetings</strong> (North Star)</p>
+            <h3 class="h3" style="color:var(--teal-500)">Visibility (Data & Schema)</h3>
+            <p>Clean product feeds, normalized attributes, and JSON-LD so agents can match your items to long-tail intent.</p>
           </div>
           <div class="card">
-            <h3 class="h3" style="color:var(--teal-500)">AAP($)</h3>
-            <p><strong>Pipeline from AAQM</strong></p>
+            <h3 class="h3" style="color:var(--violet-500)">Answers (Content)</h3>
+            <p>Quote-ready Answer Pages, FAQs/How-Tos, and comparisons surfaced from reviews/support—so the model cites you.</p>
           </div>
           <div class="card">
-            <h3 class="h3" style="color:var(--teal-500)">AAS / EIR / CMR</h3>
-            <p><strong>AI-sessions / Engaged-intent rate / CTA→Meeting</strong></p>
+            <h3 class="h3" style="color:var(--ok)">Conversion (On-site)</h3>
+            <p>PDP deep-links, preview/ship-by cues, and clean CTAs—so cited traffic adds to cart and buys.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2 class="h2" style="text-align:center;margin-bottom:48px">Six ways we make your store agent-ready</h2>
+
+        <div class="grid two" style="gap:24px">
+          <div class="card">
+            <h3 class="h3">1. Agent-ready product data</h3>
+            <p style="margin-bottom:12px"><strong>What it is:</strong> Attribute normalization (age, size, material, compatibility, ship times), variant cleanup, and partner/ACP feed submission.</p>
+            <p><strong>Why it matters:</strong> AI can't recommend what it can't parse. Clean data wins matching for specific queries.</p>
+          </div>
+
+          <div class="card">
+            <h3 class="h3">2. Quote-ready Answer Pages</h3>
+            <p style="margin-bottom:12px"><strong>What it is:</strong> One canonical page per recurring question (≤18-word claim, proof table + tiny CSV, FAQ & How-To).</p>
+            <p><strong>Why it matters:</strong> Short, info-dense lines + tables get cited; citations drive qualified clicks.</p>
+          </div>
+
+          <div class="card">
+            <h3 class="h3">3. Review-mined FAQs & comparisons</h3>
+            <p style="margin-bottom:12px"><strong>What it is:</strong> We mine reviews, social, and support tickets to write the exact answers shoppers (and models) look for.</p>
+            <p><strong>Why it matters:</strong> Removes friction, preserves attribution, and stops the model from citing someone else.</p>
+          </div>
+
+          <div class="card">
+            <h3 class="h3">4. Technical SEO that helps AEO</h3>
+            <p style="margin-bottom:12px"><strong>What it is:</strong> JSON-LD (Product/Offer/FAQ/HowTo/Review), internal links from collections/blog, clean canonicals/robots, image alts.</p>
+            <p><strong>Why it matters:</strong> You stay fast, crawlable, and machine-legible—without bloating the theme.</p>
+          </div>
+
+          <div class="card">
+            <h3 class="h3">5. Conversion cues for cited traffic</h3>
+            <p style="margin-bottom:12px"><strong>What it is:</strong> PDP deep-links from Answer Pages (pre-selected options), preview/name builder, ship-by counters, trust badges.</p>
+            <p><strong>Why it matters:</strong> Cited traffic is high-intent; give it the shortest path to add-to-cart.</p>
+          </div>
+
+          <div class="card">
+            <h3 class="h3">6. Proof & measurement</h3>
+            <p style="margin-bottom:12px"><strong>What it is:</strong> Baseline vs. after: AI-attributed sessions, citation CTR to PDP, ATC/checkout deltas, with screenshots of appearances.</p>
+            <p><strong>Why it matters:</strong> You see the lift and know where to double down.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2 class="h2" style="text-align:center;margin-bottom:48px">We De-Risk the Outcome</h2>
+
+        <div class="grid three" style="gap:24px">
+          <div class="card" style="border-color:var(--ok)">
+            <h3 class="h3" style="color:var(--ok)">1) Cited-or-We-Work-Free (Tier 1)</h3>
+            <p>Within 30 days of go-live, you'll have at least one "appeared/cited" screenshot for a seeded, long-tail product question (ChatGPT, Perplexity, or Google AI). If not, we work one extra week free and add an extra Answer Page update at no charge.</p>
+          </div>
+          <div class="card" style="border-color:var(--ok)">
+            <h3 class="h3" style="color:var(--ok)">2) Feed & Schema Guarantee</h3>
+            <p>Your product feed ingests and JSON-LD validates (Product/Offer/FAQ/HowTo/Review). If any validator or ingestion error appears in the first 30 days, we fix it free.</p>
+          </div>
+          <div class="card" style="border-color:var(--ok)">
+            <h3 class="h3" style="color:var(--ok)">3) Measurement Transparency</h3>
+            <p>You'll get a baseline vs. after report with AI-attributed sessions, citation→PDP CTR, ATC/checkout deltas, and screenshots. If the dashboard isn't fully wired, we finish it free.</p>
           </div>
         </div>
 
-        <div class="card" style="margin:32px 0;background:rgba(255,107,107,0.1);border-color:#FF6B6B">
-          <h3 class="h3" style="color:#FF6B6B">Brakes (when to change course)</h3>
-          <ul class="list">
-            <li>AAS &lt; 50 <strong>or</strong> CMR &lt; 3% (30 days) → rewrite first 100 words + tighten the claim</li>
-            <li>AAQM = 0 with traffic (60 days) → change theme or guest mix</li>
-          </ul>
+        <div class="card" style="margin:32px auto;max-width:900px;background:rgba(122,92,255,0.1);border-color:var(--violet-500)">
+          <h3 class="h3">Eligibility guardrails</h3>
+          <p>Up to 500 SKUs, reasonable traffic, access to reviews/support logs, and approval of recommended changes within 5 business days.</p>
         </div>
       </div>
     </section>
@@ -377,50 +275,67 @@ const siteGraph = [
     <section class="section" id="pricing">
       <div class="wrap">
         <p class="kicker">Packages & Pricing</p>
-        <h2 class="h2">Three service levels</h2>
-        <div class="price-grid">
-          <div class="price-card">
-            <h3>AI Visibility (Level 1)</h3>
-            <div class="amt">$3,000</div>
-            <p style="color:var(--ink-500);margin-bottom:20px">10 days</p>
+        <h2 class="h2" style="text-align:center">Tier 1 — AI Visibility Optimization</h2>
+        <div class="card" style="max-width:900px;margin:32px auto;background:var(--grad-iris)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:16px">
+            <div>
+              <h3 class="h3" style="margin:0">10-day sprint</h3>
+            </div>
+            <div class="amt" style="margin:0">$5,000</div>
+          </div>
+
+          <h3 class="h3">What's included</h3>
+          <ul class="list">
+            <li>AEO & SEO Audit with prioritized fixes (effort × impact)</li>
+            <li>Product data & description optimization (intent-matching titles, ≤18-word claims where it counts, normalized attributes/variants)</li>
+            <li>Feed & registration (partner/ACP where applicable)</li>
+            <li>On-site content: FAQ & How-To blocks per product/collection, comparison rows</li>
+            <li>Technical SEO: JSON-LD (Product/Offer/FAQ/HowTo/Review), internal links, canonicals/robots, image alts</li>
+            <li>Post-optimization report: citations/appearances, CTR→PDP, ATC/checkout deltas, screenshots, 30-day plan</li>
+          </ul>
+
+          <p style="margin-top:24px;color:var(--ink-300)"><strong>Timeline:</strong> 10 days</p>
+          <p style="margin-top:8px;color:var(--ink-300)"><strong>Inputs:</strong> catalog export, top SKUs, policies/shipping, review & support access</p>
+
+          <div class="bar" style="margin-top:32px">
+            <a href="#audit" class="btn btn-primary" data-cta>Get your Free Audit</a>
+            <a href="#contact" class="btn btn-secondary">Talk to a human</a>
+          </div>
+        </div>
+
+        <div class="grid two" style="gap:24px;margin-top:48px">
+          <div class="card" style="opacity:0.7">
+            <div style="display:inline-block;padding:4px 12px;background:var(--warn);color:#0B0C10;border-radius:6px;font-weight:700;font-size:12px;margin-bottom:16px">COMING SOON</div>
+            <h3 class="h3">Tier 2: Agentic Engagement & Reputation</h3>
+            <div class="amt" style="font-size:24px">$5,000 setup</div>
+            <p style="margin:8px 0 16px;color:var(--ink-500)">+ performance commission (per recovered sale / resolved issue)</p>
             <ul class="list" style="font-size:14px">
-              <li>Claim tighten</li>
-              <li>Proof table + CSV</li>
-              <li>JSON-LD</li>
-              <li>Cross-posts</li>
-              <li>Screenshots</li>
+              <li>Social listening & review monitoring with suggested responses (approve → post)</li>
+              <li>On-site agent: product guide/Q&A trained on your catalog & policies</li>
+              <li>Cart abandonment rescue via web/SMS/email with context-aware nudges</li>
+              <li>Upsell/Cross-sell rules (compatibility, bundles, ship-by deadlines)</li>
+              <li>Reporting: recovered revenue, response SLAs, sentiment shifts</li>
             </ul>
+            <p style="margin-top:16px;font-size:13px;color:var(--ink-500)"><strong>Commission model (examples):</strong> 3–8% of incremental recovered revenue (configurable)</p>
             <div class="bar" style="margin-top:24px">
-              <a href="#services" class="btn btn-primary" data-cta>Get AI Visibility</a>
+              <a href="#waitlist" class="btn btn-secondary">Join the Tier 2 waitlist</a>
             </div>
           </div>
-          <div class="price-card featured">
-            <h3>Content Operations (Level 2)</h3>
-            <div class="amt">$7,500</div>
-            <p style="color:var(--ink-300);margin-bottom:20px">3 weeks</p>
+
+          <div class="card" style="opacity:0.7">
+            <div style="display:inline-block;padding:4px 12px;background:var(--warn);color:#0B0C10;border-radius:6px;font-weight:700;font-size:12px;margin-bottom:16px">COMING SOON</div>
+            <h3 class="h3">Tier 3: Content OS + Distribution</h3>
+            <div class="amt" style="font-size:24px">$10,000 setup</div>
+            <p style="margin:8px 0 16px;color:var(--ink-500)">+ $5,000/month</p>
             <ul class="list" style="font-size:14px">
-              <li>Boards + automations</li>
-              <li>Page templates</li>
-              <li>First batch shipped</li>
-              <li>Analytics wired</li>
+              <li>Weekly recording → micro-content factory (1 long post, 1 short post, 5–10 clips), all pointing to Answer Pages</li>
+              <li>Creator/UGC program with TikTok Shop & YouTube Shop hooks (codes, briefs, deliverables)</li>
+              <li>Paid amplification of UGC + retargeting to Answer-page viewers (strict CAC guardrails)</li>
+              <li>Answer Page cadence: monthly micro-updates, new pages for emerging questions</li>
+              <li>Analytics: AAQ (AI-attributed) funnel, ROAS, creator CPA/LTV</li>
             </ul>
             <div class="bar" style="margin-top:24px">
-              <a href="#services" class="btn btn-primary" data-cta>Set up my Content OS</a>
-            </div>
-          </div>
-          <div class="price-card">
-            <h3>Conversion & Agentic Funnel (Level 3)</h3>
-            <div class="amt">$12,000</div>
-            <p style="color:var(--ink-500);margin-bottom:6px">setup</p>
-            <div class="amt" style="font-size:24px;margin:0 0 20px">+ $3,000/mo</div>
-            <ul class="list" style="font-size:14px">
-              <li>De-anon + triggers</li>
-              <li>Founder DM + SDR sequence</li>
-              <li>Retargeting</li>
-              <li>AAQM/AAP dashboard</li>
-            </ul>
-            <div class="bar" style="margin-top:24px">
-              <a href="#services" class="btn btn-primary" data-cta>Build my Conversion Engine</a>
+              <a href="#waitlist" class="btn btn-secondary">Join tier 3 waitlist</a>
             </div>
           </div>
         </div>
@@ -429,62 +344,48 @@ const siteGraph = [
 
     <section class="section">
       <div class="wrap">
-        <p class="kicker">Guarantees</p>
-        <h2 class="h2">We de-risk the outcome</h2>
-        <div class="grid three" style="margin-top:32px">
-          <div class="card">
-            <h3 class="h3" style="color:var(--ok)">Fit-or-Free (Level 1)</h3>
-            <p>If we can't produce <strong>3 strong claims with credible proof</strong>, refund.</p>
+        <div class="grid two" style="gap:48px;align-items:start">
+          <div>
+            <h2 class="h2">What we need from you (for Tier 1)</h2>
+            <ul class="list">
+              <li>Shopify (or platform) access, catalog export, brand/voice guardrails</li>
+              <li>Review & support logs for FAQ mining</li>
+              <li>Approver who can sign off changes within 48–72 hours</li>
+            </ul>
           </div>
-          <div class="card">
-            <h3 class="h3" style="color:var(--ok)">Appearance (Level 2)</h3>
-            <p>At least one <strong>"appeared or cited"</strong> screenshot on a seeded question in 4 weeks—or an extra week free + added proof.</p>
-          </div>
-          <div class="card">
-            <h3 class="h3" style="color:var(--ok)">Meeting-Backed Credit (Level 3)</h3>
-            <p><strong>AAQM = 0</strong> after 60 days (with timely approvals) → credit next month.</p>
+          <div>
+            <h2 class="h2">Success metrics we track by default</h2>
+            <ul class="list">
+              <li>AI-attributed sessions → PDP CTR → ATC → Checkout</li>
+              <li>Citations/appearances (with screenshots)</li>
+              <li>Ship-by conversion lift & preview/name-builder engagement (when applicable)</li>
+            </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" style="border-bottom:none" id="audit">
       <div class="wrap">
-        <p class="kicker">FAQ</p>
-        <h2 class="h2">Straight answers</h2>
-        <dl class="faq">
-          <dt>Do we need lots of content?</dt>
-          <dd>Yes—<strong>one recording a week</strong>, atomized into posts, clips, and pages that all point to your Answer Pages.</dd>
-
-          <dt>Isn't ranking #1 on Google enough?</dt>
-          <dd>Not when buyers ask LLMs for a verdict. AEO puts you where the <strong>decision</strong> happens.</dd>
-
-          <dt>How fast can we see movement?</dt>
-          <dd>Usually <strong>2–6 weeks</strong> if you have any authority. You'll get <strong>before/after screenshots</strong> and booked-meeting stats.</dd>
-        </dl>
-      </div>
-    </section>
-
-    <section class="section" style="border-bottom:none">
-      <div class="wrap">
-        <div class="card" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px;padding:48px">
-          <h2 class="h2" style="margin:0">Be the cited source. Ship more, everywhere. Turn attention into meetings.</h2>
+        <div class="card" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px;padding:48px;max-width:900px;margin:0 auto">
+          <h2 class="h2" style="margin:0">Make your store the one AI shoppers click.</h2>
+          <p class="lead" style="margin:0">Start with a free audit. See where you're invisible—and how to fix it in 10 days.</p>
           <div class="divider" style="width:100%;max-width:600px"></div>
           <div class="bar" style="margin:0">
-            <a href="#services" class="btn btn-primary" data-cta>Talk to us</a>
-            <a href="/guarantees" class="btn btn-secondary">See our Guarantees</a>
+            <a href="#contact" class="btn btn-primary" data-cta>Get your Free Audit</a>
+            <a href="#pricing" class="btn btn-secondary">See Tier 1 Pricing</a>
           </div>
         </div>
       </div>
     </section>
 
-    <footer class="footer">
+    <footer class="footer" id="contact">
       <div class="wrap footer-flex">
-        <small>© {new Date().getFullYear()} Become The Answer</small>
+        <small>© {new Date().getFullYear()} Become The Answer • AI Search Visibility for E-commerce</small>
         <nav>
-          <a href="#services">Services</a>
-          <a href="#pricing">Pricing</a>
-          <a href="/guarantees">Guarantees</a>
+          <a href="#audit">Get Free Audit</a>
+          <a href="#pricing">Tier 1 Pricing</a>
+          <a href="#waitlist">Coming Soon</a>
         </nav>
       </div>
     </footer>
