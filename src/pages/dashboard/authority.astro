@@ -1,0 +1,113 @@
+---
+import DashboardLayout from '../../components/dashboard/DashboardLayout.astro'
+import { supabase } from '../../utils/database'
+import type { Client } from '../../../supabase/types'
+
+let client: Client | null = null
+
+if (supabase) {
+  const { data: clients } = await supabase.from('clients').select('*').eq('active', true).limit(1)
+  client = clients?.[0] || null
+}
+
+// Mock data
+if (!client) {
+  client = { id: 'demo', name: 'Demo Brand', domain: 'demobrand.com', active: true } as Client
+}
+
+const reddit = [
+  { sub: 'r/gravelcycling', title: 'Best wheelset for mixed terrain?', votes: 234, cited: true },
+  { sub: 'r/cycling', title: 'Carbon vs alloy wheels debate', votes: 189, cited: false },
+  { sub: 'r/bikewrench', title: 'Tubeless setup recommendations', votes: 56, cited: false },
+  { sub: 'r/gravelcycling', title: 'Heavy rider wheel options?', votes: 145, cited: true },
+]
+
+const youtube = [
+  { channel: 'GCN Tech', title: 'Best Gravel Wheels 2024', views: '245K', cited: true },
+  { channel: 'Path Less Pedaled', title: 'Carbon Wheelset Review', views: '89K', cited: false },
+  { channel: 'Cycling Weekly', title: 'Budget Wheel Upgrades', views: '156K', cited: false },
+]
+
+const subs = ['r/gravelcycling', 'r/cycling', 'r/bikewrench', 'r/Velo']
+---
+
+<DashboardLayout title="Off-site Authority" client={client} currentPath="/dashboard/authority">
+  <div class="kpis">
+    <div class="kpi"><span class="kpi-v">58</span><span class="kpi-l">Authority Score</span></div>
+    <div class="kpi"><span class="kpi-v">72</span><span class="kpi-l">Reddit</span></div>
+    <div class="kpi"><span class="kpi-v">45</span><span class="kpi-l">YouTube</span></div>
+    <div class="kpi"><span class="kpi-v accent">8</span><span class="kpi-l">AI Cited</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-h">Reddit Mentions</div>
+      <table>
+        <thead><tr><th>Thread</th><th>Sub</th><th>Votes</th><th>Cited</th></tr></thead>
+        <tbody>
+          {reddit.map(r => (
+            <tr>
+              <td><span class="trunc">{r.title}</span></td>
+              <td class="muted">{r.sub}</td>
+              <td class="muted">{r.votes}</td>
+              <td>{r.cited ? <span class="badge badge-g">Yes</span> : <span class="muted">—</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-h">YouTube Mentions</div>
+      <table>
+        <thead><tr><th>Video</th><th>Channel</th><th>Views</th><th>Cited</th></tr></thead>
+        <tbody>
+          {youtube.map(y => (
+            <tr>
+              <td><span class="trunc">{y.title}</span></td>
+              <td class="muted">{y.channel}</td>
+              <td class="muted">{y.views}</td>
+              <td>{y.cited ? <span class="badge badge-g">Yes</span> : <span class="muted">—</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subs">
+    <span class="label">Tracked:</span>
+    {subs.map(s => <span class="sub">{s}</span>)}
+    <button class="btn btn-s">+ Add</button>
+  </div>
+</DashboardLayout>
+
+<style>
+  .kpis { display: flex; gap: 12px; margin-bottom: 20px; }
+  .kpi { background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px 18px; }
+  .kpi-v { font-size: 22px; font-weight: 700; display: block; color: #111; }
+  .kpi-v.accent { color: #ea580c; }
+  .kpi-l { font-size: 11px; color: #6b7280; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+  .card-h { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 12px; font-weight: 600; color: #111; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th { padding: 8px 12px; text-align: left; font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; background: #f9fafb; }
+  td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; color: #111; }
+  tr:last-child td { border-bottom: none; }
+  .muted { color: #6b7280; }
+  .trunc { display: block; max-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .badge { display: inline-block; padding: 2px 6px; font-size: 10px; font-weight: 600; border-radius: 3px; text-transform: uppercase; }
+  .badge-g { background: #ecfdf5; color: #059669; }
+
+  .subs { display: flex; align-items: center; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .label { font-size: 12px; color: #6b7280; }
+  .sub { font-size: 12px; padding: 4px 10px; background: #fff; border: 1px solid #e5e7eb; border-radius: 4px; color: #111; }
+
+  .btn { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; font-size: 12px; font-weight: 500; border-radius: 4px; cursor: pointer; border: none; }
+  .btn-s { background: #fff; color: #111; border: 1px solid #e5e7eb; }
+  .btn-s:hover { border-color: #ea580c; color: #ea580c; }
+</style>

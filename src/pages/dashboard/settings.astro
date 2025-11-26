@@ -1,0 +1,118 @@
+---
+import DashboardLayout from '../../components/dashboard/DashboardLayout.astro'
+import { supabase } from '../../utils/database'
+import type { Client } from '../../../supabase/types'
+
+let client: Client | null = null
+
+if (supabase) {
+  const { data: clients } = await supabase.from('clients').select('*').eq('active', true).limit(1)
+  client = clients?.[0] || null
+}
+
+// Mock data for display
+const displayClient = client || { name: '', domain: '', industry: '', competitors: [] }
+---
+
+<DashboardLayout title="Settings" client={client} currentPath="/dashboard/settings">
+  <div class="card">
+    <div class="card-h">Client Profile</div>
+    <form id="form" class="card-body">
+      <div class="field">
+        <label>Company Name *</label>
+        <input type="text" name="name" required value={displayClient.name} placeholder="Acme Inc" />
+      </div>
+      <div class="field">
+        <label>Domain *</label>
+        <input type="text" name="domain" required value={displayClient.domain} placeholder="acme.com" />
+      </div>
+      <div class="field">
+        <label>Industry</label>
+        <input type="text" name="industry" value={displayClient.industry || ''} placeholder="E-commerce" />
+      </div>
+      <div class="field">
+        <label>Competitors (comma separated)</label>
+        <input type="text" name="competitors" value={displayClient.competitors?.join(', ') || ''} placeholder="competitor1.com, competitor2.com" />
+      </div>
+      <div id="msg" class="msg"></div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-p" id="save-btn">{client ? 'Update' : 'Create Client'}</button>
+      </div>
+    </form>
+  </div>
+</DashboardLayout>
+
+<style>
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; max-width: 500px; }
+  .card-h { padding: 12px 16px; border-bottom: 1px solid #f3f4f6; font-size: 13px; font-weight: 600; color: #111; }
+  .card-body { padding: 16px; }
+
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 11px; font-weight: 600; color: #6b7280; margin-bottom: 4px; }
+  .field input { 
+    width: 100%; 
+    padding: 8px 10px; 
+    font-size: 13px; 
+    font-family: inherit;
+    border: 1px solid #e5e7eb; 
+    border-radius: 5px; 
+    background: #fff; 
+    color: #111; 
+  }
+  .field input::placeholder { color: #9ca3af; }
+  .field input:focus { outline: none; border-color: #ea580c; }
+
+  .form-actions { margin-top: 16px; }
+
+  .msg { font-size: 12px; margin-top: 8px; min-height: 18px; }
+  .msg.error { color: #dc2626; }
+  .msg.success { color: #059669; }
+
+  .btn { display: inline-flex; align-items: center; gap: 5px; padding: 8px 14px; font-size: 13px; font-weight: 500; border-radius: 5px; cursor: pointer; border: none; }
+  .btn-p { background: #ea580c; color: #fff; }
+  .btn-p:hover { background: #c2410c; }
+</style>
+
+<script define:vars={{ existingClient: client }}>
+  import { createClient } from '@supabase/supabase-js'
+  const url = import.meta.env.PUBLIC_SUPABASE_URL
+  const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+  const db = url && key ? createClient(url, key) : null
+
+  const form = document.getElementById('form') as HTMLFormElement
+  const msg = document.getElementById('msg')
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    if (!db) { if(msg) { msg.textContent = 'Database not configured'; msg.className = 'msg error' } return }
+    
+    const btn = document.getElementById('save-btn') as HTMLButtonElement
+    btn.disabled = true; btn.textContent = 'Saving...'
+    const fd = new FormData(form)
+
+    const data = {
+      name: fd.get('name') as string,
+      domain: fd.get('domain') as string,
+      industry: (fd.get('industry') as string) || null,
+      competitors: (fd.get('competitors') as string)?.split(',').map(s => s.trim()).filter(Boolean) || [],
+      active: true
+    }
+
+    try {
+      if (existingClient) {
+        const { error } = await db.from('clients').update(data).eq('id', existingClient.id)
+        if (error) throw error
+        if(msg) { msg.textContent = 'Saved successfully'; msg.className = 'msg success' }
+      } else {
+        const { error } = await db.from('clients').insert(data)
+        if (error) throw error
+        window.location.href = '/dashboard'
+      }
+    } catch (err: any) {
+      if(msg) { msg.textContent = err.message || 'Failed to save'; msg.className = 'msg error' }
+    } finally {
+      btn.disabled = false
+      btn.textContent = existingClient ? 'Update' : 'Create Client'
+    }
+  })
+</script>

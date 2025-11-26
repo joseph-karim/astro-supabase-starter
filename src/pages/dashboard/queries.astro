@@ -1,0 +1,167 @@
+---
+import DashboardLayout from '../../components/dashboard/DashboardLayout.astro'
+import { supabase } from '../../utils/database'
+import type { Client, DecisionQuery } from '../../../supabase/types'
+
+let client: Client | null = null
+let queries: DecisionQuery[] = []
+
+if (supabase) {
+  const { data: clients } = await supabase.from('clients').select('*').eq('active', true).limit(1)
+  client = clients?.[0] || null
+  if (client) {
+    const { data } = await supabase.from('decision_queries').select('*').eq('client_id', client.id).order('created_at', { ascending: false })
+    queries = data || []
+  }
+}
+
+// Mock data
+if (!client) {
+  client = { id: 'demo', name: 'Demo Brand', domain: 'demobrand.com', active: true } as Client
+}
+if (queries.length === 0) {
+  queries = [
+    { id: '1', query: 'best gravel wheels for heavy riders', priority: 'critical', cluster: 'Product Research', volume_estimate: 2400 },
+    { id: '2', query: 'carbon vs alloy wheelset comparison', priority: 'high', cluster: 'Comparison', volume_estimate: 1800 },
+    { id: '3', query: 'tubeless gravel wheels review 2024', priority: 'high', cluster: 'Reviews', volume_estimate: 3200 },
+    { id: '4', query: 'gravel bike wheel upgrade guide', priority: 'medium', cluster: 'Education', volume_estimate: 1200 },
+    { id: '5', query: 'lightweight wheels for gravel racing', priority: 'medium', cluster: 'Product Research', volume_estimate: 890 },
+  ] as DecisionQuery[]
+}
+
+const clusters = [...new Set(queries.map(q => q.cluster).filter(Boolean))] as string[]
+---
+
+<DashboardLayout title="Decision Queries" client={client} currentPath="/dashboard/queries">
+  <div class="toolbar">
+    <span class="muted">{queries.length} queries</span>
+    <button class="btn btn-p" id="add-btn">+ Add Query</button>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Query</th>
+          <th style="width:100px">Cluster</th>
+          <th style="width:80px">Priority</th>
+          <th style="width:80px">Volume</th>
+          <th style="width:40px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {queries.map(q => (
+          <tr data-id={q.id}>
+            <td>{q.query}</td>
+            <td class="muted">{q.cluster || '—'}</td>
+            <td>
+              <span class:list={['badge', 
+                q.priority === 'critical' ? 'badge-r' : 
+                q.priority === 'high' ? 'badge-y' : 'badge-n'
+              ]}>{q.priority}</span>
+            </td>
+            <td class="muted">{q.volume_estimate ? `${(q.volume_estimate/1000).toFixed(1)}k` : '—'}</td>
+            <td><button class="btn-x del-btn" title="Delete">×</button></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-bg"></div>
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>Add Query</h3>
+        <button class="btn-x close-btn">×</button>
+      </div>
+      <form id="form">
+        <div class="field">
+          <label>Query *</label>
+          <input type="text" name="query" required placeholder="best gravel wheels for heavy riders" />
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>Cluster</label>
+            <input type="text" name="cluster" list="clusters" placeholder="Comparison" />
+            <datalist id="clusters">
+              {clusters.map(c => <option value={c} />)}
+            </datalist>
+          </div>
+          <div class="field">
+            <label>Priority</label>
+            <select name="priority">
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Volume (monthly)</label>
+          <input type="number" name="volume" placeholder="1000" />
+        </div>
+        <div id="msg" class="msg"></div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-s close-btn">Cancel</button>
+          <button type="submit" class="btn btn-p" id="save-btn">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</DashboardLayout>
+
+<style>
+  .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .muted { font-size: 12px; color: #6b7280; }
+
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th { padding: 8px 12px; text-align: left; font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; background: #f9fafb; }
+  td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; color: #111; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafafa; }
+
+  .badge { display: inline-block; padding: 2px 6px; font-size: 10px; font-weight: 600; border-radius: 3px; text-transform: uppercase; }
+  .badge-r { background: #fef2f2; color: #dc2626; }
+  .badge-y { background: #fffbeb; color: #d97706; }
+  .badge-n { background: #f3f4f6; color: #6b7280; }
+
+  .btn { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; font-size: 13px; font-weight: 500; border-radius: 5px; cursor: pointer; border: none; text-decoration: none; }
+  .btn-p { background: #ea580c; color: #fff; }
+  .btn-p:hover { background: #c2410c; }
+  .btn-s { background: #fff; color: #111; border: 1px solid #e5e7eb; }
+  .btn-s:hover { border-color: #ea580c; color: #ea580c; }
+  .btn-x { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: none; border: none; font-size: 16px; color: #9ca3af; cursor: pointer; border-radius: 4px; }
+  .btn-x:hover { background: #fef2f2; color: #dc2626; }
+
+  .modal { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; }
+  .modal.hidden { display: none; }
+  .modal-bg { position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
+  .modal-box { position: relative; background: #fff; border-radius: 8px; padding: 20px; width: 100%; max-width: 400px; }
+  .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .modal-head h3 { font-size: 14px; font-weight: 600; color: #111; margin: 0; }
+  .modal-foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 11px; font-weight: 600; color: #6b7280; margin-bottom: 4px; }
+  .field input, .field select { width: 100%; padding: 8px 10px; font-size: 13px; border: 1px solid #e5e7eb; border-radius: 5px; background: #fff; color: #111; }
+  .field input:focus, .field select:focus { outline: none; border-color: #ea580c; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .msg { font-size: 12px; color: #dc2626; margin-top: 8px; min-height: 18px; }
+</style>
+
+<script define:vars={{ clientId: client?.id }}>
+  const modal = document.getElementById('modal')
+  const form = document.getElementById('form')
+
+  const open = () => modal?.classList.remove('hidden')
+  const close = () => { modal?.classList.add('hidden'); form?.reset() }
+
+  document.getElementById('add-btn')?.addEventListener('click', open)
+  document.querySelectorAll('.close-btn').forEach(b => b.addEventListener('click', close))
+  document.querySelector('.modal-bg')?.addEventListener('click', close)
+</script>

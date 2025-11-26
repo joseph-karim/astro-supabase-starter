@@ -1,0 +1,105 @@
+---
+import DashboardLayout from '../../components/dashboard/DashboardLayout.astro'
+import { supabase } from '../../utils/database'
+import type { Client } from '../../../supabase/types'
+
+let client: Client | null = null
+
+if (supabase) {
+  const { data: clients } = await supabase.from('clients').select('*').eq('active', true).limit(1)
+  client = clients?.[0] || null
+}
+
+// Mock data
+if (!client) {
+  client = { id: 'demo', name: 'Demo Brand', domain: 'demobrand.com', active: true } as Client
+}
+
+const platforms = [
+  { name: 'ChatGPT', mentions: 45, soa: 28 },
+  { name: 'Perplexity', mentions: 62, soa: 32 },
+  { name: 'Google AI', mentions: 28, soa: 15 },
+  { name: 'Claude', mentions: 21, soa: 18 },
+]
+
+const citations = [
+  { query: 'best gravel wheels for heavy riders', platform: 'Perplexity', pos: 2, cited: true },
+  { query: 'carbon vs alloy gravel wheelset', platform: 'ChatGPT', pos: 1, cited: true },
+  { query: 'gravel bike wheel upgrade', platform: 'Google AI', pos: 3, cited: false },
+  { query: 'tubeless gravel wheels review', platform: 'Perplexity', pos: 1, cited: true },
+]
+---
+
+<DashboardLayout title="AI Visibility" client={client} currentPath="/dashboard/visibility">
+  <div class="kpis">
+    <div class="kpi"><span class="kpi-v">23.5%</span><span class="kpi-l">Share of Answer</span></div>
+    <div class="kpi"><span class="kpi-v">156</span><span class="kpi-l">Total Mentions</span></div>
+    <div class="kpi"><span class="kpi-v">89</span><span class="kpi-l">Citations</span></div>
+    <div class="kpi"><span class="kpi-v">#3</span><span class="kpi-l">Category Rank</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-h">By Platform</div>
+      <table>
+        <thead><tr><th>Platform</th><th>SOA</th><th>Mentions</th></tr></thead>
+        <tbody>
+          {platforms.map(p => (
+            <tr>
+              <td>{p.name}</td>
+              <td><span class="score score-g">{p.soa}%</span></td>
+              <td class="muted">{p.mentions}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-h">Recent Citations</div>
+      <table>
+        <thead><tr><th>Query</th><th>Platform</th><th>Cited</th></tr></thead>
+        <tbody>
+          {citations.map(c => (
+            <tr>
+              <td><span class="trunc">{c.query}</span></td>
+              <td class="muted">{c.platform}</td>
+              <td>{c.cited ? <span class="badge badge-g">Yes</span> : <span class="badge badge-n">No</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="note">Connect Scrunch AI for real-time visibility data. <a href="#">Learn more →</a></p>
+</DashboardLayout>
+
+<style>
+  .kpis { display: flex; gap: 12px; margin-bottom: 20px; }
+  .kpi { background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px 18px; }
+  .kpi-v { font-size: 22px; font-weight: 700; display: block; color: #111; }
+  .kpi-l { font-size: 11px; color: #6b7280; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+  .card-h { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 12px; font-weight: 600; color: #111; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th { padding: 8px 12px; text-align: left; font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; background: #f9fafb; }
+  td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; color: #111; }
+  tr:last-child td { border-bottom: none; }
+  .muted { color: #6b7280; }
+  .trunc { display: block; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .score { min-width: 28px; height: 22px; padding: 0 6px; font-size: 11px; font-weight: 700; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; }
+  .score-g { background: #ecfdf5; color: #059669; }
+
+  .badge { display: inline-block; padding: 2px 6px; font-size: 10px; font-weight: 600; border-radius: 3px; text-transform: uppercase; }
+  .badge-g { background: #ecfdf5; color: #059669; }
+  .badge-n { background: #f3f4f6; color: #6b7280; }
+
+  .note { margin-top: 20px; font-size: 12px; color: #6b7280; }
+  .note a { color: #ea580c; text-decoration: none; }
+  .note a:hover { text-decoration: underline; }
+</style>

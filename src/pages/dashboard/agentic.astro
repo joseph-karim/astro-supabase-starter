@@ -1,0 +1,138 @@
+---
+import DashboardLayout from '../../components/dashboard/DashboardLayout.astro'
+import { supabase } from '../../utils/database'
+import type { Client } from '../../../supabase/types'
+
+let client: Client | null = null
+
+if (supabase) {
+  const { data: clients } = await supabase.from('clients').select('*').eq('active', true).limit(1)
+  client = clients?.[0] || null
+}
+
+// Mock data
+if (!client) {
+  client = { id: 'demo', name: 'Demo Brand', domain: 'demobrand.com', active: true } as Client
+}
+
+const chatgpt = [
+  { task: 'Create ACP-compliant product feed', done: true },
+  { task: 'Submit feed to ChatGPT Shop', done: true },
+  { task: 'Add GTIN/UPC to all products', done: false },
+  { task: 'Enable Stripe ACP integration', done: false },
+  { task: 'Get feed approved', done: false },
+]
+
+const perplexity = [
+  { task: 'Apply to Merchant Program', done: false },
+  { task: 'Meet revenue requirements', done: true },
+  { task: 'Enable Buy with Pro checkout', done: false },
+]
+---
+
+<DashboardLayout title="Agentic Commerce" client={client} currentPath="/dashboard/agentic">
+  <p class="desc">Get ready for ChatGPT Instant Checkout and Perplexity Buy.</p>
+
+  <div class="kpi-wrap">
+    <div class="kpi big"><span class="kpi-v">42%</span><span class="kpi-l">Agentic Readiness</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-h">
+        <span>ChatGPT Shopping</span>
+        <span class="badge badge-y">In Progress</span>
+      </div>
+      <div class="status-row">
+        <div class="status"><span class="dot on"></span><span>Shopping Visible</span></div>
+        <div class="status"><span class="dot"></span><span>Instant Checkout</span></div>
+        <div class="status"><span class="dot on"></span><span>Feed Submitted</span></div>
+        <div class="status"><span class="dot pulse"></span><span>Feed Approved</span></div>
+      </div>
+      <div class="checklist">
+        {chatgpt.map(t => (
+          <label class="check-item">
+            <input type="checkbox" checked={t.done} disabled />
+            <span class:list={{ done: t.done }}>{t.task}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h">
+        <span>Perplexity Merchant</span>
+        <span class="badge badge-n">Not Started</span>
+      </div>
+      <div class="status-row">
+        <div class="status"><span class="dot"></span><span>Applied</span></div>
+        <div class="status"><span class="dot"></span><span>Approved</span></div>
+        <div class="status"><span class="dot"></span><span>Buy Enabled</span></div>
+      </div>
+      <div class="checklist">
+        {perplexity.map(t => (
+          <label class="check-item">
+            <input type="checkbox" checked={t.done} disabled />
+            <span class:list={{ done: t.done }}>{t.task}</span>
+          </label>
+        ))}
+      </div>
+      <div class="card-foot">
+        <button class="btn btn-p">Apply to Merchant Program</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="card-h">Stripe ACP Integration</div>
+    <div class="stripe-row">
+      <div>
+        <strong>Required for Instant Checkout</strong>
+        <p class="muted">Connect Stripe to enable the Agentic Commerce Protocol.</p>
+      </div>
+      <button class="btn btn-s">Connect Stripe</button>
+    </div>
+  </div>
+</DashboardLayout>
+
+<style>
+  .desc { font-size: 13px; color: #6b7280; margin-bottom: 16px; }
+
+  .kpi-wrap { margin-bottom: 20px; }
+  .kpi { background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px 18px; display: inline-block; }
+  .kpi.big { padding: 20px 28px; }
+  .kpi-v { font-size: 28px; font-weight: 700; display: block; color: #111; }
+  .kpi-l { font-size: 11px; color: #6b7280; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+  .card-h { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 12px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; color: #111; }
+
+  .badge { display: inline-block; padding: 2px 6px; font-size: 10px; font-weight: 600; border-radius: 3px; text-transform: uppercase; }
+  .badge-y { background: #fffbeb; color: #d97706; }
+  .badge-n { background: #f3f4f6; color: #6b7280; }
+
+  .status-row { display: flex; gap: 16px; padding: 12px; border-bottom: 1px solid #f3f4f6; flex-wrap: wrap; }
+  .status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #111; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #e5e7eb; flex-shrink: 0; }
+  .dot.on { background: #059669; }
+  .dot.pulse { background: #d97706; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  .checklist { padding: 12px; }
+  .check-item { display: flex; align-items: center; gap: 8px; font-size: 12px; margin-bottom: 6px; cursor: default; color: #111; }
+  .check-item input { width: 14px; height: 14px; accent-color: #ea580c; }
+  .check-item .done { color: #9ca3af; text-decoration: line-through; }
+
+  .card-foot { padding: 12px; border-top: 1px solid #f3f4f6; }
+
+  .stripe-row { display: flex; justify-content: space-between; align-items: center; padding: 16px; }
+  .stripe-row strong { color: #111; font-size: 13px; }
+  .stripe-row .muted { margin-top: 4px; font-size: 12px; color: #6b7280; }
+
+  .btn { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; font-size: 13px; font-weight: 500; border-radius: 5px; cursor: pointer; border: none; }
+  .btn-p { background: #ea580c; color: #fff; }
+  .btn-p:hover { background: #c2410c; }
+  .btn-s { background: #fff; color: #111; border: 1px solid #e5e7eb; }
+  .btn-s:hover { border-color: #ea580c; color: #ea580c; }
+</style>

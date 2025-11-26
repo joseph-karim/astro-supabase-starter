@@ -1,0 +1,127 @@
+---
+import DashboardLayout from '../../components/dashboard/DashboardLayout.astro'
+import { supabase } from '../../utils/database'
+import type { Client } from '../../../supabase/types'
+
+let client: Client | null = null
+
+if (supabase) {
+  const { data: clients } = await supabase.from('clients').select('*').eq('active', true).limit(1)
+  client = clients?.[0] || null
+}
+
+// Mock data
+if (!client) {
+  client = { id: 'demo', name: 'Demo Brand', domain: 'demobrand.com', active: true } as Client
+}
+
+const required = [
+  { name: 'id', pct: 100 },
+  { name: 'title', pct: 100 },
+  { name: 'description', pct: 98 },
+  { name: 'price', pct: 100 },
+  { name: 'availability', pct: 95 },
+]
+
+const recommended = [
+  { name: 'gtin', pct: 45 },
+  { name: 'shipping', pct: 34 },
+  { name: 'review_count', pct: 23 },
+  { name: 'rating', pct: 23 },
+]
+
+const issues = [
+  { field: 'gtin', msg: '86 products missing GTIN/UPC', impact: 'Required for ChatGPT Shopping' },
+  { field: 'review_count', msg: '120 products missing review data', impact: 'Lower ranking in results' },
+]
+---
+
+<DashboardLayout title="Feed Validation" client={client} currentPath="/dashboard/feeds">
+  <div class="toolbar">
+    <span class="muted">Validate product feeds for ACP compliance</span>
+    <button class="btn btn-p">Upload Feed</button>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><span class="kpi-v">72%</span><span class="kpi-l">ACP Readiness</span></div>
+    <div class="kpi"><span class="kpi-v">142/156</span><span class="kpi-l">Valid Products</span></div>
+    <div class="kpi"><span class="kpi-v err">3</span><span class="kpi-l">Critical Issues</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-h">Required Fields</div>
+      <div class="fields">
+        {required.map(f => (
+          <div class="field-row">
+            <code>{f.name}</code>
+            <div class="bar"><div class="bar-fill" style={`width:${f.pct}%`}></div></div>
+            <span class="pct">{f.pct}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h">Recommended Fields</div>
+      <div class="fields">
+        {recommended.map(f => (
+          <div class="field-row">
+            <code>{f.name}</code>
+            <div class="bar"><div class:list={['bar-fill', f.pct < 50 ? 'warn' : '']} style={`width:${f.pct}%`}></div></div>
+            <span class="pct">{f.pct}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="card-h">Critical Issues</div>
+    <table>
+      <thead><tr><th>Issue</th><th>Field</th><th>Impact</th></tr></thead>
+      <tbody>
+        {issues.map(i => (
+          <tr>
+            <td>{i.msg}</td>
+            <td><code>{i.field}</code></td>
+            <td class="muted">{i.impact}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</DashboardLayout>
+
+<style>
+  .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .muted { font-size: 12px; color: #6b7280; }
+
+  .kpis { display: flex; gap: 12px; margin-bottom: 20px; }
+  .kpi { background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px 18px; }
+  .kpi-v { font-size: 22px; font-weight: 700; display: block; color: #111; }
+  .kpi-v.err { color: #dc2626; }
+  .kpi-l { font-size: 11px; color: #6b7280; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+  .card-h { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 12px; font-weight: 600; color: #111; }
+
+  .fields { padding: 12px; }
+  .field-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .field-row code { width: 100px; font-size: 11px; color: #111; background: #f3f4f6; padding: 2px 6px; border-radius: 3px; }
+  .bar { flex: 1; height: 6px; background: #f3f4f6; border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; background: #059669; border-radius: 3px; }
+  .bar-fill.warn { background: #d97706; }
+  .pct { width: 40px; text-align: right; font-size: 11px; color: #6b7280; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th { padding: 8px 12px; text-align: left; font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; background: #f9fafb; }
+  td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; color: #111; }
+  tr:last-child td { border-bottom: none; }
+  td code { font-size: 11px; background: #f3f4f6; padding: 2px 6px; border-radius: 3px; }
+
+  .btn { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; font-size: 13px; font-weight: 500; border-radius: 5px; cursor: pointer; border: none; }
+  .btn-p { background: #ea580c; color: #fff; }
+  .btn-p:hover { background: #c2410c; }
+</style>

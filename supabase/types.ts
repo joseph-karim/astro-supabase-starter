@@ -4,284 +4,551 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[];
+  | Json[]
 
-export type Database = {
+export interface Database {
   public: {
     Tables: {
+      clients: {
+        Row: {
+          id: string
+          user_id: string | null
+          name: string
+          domain: string
+          shopify_store_url: string | null
+          logo_url: string | null
+          tier: 'starter' | 'growth' | 'pro' | 'enterprise'
+          settings: Json
+          created_at: string
+          updated_at: string
+          active: boolean
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          name: string
+          domain: string
+          shopify_store_url?: string | null
+          logo_url?: string | null
+          tier?: 'starter' | 'growth' | 'pro' | 'enterprise'
+          settings?: Json
+          created_at?: string
+          updated_at?: string
+          active?: boolean
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          name?: string
+          domain?: string
+          shopify_store_url?: string | null
+          logo_url?: string | null
+          tier?: 'starter' | 'growth' | 'pro' | 'enterprise'
+          settings?: Json
+          created_at?: string
+          updated_at?: string
+          active?: boolean
+        }
+      }
+      decision_queries: {
+        Row: {
+          id: string
+          client_id: string
+          query: string
+          cluster: string | null
+          tags: string[]
+          volume_estimate: number | null
+          priority: 'low' | 'medium' | 'high' | 'critical'
+          status: 'active' | 'paused' | 'archived'
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          client_id: string
+          query: string
+          cluster?: string | null
+          tags?: string[]
+          volume_estimate?: number | null
+          priority?: 'low' | 'medium' | 'high' | 'critical'
+          status?: 'active' | 'paused' | 'archived'
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          client_id?: string
+          query?: string
+          cluster?: string | null
+          tags?: string[]
+          volume_estimate?: number | null
+          priority?: 'low' | 'medium' | 'high' | 'critical'
+          status?: 'active' | 'paused' | 'archived'
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      visibility_snapshots: {
+        Row: {
+          id: string
+          client_id: string
+          date: string
+          share_of_answer: number | null
+          brand_mentions: number
+          competitor_mentions: Json
+          platforms_data: Json
+          query_results: Json
+          raw_data: Json | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          client_id: string
+          date: string
+          share_of_answer?: number | null
+          brand_mentions?: number
+          competitor_mentions?: Json
+          platforms_data?: Json
+          query_results?: Json
+          raw_data?: Json | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          client_id?: string
+          date?: string
+          share_of_answer?: number | null
+          brand_mentions?: number
+          competitor_mentions?: Json
+          platforms_data?: Json
+          query_results?: Json
+          raw_data?: Json | null
+          created_at?: string
+        }
+      }
+      citations: {
+        Row: {
+          id: string
+          client_id: string
+          query_id: string | null
+          platform: 'chatgpt' | 'perplexity' | 'claude' | 'gemini' | 'google_aio'
+          query_text: string | null
+          cited_domain: string | null
+          cited_url: string | null
+          brand_mentioned: boolean
+          position: number | null
+          response_snippet: string | null
+          screenshot_url: string | null
+          tested_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          client_id: string
+          query_id?: string | null
+          platform: 'chatgpt' | 'perplexity' | 'claude' | 'gemini' | 'google_aio'
+          query_text?: string | null
+          cited_domain?: string | null
+          cited_url?: string | null
+          brand_mentioned?: boolean
+          position?: number | null
+          response_snippet?: string | null
+          screenshot_url?: string | null
+          tested_at?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          client_id?: string
+          query_id?: string | null
+          platform?: 'chatgpt' | 'perplexity' | 'claude' | 'gemini' | 'google_aio'
+          query_text?: string | null
+          cited_domain?: string | null
+          cited_url?: string | null
+          brand_mentioned?: boolean
+          position?: number | null
+          response_snippet?: string | null
+          screenshot_url?: string | null
+          tested_at?: string
+          created_at?: string
+        }
+      }
+      pdp_audits: {
+        Row: {
+          id: string
+          client_id: string
+          url: string
+          product_title: string | null
+          overall_score: number | null
+          schema_score: number | null
+          extractability_score: number | null
+          feed_alignment_score: number | null
+          has_product_schema: boolean
+          has_offer_schema: boolean
+          has_faq_schema: boolean
+          has_review_schema: boolean
+          schema_issues: string[]
+          detected_schema: Json | null
+          has_spec_table: boolean
+          has_short_claims: boolean
+          has_comparison: boolean
+          extractability_issues: string[]
+          detected_claims: string[]
+          recommendations: Json
+          audited_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          client_id: string
+          url: string
+          product_title?: string | null
+          overall_score?: number | null
+          schema_score?: number | null
+          extractability_score?: number | null
+          feed_alignment_score?: number | null
+          has_product_schema?: boolean
+          has_offer_schema?: boolean
+          has_faq_schema?: boolean
+          has_review_schema?: boolean
+          schema_issues?: string[]
+          detected_schema?: Json | null
+          has_spec_table?: boolean
+          has_short_claims?: boolean
+          has_comparison?: boolean
+          extractability_issues?: string[]
+          detected_claims?: string[]
+          recommendations?: Json
+          audited_at?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          client_id?: string
+          url?: string
+          product_title?: string | null
+          overall_score?: number | null
+          schema_score?: number | null
+          extractability_score?: number | null
+          feed_alignment_score?: number | null
+          has_product_schema?: boolean
+          has_offer_schema?: boolean
+          has_faq_schema?: boolean
+          has_review_schema?: boolean
+          schema_issues?: string[]
+          detected_schema?: Json | null
+          has_spec_table?: boolean
+          has_short_claims?: boolean
+          has_comparison?: boolean
+          extractability_issues?: string[]
+          detected_claims?: string[]
+          recommendations?: Json
+          audited_at?: string
+          created_at?: string
+        }
+      }
+      feed_validations: {
+        Row: {
+          id: string
+          client_id: string
+          feed_type: 'shopify' | 'gmc' | 'acp' | 'custom'
+          feed_url: string | null
+          total_products: number
+          valid_products: number
+          acp_readiness_score: number | null
+          shopping_optimization_score: number | null
+          required_field_coverage: Json
+          recommended_field_coverage: Json
+          critical_issues: string[]
+          warnings: string[]
+          product_issues: Json
+          validated_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          client_id: string
+          feed_type: 'shopify' | 'gmc' | 'acp' | 'custom'
+          feed_url?: string | null
+          total_products?: number
+          valid_products?: number
+          acp_readiness_score?: number | null
+          shopping_optimization_score?: number | null
+          required_field_coverage?: Json
+          recommended_field_coverage?: Json
+          critical_issues?: string[]
+          warnings?: string[]
+          product_issues?: Json
+          validated_at?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          client_id?: string
+          feed_type?: 'shopify' | 'gmc' | 'acp' | 'custom'
+          feed_url?: string | null
+          total_products?: number
+          valid_products?: number
+          acp_readiness_score?: number | null
+          shopping_optimization_score?: number | null
+          required_field_coverage?: Json
+          recommended_field_coverage?: Json
+          critical_issues?: string[]
+          warnings?: string[]
+          product_issues?: Json
+          validated_at?: string
+          created_at?: string
+        }
+      }
+      offsite_mentions: {
+        Row: {
+          id: string
+          client_id: string
+          source: 'reddit' | 'youtube' | 'blog' | 'review_site' | 'forum' | 'social'
+          platform: string | null
+          url: string
+          title: string | null
+          author: string | null
+          sentiment: 'positive' | 'neutral' | 'negative' | null
+          engagement: Json
+          products_mentioned: string[]
+          is_ai_cited: boolean
+          content_snippet: string | null
+          discovered_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          client_id: string
+          source: 'reddit' | 'youtube' | 'blog' | 'review_site' | 'forum' | 'social'
+          platform?: string | null
+          url: string
+          title?: string | null
+          author?: string | null
+          sentiment?: 'positive' | 'neutral' | 'negative' | null
+          engagement?: Json
+          products_mentioned?: string[]
+          is_ai_cited?: boolean
+          content_snippet?: string | null
+          discovered_at?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          client_id?: string
+          source?: 'reddit' | 'youtube' | 'blog' | 'review_site' | 'forum' | 'social'
+          platform?: string | null
+          url?: string
+          title?: string | null
+          author?: string | null
+          sentiment?: 'positive' | 'neutral' | 'negative' | null
+          engagement?: Json
+          products_mentioned?: string[]
+          is_ai_cited?: boolean
+          content_snippet?: string | null
+          discovered_at?: string
+          created_at?: string
+        }
+      }
+      agentic_commerce_status: {
+        Row: {
+          id: string
+          client_id: string
+          chatgpt_shopping_visible: boolean
+          chatgpt_instant_checkout: boolean
+          acp_feed_submitted: boolean
+          acp_feed_approved: boolean
+          perplexity_merchant_applied: boolean
+          perplexity_merchant_approved: boolean
+          perplexity_buy_enabled: boolean
+          stripe_acp_enabled: boolean
+          notes: string | null
+          last_checked: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          client_id: string
+          chatgpt_shopping_visible?: boolean
+          chatgpt_instant_checkout?: boolean
+          acp_feed_submitted?: boolean
+          acp_feed_approved?: boolean
+          perplexity_merchant_applied?: boolean
+          perplexity_merchant_approved?: boolean
+          perplexity_buy_enabled?: boolean
+          stripe_acp_enabled?: boolean
+          notes?: string | null
+          last_checked?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          client_id?: string
+          chatgpt_shopping_visible?: boolean
+          chatgpt_instant_checkout?: boolean
+          acp_feed_submitted?: boolean
+          acp_feed_approved?: boolean
+          perplexity_merchant_applied?: boolean
+          perplexity_merchant_approved?: boolean
+          perplexity_buy_enabled?: boolean
+          stripe_acp_enabled?: boolean
+          notes?: string | null
+          last_checked?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      competitors: {
+        Row: {
+          id: string
+          client_id: string
+          name: string
+          domain: string
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          client_id: string
+          name: string
+          domain: string
+          notes?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          client_id?: string
+          name?: string
+          domain?: string
+          notes?: string | null
+          created_at?: string
+        }
+      }
+      // Existing tables
       claims: {
         Row: {
-          id: string;
-          slug: string;
-          h1: string;
-          tl_dr: string;
-          pull_quotes: string[];
-          proof_table: Json | null;
-          csv_url: string | null;
-          jsonld: Json | null;
-          updated_at: string;
-          published: boolean;
-        };
+          id: string
+          slug: string
+          h1: string
+          tl_dr: string
+          pull_quotes: string[]
+          proof_table: Json | null
+          csv_url: string | null
+          jsonld: Json | null
+          updated_at: string
+          published: boolean
+        }
         Insert: {
-          id?: string;
-          slug: string;
-          h1: string;
-          tl_dr: string;
-          pull_quotes?: string[];
-          proof_table?: Json | null;
-          csv_url?: string | null;
-          jsonld?: Json | null;
-          updated_at?: string;
-          published?: boolean;
-        };
+          id?: string
+          slug: string
+          h1: string
+          tl_dr: string
+          pull_quotes?: string[]
+          proof_table?: Json | null
+          csv_url?: string | null
+          jsonld?: Json | null
+          updated_at?: string
+          published?: boolean
+        }
         Update: {
-          id?: string;
-          slug?: string;
-          h1?: string;
-          tl_dr?: string;
-          pull_quotes?: string[];
-          proof_table?: Json | null;
-          csv_url?: string | null;
-          jsonld?: Json | null;
-          updated_at?: string;
-          published?: boolean;
-        };
-        Relationships: [];
-      };
+          id?: string
+          slug?: string
+          h1?: string
+          tl_dr?: string
+          pull_quotes?: string[]
+          proof_table?: Json | null
+          csv_url?: string | null
+          jsonld?: Json | null
+          updated_at?: string
+          published?: boolean
+        }
+      }
       events: {
         Row: {
-          id: string;
-          claim_slug: string;
-          referrer: string | null;
-          is_ai_referrer: boolean;
-          page: string;
-          event_type: string;
-          meta: Json | null;
-          created_at: string;
-        };
+          id: string
+          claim_slug: string
+          referrer: string | null
+          is_ai_referrer: boolean
+          page: string
+          event_type: string
+          meta: Json | null
+          created_at: string
+        }
         Insert: {
-          id?: string;
-          claim_slug: string;
-          referrer?: string | null;
-          is_ai_referrer?: boolean;
-          page: string;
-          event_type: string;
-          meta?: Json | null;
-          created_at?: string;
-        };
+          id?: string
+          claim_slug: string
+          referrer?: string | null
+          is_ai_referrer?: boolean
+          page: string
+          event_type: string
+          meta?: Json | null
+          created_at?: string
+        }
         Update: {
-          id?: string;
-          claim_slug?: string;
-          referrer?: string | null;
-          is_ai_referrer?: boolean;
-          page?: string;
-          event_type?: string;
-          meta?: Json | null;
-          created_at?: string;
-        };
-        Relationships: [];
-      };
-      frameworks: {
-        Row: {
-          description: string;
-          created_at: string;
-          url: string;
-          id: string;
-          logo: string;
-          name: string;
-          likes: number;
-        };
-        Insert: {
-          description: string;
-          created_at?: string;
-          url: string;
-          id?: string;
-          logo: string;
-          name: string;
-          likes?: number;
-        };
-        Update: {
-          description?: string;
-          created_at?: string;
-          url?: string;
-          id?: string;
-          logo?: string;
-          name?: string;
-          likes?: number;
-        };
-        Relationships: [];
-      };
+          id?: string
+          claim_slug?: string
+          referrer?: string | null
+          is_ai_referrer?: boolean
+          page?: string
+          event_type?: string
+          meta?: Json | null
+          created_at?: string
+        }
+      }
       leads: {
         Row: {
-          id: string;
-          email: string;
-          company: string | null;
-          icp: Json | null;
-          pains: string[];
-          proof_links: string[];
-          competitors: string[];
-          created_at: string;
-        };
+          id: string
+          email: string
+          company: string | null
+          icp: Json | null
+          pains: string[]
+          proof_links: string[]
+          competitors: string[]
+          created_at: string
+        }
         Insert: {
-          id?: string;
-          email: string;
-          company?: string | null;
-          icp?: Json | null;
-          pains?: string[];
-          proof_links?: string[];
-          competitors?: string[];
-          created_at?: string;
-        };
+          id?: string
+          email: string
+          company?: string | null
+          icp?: Json | null
+          pains?: string[]
+          proof_links?: string[]
+          competitors?: string[]
+          created_at?: string
+        }
         Update: {
-          id?: string;
-          email?: string;
-          company?: string | null;
-          icp?: Json | null;
-          pains?: string[];
-          proof_links?: string[];
-          competitors?: string[];
-          created_at?: string;
-        };
-        Relationships: [];
-      };
-      tests: {
-        Row: {
-          id: string;
-          claim_id: string | null;
-          engine: string;
-          query: string;
-          appeared: boolean;
-          cited: boolean;
-          clickable: boolean;
-          screenshot_url: string | null;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          claim_id?: string | null;
-          engine: string;
-          query: string;
-          appeared?: boolean;
-          cited?: boolean;
-          clickable?: boolean;
-          screenshot_url?: string | null;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          claim_id?: string | null;
-          engine?: string;
-          query?: string;
-          appeared?: boolean;
-          cited?: boolean;
-          clickable?: boolean;
-          screenshot_url?: string | null;
-          created_at?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "tests_claim_id_fkey";
-            columns: ["claim_id"];
-            isOneToOne: false;
-            referencedRelation: "claims";
-            referencedColumns: ["id"];
-          }
-        ];
-      };
-    };
-    Views: {
-      [_ in never]: never;
-    };
+          id?: string
+          email?: string
+          company?: string | null
+          icp?: Json | null
+          pains?: string[]
+          proof_links?: string[]
+          competitors?: string[]
+          created_at?: string
+        }
+      }
+    }
     Functions: {
-      [_ in never]: never;
-    };
-    Enums: {
-      [_ in never]: never;
-    };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
-};
-
-type PublicSchema = Database[Extract<keyof Database, "public">];
-
-export type Tables<
-  PublicTableNameOrOptions extends
-    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-        Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R;
-    }
-    ? R
-    : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-        PublicSchema["Views"])
-    ? (PublicSchema["Tables"] &
-        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R;
+      get_client_dashboard: {
+        Args: { p_client_id: string }
+        Returns: Json
       }
-      ? R
-      : never
-    : never;
-
-export type TablesInsert<
-  PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I;
     }
-    ? I
-    : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I;
-      }
-      ? I
-      : never
-    : never;
+  }
+}
 
-export type TablesUpdate<
-  PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U;
-    }
-    ? U
-    : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U;
-      }
-      ? U
-      : never
-    : never;
-
-export type Enums<
-  PublicEnumNameOrOptions extends
-    | keyof PublicSchema["Enums"]
-    | { schema: keyof Database },
-  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
-> = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never;
+// Helper types
+export type Client = Database['public']['Tables']['clients']['Row']
+export type DecisionQuery = Database['public']['Tables']['decision_queries']['Row']
+export type VisibilitySnapshot = Database['public']['Tables']['visibility_snapshots']['Row']
+export type Citation = Database['public']['Tables']['citations']['Row']
+export type PDPAudit = Database['public']['Tables']['pdp_audits']['Row']
+export type FeedValidation = Database['public']['Tables']['feed_validations']['Row']
+export type OffsiteMention = Database['public']['Tables']['offsite_mentions']['Row']
+export type AgenticCommerceStatus = Database['public']['Tables']['agentic_commerce_status']['Row']
+export type Competitor = Database['public']['Tables']['competitors']['Row']

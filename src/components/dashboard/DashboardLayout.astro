@@ -1,0 +1,276 @@
+---
+import type { Client } from '../../../supabase/types'
+
+interface Props {
+  title: string
+  client?: Client | null
+  currentPath?: string
+}
+
+const { title, client, currentPath = '' } = Astro.props
+
+const nav = [
+  { href: '/dashboard', label: 'Overview' },
+  { href: '/dashboard/queries', label: 'Queries' },
+  { href: '/dashboard/visibility', label: 'Visibility' },
+  { href: '/dashboard/pdp-audits', label: 'PDP Audits' },
+  { href: '/dashboard/feeds', label: 'Feeds' },
+  { href: '/dashboard/authority', label: 'Authority' },
+  { href: '/dashboard/agentic', label: 'Agentic' },
+]
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>{title} | BTA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <a href="/dashboard" class="logo">⚡ BTA</a>
+      {client && <div class="client">{client.name}</div>}
+      <nav class="nav">
+        {nav.map(item => (
+          <a 
+            href={item.href} 
+            class:list={['nav-item', { active: currentPath === item.href || (item.href !== '/dashboard' && currentPath.startsWith(item.href)) }]}
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
+      <div class="side-foot">
+        <a href="/dashboard/settings" class:list={['nav-item', { active: currentPath === '/dashboard/settings' }]}>Settings</a>
+        <a href="/" class="nav-item dim">← Site</a>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="head">
+        <h1>{title}</h1>
+      </header>
+      <div class="body">
+        <slot />
+      </div>
+    </main>
+  </div>
+
+  <style is:global>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --bg: #F9FAFB;
+      --card: #FFF;
+      --border: #E5E7EB;
+      --border-lt: #F3F4F6;
+      --text: #111827;
+      --text-2: #6B7280;
+      --text-3: #9CA3AF;
+      --accent: #EA580C;
+      --accent-bg: #FFF7ED;
+      --green: #059669;
+      --green-bg: #ECFDF5;
+      --yellow: #D97706;
+      --yellow-bg: #FFFBEB;
+      --red: #DC2626;
+      --red-bg: #FEF2F2;
+    }
+
+    body {
+      font: 13px/1.5 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .shell { display: flex; min-height: 100vh; }
+
+    .side {
+      width: 180px;
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      padding: 12px;
+    }
+
+    .logo {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text);
+      text-decoration: none;
+      padding: 8px;
+      margin-bottom: 4px;
+    }
+
+    .client {
+      font-size: 11px;
+      color: var(--text-2);
+      padding: 0 8px 12px;
+      border-bottom: 1px solid var(--border-lt);
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+
+    .nav-item {
+      display: block;
+      padding: 7px 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      border-radius: 5px;
+      transition: all .1s;
+    }
+
+    .nav-item:hover { background: var(--border-lt); color: var(--text); }
+    .nav-item.active { background: var(--accent-bg); color: var(--accent); }
+    .nav-item.dim { color: var(--text-3); font-size: 12px; }
+
+    .side-foot {
+      border-top: 1px solid var(--border-lt);
+      padding-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .main {
+      flex: 1;
+      margin-left: 180px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .head {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      z-index: 10;
+    }
+
+    .head h1 {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .body { padding: 20px; flex: 1; }
+
+    /* Common UI */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      font: inherit;
+      font-weight: 500;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all .15s;
+      text-decoration: none;
+    }
+
+    .btn-p { background: var(--accent); color: #fff; border: none; }
+    .btn-p:hover { filter: brightness(1.1); }
+    .btn-s { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+    .btn-s:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-g { background: transparent; color: var(--text-2); border: none; padding: 4px 8px; }
+    .btn-g:hover { color: var(--text); }
+    .btn-icon { width: 26px; height: 26px; padding: 0; display: flex; align-items: center; justify-content: center; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      font-size: 10px;
+      font-weight: 600;
+      border-radius: 3px;
+      text-transform: uppercase;
+    }
+    .badge-g { background: var(--green-bg); color: var(--green); }
+    .badge-y { background: var(--yellow-bg); color: var(--yellow); }
+    .badge-r { background: var(--red-bg); color: var(--red); }
+    .badge-n { background: var(--border-lt); color: var(--text-2); }
+
+    .score {
+      min-width: 28px;
+      height: 22px;
+      padding: 0 6px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .score-g { background: var(--green-bg); color: var(--green); }
+    .score-y { background: var(--yellow-bg); color: var(--yellow); }
+    .score-r { background: var(--red-bg); color: var(--red); }
+
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: 8px 12px; text-align: left; font-size: 10px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .5px; background: var(--border-lt); }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--border-lt); font-size: 13px; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(0,0,0,.01); }
+
+    .trunc { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+    .muted { color: var(--text-3); }
+    .small { font-size: 11px; }
+
+    .empty {
+      padding: 48px 24px;
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .empty h3 { font-size: 14px; margin-bottom: 4px; }
+    .empty p { font-size: 12px; color: var(--text-2); margin-bottom: 12px; }
+
+    .row { display: flex; gap: 16px; margin-bottom: 16px; }
+    .row > * { flex: 1; }
+
+    .field { margin-bottom: 12px; }
+    .field label { display: block; font-size: 11px; font-weight: 600; color: var(--text-2); margin-bottom: 4px; }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 7px 10px;
+      font: inherit;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--card);
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.3); z-index: 100; }
+    .modal-box { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: var(--card); border-radius: 8px; padding: 20px; width: 100%; max-width: 400px; z-index: 101; }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .modal-head h3 { font-size: 14px; }
+    .modal-foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+    .hidden { display: none !important; }
+  </style>
+</body>
+</html>

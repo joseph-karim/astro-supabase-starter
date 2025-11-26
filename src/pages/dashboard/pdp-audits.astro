@@ -1,0 +1,170 @@
+---
+import DashboardLayout from '../../components/dashboard/DashboardLayout.astro'
+import { supabase } from '../../utils/database'
+import type { Client, PDPAudit } from '../../../supabase/types'
+
+let client: Client | null = null
+let audits: PDPAudit[] = []
+
+if (supabase) {
+  const { data: clients } = await supabase.from('clients').select('*').eq('active', true).limit(1)
+  client = clients?.[0] || null
+  if (client) {
+    const { data } = await supabase.from('pdp_audits').select('*').eq('client_id', client.id).order('audited_at', { ascending: false })
+    audits = data || []
+  }
+}
+
+// Mock data
+if (!client) {
+  client = { id: 'demo', name: 'Demo Brand', domain: 'demobrand.com', active: true } as Client
+}
+if (audits.length === 0) {
+  audits = [
+    { id: '1', product_title: 'Carbon Gravel Wheelset Pro', url: 'https://demo.com/wheels/carbon-pro', overall_score: 85, has_product_schema: true, has_offer_schema: true, has_faq_schema: true, has_review_schema: true, schema_issues: [] },
+    { id: '2', product_title: 'Alloy Adventure Wheels', url: 'https://demo.com/wheels/alloy-adventure', overall_score: 72, has_product_schema: true, has_offer_schema: true, has_faq_schema: false, has_review_schema: true, schema_issues: ['Missing FAQ schema'] },
+    { id: '3', product_title: 'Tubeless Ready Set', url: 'https://demo.com/wheels/tubeless-ready', overall_score: 58, has_product_schema: true, has_offer_schema: false, has_faq_schema: false, has_review_schema: false, schema_issues: ['Missing Offer schema', 'Missing FAQ schema', 'Missing Review schema'] },
+    { id: '4', product_title: 'Gravel Race Hoops', url: 'https://demo.com/wheels/race-hoops', overall_score: 91, has_product_schema: true, has_offer_schema: true, has_faq_schema: true, has_review_schema: true, schema_issues: [] },
+  ] as PDPAudit[]
+}
+
+const avg = audits.length ? Math.round(audits.reduce((s, a) => s + (a.overall_score || 0), 0) / audits.length) : 0
+---
+
+<DashboardLayout title="PDP Audits" client={client} currentPath="/dashboard/pdp-audits">
+  <div class="toolbar">
+    <span class="muted">{audits.length} audits · Avg score: {avg}%</span>
+    <button class="btn btn-p" id="add-btn">+ Run Audit</button>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th style="width:70px">Score</th>
+          <th style="width:100px">Schema</th>
+          <th style="width:80px">Issues</th>
+          <th style="width:40px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {audits.map(a => (
+          <tr data-id={a.id}>
+            <td>
+              <div class="cell-stack">
+                <span class="cell-main">{a.product_title || 'Untitled'}</span>
+                <span class="cell-sub">{a.url}</span>
+              </div>
+            </td>
+            <td>
+              <span class:list={['score', 
+                (a.overall_score || 0) >= 80 ? 'score-g' : 
+                (a.overall_score || 0) >= 60 ? 'score-y' : 'score-r'
+              ]}>{a.overall_score}</span>
+            </td>
+            <td>
+              <div class="schema-dots">
+                <span class:list={['dot', { on: a.has_product_schema }]} title="Product">P</span>
+                <span class:list={['dot', { on: a.has_offer_schema }]} title="Offer">O</span>
+                <span class:list={['dot', { on: a.has_faq_schema }]} title="FAQ">F</span>
+                <span class:list={['dot', { on: a.has_review_schema }]} title="Review">R</span>
+              </div>
+            </td>
+            <td>
+              {(a.schema_issues?.length || 0) > 0 
+                ? <span class="issues">{a.schema_issues?.length}</span>
+                : <span class="ok">OK</span>
+              }
+            </td>
+            <td><button class="btn-x del-btn" title="Delete">×</button></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-bg"></div>
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>Run Audit</h3>
+        <button class="btn-x close-btn">×</button>
+      </div>
+      <form id="form">
+        <div class="field">
+          <label>Product URL *</label>
+          <input type="url" name="url" required placeholder="https://yoursite.com/products/..." />
+        </div>
+        <div id="msg" class="msg"></div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-s close-btn">Cancel</button>
+          <button type="submit" class="btn btn-p" id="save-btn">Run Audit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</DashboardLayout>
+
+<style>
+  .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .muted { font-size: 12px; color: #6b7280; }
+
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th { padding: 8px 12px; text-align: left; font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; background: #f9fafb; }
+  td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; color: #111; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafafa; }
+
+  .cell-stack { display: flex; flex-direction: column; gap: 1px; }
+  .cell-main { font-weight: 500; color: #111; }
+  .cell-sub { font-size: 11px; color: #9ca3af; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .score { min-width: 28px; height: 22px; padding: 0 6px; font-size: 11px; font-weight: 700; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; }
+  .score-g { background: #ecfdf5; color: #059669; }
+  .score-y { background: #fffbeb; color: #d97706; }
+  .score-r { background: #fef2f2; color: #dc2626; }
+
+  .schema-dots { display: flex; gap: 3px; }
+  .dot { width: 18px; height: 18px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; background: #f3f4f6; color: #9ca3af; }
+  .dot.on { background: #ecfdf5; color: #059669; }
+
+  .issues { font-size: 11px; font-weight: 600; color: #dc2626; }
+  .ok { font-size: 11px; font-weight: 500; color: #059669; }
+
+  .btn { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; font-size: 13px; font-weight: 500; border-radius: 5px; cursor: pointer; border: none; }
+  .btn-p { background: #ea580c; color: #fff; }
+  .btn-p:hover { background: #c2410c; }
+  .btn-s { background: #fff; color: #111; border: 1px solid #e5e7eb; }
+  .btn-x { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: none; border: none; font-size: 16px; color: #9ca3af; cursor: pointer; border-radius: 4px; }
+  .btn-x:hover { background: #fef2f2; color: #dc2626; }
+
+  .modal { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; }
+  .modal.hidden { display: none; }
+  .modal-bg { position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
+  .modal-box { position: relative; background: #fff; border-radius: 8px; padding: 20px; width: 100%; max-width: 400px; }
+  .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .modal-head h3 { font-size: 14px; font-weight: 600; color: #111; margin: 0; }
+  .modal-foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 11px; font-weight: 600; color: #6b7280; margin-bottom: 4px; }
+  .field input { width: 100%; padding: 8px 10px; font-size: 13px; border: 1px solid #e5e7eb; border-radius: 5px; background: #fff; color: #111; }
+  .field input:focus { outline: none; border-color: #ea580c; }
+
+  .msg { font-size: 12px; color: #dc2626; margin-top: 8px; min-height: 18px; }
+</style>
+
+<script>
+  const modal = document.getElementById('modal')
+  const form = document.getElementById('form')
+
+  const open = () => modal?.classList.remove('hidden')
+  const close = () => { modal?.classList.add('hidden'); form?.reset() }
+
+  document.getElementById('add-btn')?.addEventListener('click', open)
+  document.querySelectorAll('.close-btn').forEach(b => b.addEventListener('click', close))
+  document.querySelector('.modal-bg')?.addEventListener('click', close)
+</script>
