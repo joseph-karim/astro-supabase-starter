@@ -1,6 +1,6 @@
 ---
+import Layout from '../components/Layout.astro';
 import JSONLD from '../shared/JSONLD.astro';
-import PipelineFlow from '../shared/PipelineFlow.astro';
 
 export const prerender = false;
 
@@ -9,413 +9,963 @@ const siteGraph = [
     "@type": "Organization",
     "name": "Become The Answer",
     "url": "https://becometheanswer.ai",
-    "logo": "https://becometheanswer.ai/og-logo.png",
-    "sameAs": ["https://www.linkedin.com/company/becometheanswer"]
+    "logo": "https://becometheanswer.ai/og-logo.png"
   },
   {
     "@type": "Service",
-    "name": "AEO — AI Visibility & Conversion",
+    "name": "AI Answer Citation Sprint",
     "provider": {"@type":"Organization","name":"Become The Answer"},
-    "description": "Claim → Cite → Close for challenger brands: claim page, evidence + schema, conversion-first design.",
+    "description": "We make your products visible, quotable, and purchasable inside AI answers so high-intent shoppers find you first.",
     "areaServed": "Global",
     "url": "https://becometheanswer.ai"
   }
 ];
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Become the Answer — AI Search Visibility for E-commerce</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Make your products visible, quotable, and purchasable inside AI answers. We help e-commerce stores win AI-shopping with agent-ready data and content." />
-    <link rel="canonical" href="https://becometheanswer.ai/" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <JSONLD graph={siteGraph} />
-    <style>
-      :root{
-        --violet-900:#1A1033;--violet-800:#241445;--violet-700:#39206B;--violet-600:#5A3AF5;--violet-500:#7A5CFF;--violet-400:#A08BFF;
-        --teal-500:#31D0C6;--magenta-500:#FF4D9D;
-        --bg-950:#0A0B0D;--bg-900:#101322;--panel-800:#111319;--stroke-700:#1B1F29;
-        --ink-100:#F3F1FF;--ink-300:#D7D2FF;--ink-500:#9EA3C7;
-        --ok:#20C997;--warn:#FFB02E;--danger:#FF6B6B;
-        --grad-answer:linear-gradient(135deg,var(--violet-600) 0%,var(--violet-400) 55%,var(--teal-500) 100%);
-        --grad-iris:linear-gradient(160deg,#2B1A47 0%,#39206B 60%,#5A3AF5 100%);
-        --shadow:0 10px 30px rgba(0,0,0,.35);
-        --font-h:'Space Grotesk',ui-sans-serif,system-ui;
-        --font-b:'Inter',ui-sans-serif,system-ui;
-      }
-      *{box-sizing:border-box;margin:0;padding:0}
-      html{scroll-behavior:smooth}
-      body{margin:0;padding:0;background:var(--bg-950);color:var(--ink-300);font:17px/1.6 var(--font-b);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-      a{color:var(--teal-500);text-decoration:none;transition:all 0.2s cubic-bezier(.2,.6,.2,1)}
-      a:hover{color:var(--ink-100)}
-      .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
-      .btn{display:inline-flex;gap:10px;align-items:center;padding:14px 24px;border-radius:12px;border:1px solid transparent;font:700 15px var(--font-b);letter-spacing:-0.01em;transition:all 0.2s cubic-bezier(.2,.6,.2,1);cursor:pointer}
-      .btn-primary{background:var(--grad-answer);color:#0B0C10;box-shadow:0 0 0 0 rgba(122,92,255,0.4)}
-      .btn-primary:hover{filter:brightness(1.1);box-shadow:0 0 0 8px rgba(122,92,255,0.15);transform:translateY(-2px)}
-      .btn-secondary{background:transparent;border-color:var(--stroke-700);color:var(--ink-100)}
-      .btn-secondary:hover{border-color:var(--violet-500);background:rgba(122,92,255,0.1)}
-      .ribbon{background:var(--grad-iris);border-bottom:1px solid var(--stroke-700);padding:14px 0;text-align:center;font-size:14px;line-height:1.5;color:var(--ink-300);font-weight:500}
-      .hero{padding:80px 0 60px;background:var(--bg-950);position:relative;overflow:hidden;border-bottom:1px solid var(--stroke-700)}
-      .hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(90,58,245,0.15) 0%,transparent 70%);border-radius:50%;animation:pulse 12s ease-in-out infinite}
-      @keyframes pulse{0%,100%{transform:scale(1) rotate(0deg);opacity:0.4}50%{transform:scale(1.2) rotate(180deg);opacity:0.6}}
-      .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center;position:relative;z-index:1}
-      .h1{font:800 56px/1.05 var(--font-h);letter-spacing:-0.02em;color:var(--ink-100);margin:0 0 16px}
-      .h2{font:800 40px/1.15 var(--font-h);color:var(--ink-100);letter-spacing:-0.02em;margin:0 0 16px}
-      .h3{font:700 24px/1.3 var(--font-h);color:var(--ink-100);margin:0 0 12px}
-      .subhead{font:500 24px/1.4 var(--font-b);color:var(--ink-300);margin:0 0 12px;letter-spacing:-0.01em}
-      .kicker{font:700 12px/1.5 var(--font-b);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-500);margin:0 0 10px}
-      .lead{font:400 18px/1.7 var(--font-b);color:var(--ink-300);margin:0 0 24px;max-width:800px}
-      .chips-label{font:600 13px var(--font-b);letter-spacing:0.05em;text-transform:uppercase;color:var(--teal-500);margin:0 0 12px;display:flex;align-items:center;gap:8px}
-      .chips-label::before{content:'';width:20px;height:2px;background:var(--grad-answer);border-radius:999px}
-      .chips{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 32px}
-      .chip{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;background:#0E1118;border:1px solid var(--stroke-700);color:#CFE9E7;font-size:14px;font-weight:600;transition:all 0.3s cubic-bezier(.2,.6,.2,1);position:relative;overflow:hidden}
-      .chip::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(49,208,198,0.2),transparent);transition:left 0.5s ease}
-      .chip:hover{border-color:var(--teal-500);background:rgba(49,208,198,0.15);transform:translateY(-2px) scale(1.05);box-shadow:0 4px 12px rgba(49,208,198,0.2)}
-      .chip:hover::before{left:100%}
-      .trust-strip{display:flex;gap:32px;align-items:center;justify-content:center;flex-wrap:wrap;margin:48px 0 0;padding:24px;opacity:0.6;filter:grayscale(1)}
-      .trust-badge{font:600 14px var(--font-b);color:var(--ink-500);display:flex;align-items:center;gap:8px}
-      .trust-badge::before{content:'✓';color:var(--ok);font-size:16px}
-      .bar{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0}
-      .section{padding:80px 0;border-bottom:1px solid var(--stroke-700)}
-      .card{background:var(--panel-800);border:1px solid var(--stroke-700);border-radius:16px;padding:24px;transition:all 0.3s cubic-bezier(.2,.6,.2,1);box-shadow:0 1px 0 var(--stroke-700) inset}
-      .card:hover{border-color:var(--violet-600);box-shadow:0 1px 0 var(--stroke-700) inset,var(--shadow);transform:translateY(-4px)}
-      .grid{display:grid;gap:32px}
-      .two{grid-template-columns:repeat(2,1fr)}
-      .three{grid-template-columns:repeat(3,1fr)}
-      .list{margin:0;padding:0 0 0 24px;line-height:1.9}
-      .list li{margin:12px 0;color:var(--ink-300)}
-      .list li strong{color:var(--ink-100);font-weight:600}
-      .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
-      .price-card{padding:32px;border:2px solid var(--stroke-700);border-radius:16px;background:var(--panel-800);transition:all 0.3s ease;position:relative}
-      .price-card:hover{border-color:var(--violet-500);transform:translateY(-6px);box-shadow:var(--shadow)}
-      .price-card.featured{border-color:var(--violet-600);background:var(--grad-iris)}
-      .price-card.featured::before{content:'MOST POPULAR';position:absolute;top:16px;right:-30px;background:var(--grad-answer);color:#0B0C10;padding:4px 40px;font-size:10px;font-weight:700;letter-spacing:0.1em;transform:rotate(45deg)}
-      .price-card h3{margin:0 0 8px;font-size:22px;color:var(--ink-100);font-weight:700}
-      .price-card .amt{font-size:36px;font-weight:800;margin:12px 0 24px;background:var(--grad-answer);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-      .faq dt{font-weight:700;margin:24px 0 8px;font-size:18px;color:var(--ink-100)}
-      .faq dd{margin:0 0 16px;color:var(--ink-300);line-height:1.7}
-      .footer{padding:40px 0;background:var(--bg-900);border-top:1px solid var(--stroke-700);color:var(--ink-500)}
-      .footer-flex{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-      .footer nav{display:flex;gap:20px}
-      .footer a{color:var(--ink-500);font-weight:500;transition:color 0.2s ease}
-      .footer a:hover{color:var(--teal-500)}
-      .divider{height:6px;background:var(--grad-answer);border-radius:999px;margin:24px 0}
-      table{border-collapse:collapse;font-size:15px;width:100%}
-      table thead tr{background:var(--grad-iris)}
-      table th{padding:16px;text-align:left;border:1px solid var(--stroke-700);font-weight:600;color:var(--ink-100)}
-      table td{padding:14px;border:1px solid var(--stroke-700);color:var(--ink-300);line-height:1.6}
-      table tbody tr{background:var(--panel-800);transition:background 0.2s ease}
-      table tbody tr:hover{background:rgba(90,58,245,0.1)}
-      table tbody tr td strong{color:var(--ink-100);font-weight:600}
-      @media(prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
-      @media(max-width:980px){
-        .hero-grid,.two,.three,.price-grid{grid-template-columns:1fr}
-        .h1{font-size:42px}
-        .h2{font-size:32px}
-        .subhead{font-size:20px}
-        .hero{padding:50px 0 40px}
-        .section{padding:50px 0}
-      }
-    </style>
-  </head>
-  <body>
-    <header class="hero">
-      <div class="wrap">
-        <div style="text-align:center;max-width:900px;margin:0 auto">
-          <p class="kicker">AI SEARCH VISIBILITY, CONTENT OPERATIONS AND CONVERSION SERVICES FOR E-COMMERCE</p>
-          <h1 class="h1">Become the Answer shoppers click then buy.</h1>
-          <p class="subhead">We make your products visible, quotable, and purchasable inside AI answers (ChatGPT, Perplexity, Google AI)—so long-tail, high-intent queries land on your PDPs.</p>
-          <div class="bar" style="justify-content:center">
-            <a href="#audit" class="btn btn-primary" data-cta>Get your Free Audit</a>
-            <a href="#contact" class="btn btn-secondary">Talk to a human</a>
-          </div>
-          <div class="trust-strip">
-            <span class="trust-badge">Shopify</span>
-            <span class="trust-badge">Stripe/PayPal compatible</span>
-            <span class="trust-badge">OpenAI/ACP-ready</span>
-          </div>
+<Layout title="Become the Answer | AI Search Visibility for E-commerce">
+  <JSONLD graph={siteGraph} slot="head" />
+  
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="container hero-content">
+      <p class="overline animate-fade-in-up">AI Search Visibility for E-commerce</p>
+      <h1 class="hero-title animate-fade-in-up animate-delay-1">When shoppers ask AI for the best product, make sure they hear your name.</h1>
+      <p class="hero-subtitle animate-fade-in-up animate-delay-2">Millions of buyers now ask ChatGPT, Perplexity, and Google AI which products to buy. We make sure those AI assistants recommend your products, link to your pages, and send ready-to-buy customers your way.</p>
+      <div class="hero-ctas animate-fade-in-up animate-delay-3">
+        <a href="#audit" class="btn btn-primary" data-cta>Get Your Free AI Audit</a>
+        <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
+      </div>
+      
+      <!-- Hero Illustration -->
+      <div class="hero-illustration animate-fade-in-up animate-delay-4">
+        <svg viewBox="0 0 800 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background -->
+          <rect x="40" y="40" width="720" height="240" rx="16" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2"/>
+          
+          <!-- AI Chat Interface -->
+          <rect x="80" y="80" width="280" height="160" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+          <circle cx="104" cy="104" r="8" fill="#E67E22"/>
+          <text x="120" y="108" font-family="Inter" font-size="12" font-weight="600" fill="#0F172A">AI Assistant</text>
+          
+          <!-- User Question -->
+          <rect x="100" y="130" width="200" height="32" rx="6" fill="#F1F5F9"/>
+          <text x="112" y="150" font-family="Inter" font-size="11" fill="#475569">"Best running shoes for flat feet?"</text>
+          
+          <!-- AI Answer -->
+          <rect x="100" y="172" width="240" height="50" rx="6" fill="#FEF3E2"/>
+          <text x="112" y="192" font-family="Inter" font-size="11" fill="#0F172A" font-weight="500">Based on my research, the top pick is</text>
+          <text x="112" y="208" font-family="Inter" font-size="11" fill="#E67E22" font-weight="600">YourBrand Pro Runner →</text>
+          
+          <!-- Arrow -->
+          <path d="M380 160 L440 160" stroke="#E67E22" stroke-width="3" stroke-linecap="round" stroke-dasharray="8 4">
+            <animate attributeName="stroke-dashoffset" from="0" to="-24" dur="1s" repeatCount="indefinite"/>
+          </path>
+          <polygon points="450,160 438,154 438,166" fill="#E67E22"/>
+          
+          <!-- Product Page -->
+          <rect x="480" y="80" width="240" height="160" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+          <rect x="500" y="100" width="80" height="80" rx="8" fill="#F1F5F9"/>
+          <rect x="508" y="108" width="64" height="64" rx="4" fill="#E2E8F0"/>
+          <text x="596" y="116" font-family="Inter" font-size="11" font-weight="600" fill="#0F172A">Pro Runner</text>
+          <text x="596" y="132" font-family="Inter" font-size="10" fill="#475569">Perfect for flat feet</text>
+          <text x="596" y="156" font-family="Inter" font-size="14" font-weight="700" fill="#0F172A">$149</text>
+          <rect x="596" y="168" width="100" height="28" rx="6" fill="#E67E22"/>
+          <text x="620" y="186" font-family="Inter" font-size="10" font-weight="600" fill="white">Add to Cart</text>
+          
+          <!-- Conversion Icon -->
+          <circle cx="680" cy="220" r="20" fill="#ECFDF5" stroke="#059669" stroke-width="2"/>
+          <path d="M672 220 L678 226 L690 214" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== THE SHIFT ===== -->
+  <section class="section" id="problem">
+    <div class="container">
+      <div class="split-grid" data-reveal>
+        <div class="split-content">
+          <p class="overline">The Shift Is Happening</p>
+          <h2>Shopping has changed. Your buyers are asking AI what to buy.</h2>
+          <p class="text-large">Instead of scrolling through endless search results, today's shoppers simply ask: "What's the best espresso machine under $500?" or "Which running shoes are best for beginners?"</p>
+          <p class="text-large">AI gives them a short list. Sometimes just one recommendation. And that's what they buy.</p>
+          <p class="text-large" style="color: var(--ink); font-weight: 500;">If your products aren't in that answer, those customers never see you.</p>
         </div>
-        <div style="margin-top:48px">
-          <PipelineFlow />
+        <div class="split-visual">
+          <!-- Before/After Illustration -->
+          <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" class="illustration-svg">
+            <!-- Old Way -->
+            <text x="20" y="30" font-family="Inter" font-size="12" font-weight="600" fill="#64748B">OLD WAY</text>
+            <rect x="20" y="50" width="160" height="140" rx="12" fill="#F8FAFC" stroke="#E2E8F0"/>
+            <rect x="35" y="70" width="130" height="16" rx="3" fill="#E2E8F0"/>
+            <rect x="35" y="94" width="100" height="10" rx="2" fill="#E2E8F0"/>
+            <rect x="35" y="114" width="130" height="10" rx="2" fill="#E2E8F0"/>
+            <rect x="35" y="128" width="80" height="10" rx="2" fill="#E2E8F0"/>
+            <rect x="35" y="148" width="130" height="10" rx="2" fill="#E2E8F0"/>
+            <rect x="35" y="162" width="110" height="10" rx="2" fill="#E2E8F0"/>
+            <text x="100" y="210" font-family="Inter" font-size="10" fill="#94A3B8" text-anchor="middle">10+ results to compare</text>
+            
+            <!-- Arrow -->
+            <path d="M200 120 L220 120" stroke="#CBD5E1" stroke-width="2"/>
+            <polygon points="228,120 220,116 220,124" fill="#CBD5E1"/>
+            
+            <!-- New Way -->
+            <text x="240" y="30" font-family="Inter" font-size="12" font-weight="600" fill="#E67E22">NEW WAY</text>
+            <rect x="240" y="50" width="140" height="100" rx="12" fill="#FEF7ED" stroke="#E67E22" stroke-width="1.5"/>
+            <circle cx="262" cy="72" r="10" fill="#E67E22"/>
+            <text x="280" y="76" font-family="Inter" font-size="11" font-weight="600" fill="#0F172A">AI says:</text>
+            <text x="256" y="100" font-family="Inter" font-size="12" fill="#0F172A">"The best option is</text>
+            <text x="256" y="118" font-family="Inter" font-size="12" font-weight="600" fill="#E67E22">YourProduct Pro"</text>
+            <text x="310" y="170" font-family="Inter" font-size="10" fill="#059669" text-anchor="middle">One clear answer</text>
+            
+            <!-- Lower Section: Pain Points -->
+            <text x="20" y="260" font-family="Inter" font-size="11" font-weight="600" fill="#0F172A">Without AI visibility, you're missing:</text>
+            <g transform="translate(20, 280)">
+              <circle cx="8" cy="8" r="4" fill="#EF4444"/>
+              <text x="20" y="12" font-family="Inter" font-size="11" fill="#475569">High-intent buyers ready to purchase</text>
+            </g>
+            <g transform="translate(20, 305)">
+              <circle cx="8" cy="8" r="4" fill="#EF4444"/>
+              <text x="20" y="12" font-family="Inter" font-size="11" fill="#475569">Free traffic from AI recommendations</text>
+            </g>
+            <g transform="translate(20, 330)">
+              <circle cx="8" cy="8" r="4" fill="#EF4444"/>
+              <text x="20" y="12" font-family="Inter" font-size="11" fill="#475569">Sales going to competitors instead</text>
+            </g>
+          </svg>
         </div>
       </div>
-    </header>
+    </div>
+  </section>
 
-    <section class="section">
-      <div class="wrap">
-        <h2 class="h2" style="text-align:center">There's a Generational Opportunity to win AI-Shopping, but most stores don't show up</h2>
-        <p class="lead" style="text-align:center;max-width:800px;margin:0 auto 48px">Buyers now ask AI specific, high-intent questions; the model returns a short list and one link gets the click, at no cost to you.</p>
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section section-alt" id="how-it-works">
+    <div class="container">
+      <div class="section-header" data-reveal>
+        <p class="overline">How It Works</p>
+        <h2>We make AI engines recommend your products in three steps.</h2>
+        <p class="section-desc">AI assistants need specific information to confidently recommend products. We make sure your store provides exactly what they're looking for.</p>
+      </div>
+      
+      <!-- Three Pillars -->
+      <div class="pillars-row" data-reveal>
+        <div class="pillar-card">
+          <div class="pillar-number">1</div>
+          <div class="pillar-icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+              <path d="M16 18H32M16 24H28M16 30H32" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Structure Your Data</h3>
+          <p>We organize your product information so AI can easily read and understand it. This includes proper formatting, complete specifications, and machine-readable markup that AI systems look for.</p>
+        </div>
+        
+        <div class="pillar-card">
+          <div class="pillar-number">2</div>
+          <div class="pillar-icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <path d="M24 8V40M8 24H40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="2"/>
+              <circle cx="24" cy="24" r="6" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3>Create Answer Content</h3>
+          <p>We build pages that directly answer the questions shoppers ask AI. When someone asks "what's the best X for Y," your site has the perfect, quotable answer ready.</p>
+        </div>
+        
+        <div class="pillar-card">
+          <div class="pillar-number">3</div>
+          <div class="pillar-icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <path d="M12 36L24 8L36 36" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 28H32" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="24" cy="40" r="4" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3>Build Authority</h3>
+          <p>AI trusts sources that are mentioned across the web. We help you get featured in reviews, discussions, and guides that AI systems use to verify recommendations.</p>
+        </div>
+      </div>
+      
+      <!-- Visual Flow Diagram -->
+      <div class="flow-diagram" data-reveal>
+        <svg viewBox="0 0 900 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Step 1 -->
+          <g transform="translate(50, 20)">
+            <rect width="200" height="140" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+            <rect x="16" y="16" width="168" height="24" rx="4" fill="#FEF3E2"/>
+            <text x="100" y="33" font-family="Inter" font-size="11" font-weight="600" fill="#E67E22" text-anchor="middle">YOUR STORE DATA</text>
+            <rect x="24" y="52" width="152" height="8" rx="2" fill="#E2E8F0"/>
+            <rect x="24" y="68" width="120" height="8" rx="2" fill="#E2E8F0"/>
+            <rect x="24" y="84" width="140" height="8" rx="2" fill="#E2E8F0"/>
+            <rect x="24" y="100" width="100" height="8" rx="2" fill="#E2E8F0"/>
+            <text x="100" y="128" font-family="Inter" font-size="10" fill="#64748B" text-anchor="middle">Structured + Optimized</text>
+          </g>
+          
+          <!-- Arrow 1 -->
+          <g transform="translate(270, 80)">
+            <path d="M0 10 L60 10" stroke="#E67E22" stroke-width="2" stroke-dasharray="6 4">
+              <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="0.8s" repeatCount="indefinite"/>
+            </path>
+            <polygon points="68,10 58,5 58,15" fill="#E67E22"/>
+          </g>
+          
+          <!-- Step 2 -->
+          <g transform="translate(350, 20)">
+            <rect width="200" height="140" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+            <circle cx="100" cy="50" r="24" fill="#FEF3E2" stroke="#E67E22" stroke-width="1.5"/>
+            <text x="100" y="54" font-family="Inter" font-size="16" fill="#E67E22" text-anchor="middle">AI</text>
+            <text x="100" y="96" font-family="Inter" font-size="11" font-weight="500" fill="#0F172A" text-anchor="middle">AI reads your content</text>
+            <text x="100" y="112" font-family="Inter" font-size="10" fill="#64748B" text-anchor="middle">and recommends you</text>
+          </g>
+          
+          <!-- Arrow 2 -->
+          <g transform="translate(570, 80)">
+            <path d="M0 10 L60 10" stroke="#E67E22" stroke-width="2" stroke-dasharray="6 4">
+              <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="0.8s" repeatCount="indefinite"/>
+            </path>
+            <polygon points="68,10 58,5 58,15" fill="#E67E22"/>
+          </g>
+          
+          <!-- Step 3 -->
+          <g transform="translate(650, 20)">
+            <rect width="200" height="140" rx="12" fill="#ECFDF5" stroke="#059669" stroke-width="1.5"/>
+            <text x="100" y="50" font-family="Inter" font-size="32" text-anchor="middle">🛒</text>
+            <text x="100" y="85" font-family="Inter" font-size="13" font-weight="600" fill="#059669" text-anchor="middle">Customer Buys</text>
+            <text x="100" y="105" font-family="Inter" font-size="11" fill="#047857" text-anchor="middle">From your store</text>
+            <text x="100" y="125" font-family="Inter" font-size="10" fill="#047857" text-anchor="middle">Zero ad spend</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
 
-        <div class="grid two" style="gap:24px">
-          <div class="card">
-            <h3 class="h3" style="color:var(--danger)">❌ Product data isn't agent-readable</h3>
-            <p>Missing attributes, messy variants, no clean feed → the AI can't match your SKUs to the query.</p>
+  <!-- ===== WHAT YOU GET ===== -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="section-header" data-reveal>
+        <p class="overline">What You Get</p>
+        <h2>Everything you need to become the answer AI gives.</h2>
+      </div>
+      
+      <div class="services-grid" data-reveal>
+        <div class="service-item">
+          <div class="service-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
           </div>
-          <div class="card">
-            <h3 class="h3" style="color:var(--danger)">❌ Pages aren't quotable</h3>
-            <p>Long, vague copy gets summarized; dense answers and FAQs get cited.</p>
+          <h4>Decision Answer Pages</h4>
+          <p>Custom pages built to answer the exact questions shoppers ask. When AI looks for "best X for Y," it finds your clear, authoritative answer.</p>
+        </div>
+        
+        <div class="service-item">
+          <div class="service-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/>
+              <polyline points="8 6 2 12 8 18"/>
+            </svg>
           </div>
-          <div class="card">
-            <h3 class="h3" style="color:var(--danger)">❌ Proof is buried</h3>
-            <p>Reviews, specs, and ship-by promises aren't near the top, so credit (and clicks) go elsewhere.</p>
+          <h4>Product Schema Markup</h4>
+          <p>Technical code that helps AI understand your products perfectly. Prices, availability, reviews, and specifications in a format AI loves.</p>
+        </div>
+        
+        <div class="service-item">
+          <div class="service-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
           </div>
-          <div class="card">
-            <h3 class="h3" style="color:var(--danger)">❌ No "answer" content</h3>
-            <p>There's no canonical page for the exact question shoppers ask (age/theme/constraint).</p>
+          <h4>Clean Product Feeds</h4>
+          <p>Your product data formatted perfectly for AI commerce platforms. Complete attributes, normalized categories, and optimized descriptions.</p>
+        </div>
+        
+        <div class="service-item">
+          <div class="service-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+          </div>
+          <h4>AI Traffic Dashboard</h4>
+          <p>See exactly how many visitors come from AI recommendations. Track the journey from AI citation to product view to purchase.</p>
+        </div>
+        
+        <div class="service-item">
+          <div class="service-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <h4>FAQ Optimization</h4>
+          <p>Answer blocks built from real customer questions. The exact format AI engines prefer to quote and recommend.</p>
+        </div>
+        
+        <div class="service-item">
+          <div class="service-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h4>Visibility Report</h4>
+          <p>Before and after screenshots showing your products appearing in AI answers. Proof that the strategy is working.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRICING ===== -->
+  <section class="section section-warm" id="pricing">
+    <div class="container">
+      <div class="pricing-layout" data-reveal>
+        <div class="pricing-content">
+          <p class="overline">The Citation Sprint</p>
+          <h2>Go from invisible to recommended in 10 business days.</h2>
+          <p class="text-large">Our flagship service takes one product category and makes it fully optimized for AI visibility. You get live pages, clean data, and a dashboard showing real results.</p>
+          
+          <div class="pricing-includes">
+            <h4>What's included:</h4>
+            <ul class="check-list">
+              <li>1 to 3 Decision Answer Pages for your top category</li>
+              <li>Product schema implemented on 10 to 20 product pages</li>
+              <li>Cleaned product feed ready for AI commerce</li>
+              <li>GA4 dashboard tracking AI referral traffic</li>
+              <li>Before and after AI visibility report with screenshots</li>
+              <li>60 day roadmap for continued optimization</li>
+            </ul>
           </div>
         </div>
-
-        <div class="card" style="margin:32px auto;max-width:600px;text-align:center;background:rgba(255,107,107,0.1);border-color:#FF6B6B">
-          <h3 class="h3" style="color:#FF6B6B">❌ Measurement stops at sessions</h3>
-          <p>You're not tracking AI-attributed visits, citation CTR, or downstream orders.</p>
+        
+        <div class="pricing-card">
+          <div class="price-badge">10-Day Sprint</div>
+          <div class="price-display">
+            <span class="price-amount">$5,000</span>
+            <span class="price-unit">per product category</span>
+          </div>
+          <p class="price-note">Most stores start with their best-selling category, then expand from there.</p>
+          <div class="pricing-ctas">
+            <a href="#audit" class="btn btn-primary" data-cta>Get Your Free AI Audit</a>
+            <a href="#contact" class="btn btn-secondary">Schedule a Call</a>
+          </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <p style="text-align:center;font-size:20px;font-weight:600;color:var(--ink-100);margin-top:48px">
-          If you're not structured, quotable, and in-feed, you're invisible no matter your Google rankings.
+  <!-- ===== ONGOING SERVICES ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header" data-reveal>
+        <p class="overline">Keep Growing</p>
+        <h2>Optional ongoing services to maintain your AI visibility.</h2>
+      </div>
+      
+      <div class="grid grid-2" data-reveal>
+        <div class="card">
+          <div class="badge">Monthly</div>
+          <h4 style="margin-top: 16px;">Decision Content OS</h4>
+          <p style="margin: 12px 0 16px;">Keep your AI visibility growing after the initial sprint.</p>
+          <ul class="bullet-list">
+            <li>1 to 2 new or refreshed Answer Pages per month</li>
+            <li>10 to 20 product page updates with new FAQs</li>
+            <li>Monthly AI visibility checks on your priority queries</li>
+            <li>Quarterly strategy recommendations</li>
+          </ul>
+          <p style="margin-top: 20px; font-size: 1.25rem; font-weight: 600; color: var(--ink);">$2,500 to $4,000/month</p>
+        </div>
+        
+        <div class="card">
+          <div class="badge">Add-On</div>
+          <h4 style="margin-top: 16px;">Authority Building</h4>
+          <p style="margin: 12px 0 16px;">Get mentioned where AI looks for trusted sources.</p>
+          <ul class="bullet-list">
+            <li>Identify key YouTube, Reddit, and blog opportunities</li>
+            <li>Creator outreach and product seeding for reviews</li>
+            <li>Editorial pitches to buying guides and newsletters</li>
+            <li>Monthly tracking of new mentions and citations</li>
+          </ul>
+          <p style="margin-top: 20px; font-size: 1.25rem; font-weight: 600; color: var(--ink);">$10k setup + $4k to $6k/month</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHO IT'S FOR ===== -->
+  <section class="section section-alt" id="who">
+    <div class="container">
+      <div class="who-layout" data-reveal>
+        <div class="who-content">
+          <p class="overline">Is This Right For You?</p>
+          <h2>Built for brands selling products people research before buying.</h2>
+          <p class="text-large">We work with e-commerce brands in the US and Canada. Typically Shopify or modern platforms, $80+ average order value, and 50 to 500 products in a category.</p>
+          <p>If your customers ask questions like "what's the best..." or "which one should I get for..." before purchasing, AI visibility can transform your business.</p>
+        </div>
+        <div class="who-categories">
+          <h4>Categories we work with:</h4>
+          <div class="category-tags">
+            <span class="category-tag">Cycling & Bike Gear</span>
+            <span class="category-tag">Photo & Video Equipment</span>
+            <span class="category-tag">Tools & Workshop</span>
+            <span class="category-tag">Kitchen Appliances</span>
+            <span class="category-tag">PC Parts & Gaming</span>
+            <span class="category-tag">Outdoor & Sports</span>
+            <span class="category-tag">Musical Instruments</span>
+            <span class="category-tag">Home & Garden</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section" id="faq">
+    <div class="container-narrow">
+      <div class="section-header" data-reveal>
+        <p class="overline">Common Questions</p>
+        <h2>Answers to questions you might have.</h2>
+      </div>
+      
+      <div class="faq-list" data-reveal>
+        <div class="faq-item">
+          <button class="faq-question">
+            How is this different from regular SEO?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Traditional SEO focuses on ranking in Google's search results. AI visibility focuses on getting your products recommended in AI-generated answers from ChatGPT, Perplexity, and Google's AI features. The tactics overlap (structured data, quality content), but AI engines need information formatted in specific ways and look for different trust signals than traditional search.
+            </div>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            Do I need to be on Shopify?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              No. We work with Shopify, WooCommerce, BigCommerce, and custom platforms. What matters is that your product data is accessible and your site can support structured markup and new pages.
+            </div>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            Can you guarantee I'll get more sales?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              No one can guarantee sales. What we guarantee is that you'll be more visible in AI answers and we'll show you exactly how much traffic is coming from AI recommendations. You'll have real data to see whether the investment is paying off.
+            </div>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            What do you need from my team?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              We need read-only access to your store, Google Merchant Center, and analytics. Plus a product catalog export for the category we're focusing on and any customer reviews or support logs you can share. No development work required from your team. We handle implementation or provide clear specs for your developers.
+            </div>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            How quickly will I see results?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Some changes show up in AI answers within days of going live. Meaningful traffic and conversion trends typically become clear within 4 to 8 weeks. We measure at baseline, 30 days, and 90 days to give you a complete picture.
+            </div>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            What if AI search technology changes?
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              It will change, and that's expected. Our approach focuses on fundamentals that work across AI systems: clean data, clear answers, and genuine authority. When platforms update their methods, we adapt our strategies. The ongoing Content OS service keeps you current with these changes.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA ===== -->
+  <section class="section section-dark" id="audit">
+    <div class="container">
+      <div class="cta-content" data-reveal>
+        <h2>Find out if AI is recommending your products or your competitors.</h2>
+        <p class="text-large" style="color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto 40px;">Get a free audit showing exactly where you appear (or don't) when shoppers ask AI what to buy in your category.</p>
+        <div class="cta-buttons">
+          <a href="#contact" class="btn btn-primary btn-lg" data-cta>Get Your Free AI Audit</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- ===== CONTACT ===== -->
+  <section class="section" id="contact">
+    <div class="container-tight">
+      <div class="section-header" data-reveal>
+        <h2>Let's talk about your store.</h2>
+        <p>We'll respond within one business day.</p>
+      </div>
+      <div class="contact-card" data-reveal>
+        <p style="text-align: center; padding: 48px; background: var(--soft); border-radius: var(--radius-lg); border: 1px solid var(--border);">
+          Email us at <a href="mailto:hello@becometheanswer.ai" style="font-weight: 600;">hello@becometheanswer.ai</a><br>
+          <span style="color: var(--slate-light); font-size: 0.875rem;">or schedule a call using the button above</span>
         </p>
       </div>
-    </section>
+    </div>
+  </section>
+</Layout>
 
-    <section class="section">
-      <div class="wrap">
-        <h2 class="h2" style="text-align:center">Agentic Commerce, done right</h2>
-        <p class="lead" style="text-align:center;max-width:800px;margin:0 auto 48px">We make your catalog agent-ready across three layers—Visibility, Answers, Conversion—so AI can find you, cite you, and send qualified shoppers to checkout.</p>
+<style>
+  /* Hero */
+  .hero {
+    padding: 160px 0 100px;
+    background: var(--grad-hero);
+  }
+  
+  .hero-content {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .hero-title {
+    margin: 20px 0 28px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--slate);
+    max-width: 680px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+  
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 64px;
+  }
+  
+  .hero-illustration {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .hero-illustration svg {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.06));
+  }
+  
+  /* Split Grid */
+  .split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  
+  .split-content h2 {
+    margin-bottom: 24px;
+  }
+  
+  .split-content .text-large {
+    margin-bottom: 20px;
+  }
+  
+  .split-visual {
+    background: var(--soft);
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    border: 1px solid var(--border);
+  }
+  
+  .illustration-svg {
+    width: 100%;
+    height: auto;
+  }
+  
+  @media (max-width: 900px) {
+    .split-grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+  
+  /* Section Header */
+  .section-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 64px;
+  }
+  
+  .section-header h2 {
+    margin: 16px 0;
+  }
+  
+  .section-desc {
+    font-size: 1.125rem;
+    color: var(--slate);
+  }
+  
+  /* Pillars */
+  .pillars-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-bottom: 80px;
+  }
+  
+  .pillar-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 40px 32px;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .pillar-card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+  
+  .pillar-number {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  
+  .pillar-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--accent-light);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    color: var(--accent);
+  }
+  
+  .pillar-card h3 {
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  
+  .pillar-card p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+  
+  @media (max-width: 900px) {
+    .pillars-row {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+  
+  /* Flow Diagram */
+  .flow-diagram {
+    background: var(--paper);
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  
+  .flow-diagram svg {
+    min-width: 800px;
+    height: auto;
+  }
+  
+  /* Services Grid */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  
+  .service-item {
+    padding: 32px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: all 0.3s ease;
+  }
+  
+  .service-item:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .service-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--accent-light);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: var(--accent);
+  }
+  
+  .service-item h4 {
+    margin-bottom: 12px;
+  }
+  
+  .service-item p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+  
+  @media (max-width: 900px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Pricing */
+  .pricing-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 64px;
+    align-items: start;
+  }
+  
+  .pricing-content h2 {
+    margin: 16px 0 20px;
+  }
+  
+  .pricing-includes {
+    margin-top: 40px;
+  }
+  
+  .pricing-includes h4 {
+    margin-bottom: 20px;
+  }
+  
+  .pricing-card {
+    background: var(--paper);
+    border-radius: var(--radius-xl);
+    padding: 48px 40px;
+    box-shadow: var(--shadow-xl);
+    text-align: center;
+    position: sticky;
+    top: 120px;
+  }
+  
+  .price-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: var(--accent);
+    color: white;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  
+  .pricing-card .price-display {
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .price-note {
+    font-size: 0.875rem;
+    color: var(--slate);
+    margin-bottom: 32px;
+  }
+  
+  .pricing-ctas {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .pricing-ctas .btn {
+    width: 100%;
+  }
+  
+  @media (max-width: 900px) {
+    .pricing-layout {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    
+    .pricing-card {
+      position: static;
+    }
+  }
+  
+  /* Who It's For */
+  .who-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  
+  .who-content h2 {
+    margin: 16px 0 24px;
+  }
+  
+  .who-categories h4 {
+    margin-bottom: 20px;
+  }
+  
+  .category-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .category-tag {
+    display: inline-flex;
+    padding: 12px 20px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    color: var(--ink-light);
+    transition: all 0.2s ease;
+  }
+  
+  .category-tag:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  
+  @media (max-width: 768px) {
+    .who-layout {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+  
+  /* CTA Section */
+  .cta-content {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  .cta-content h2 {
+    color: white;
+    margin-bottom: 20px;
+  }
+  
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+  
+  .btn-lg {
+    padding: 20px 40px;
+    font-size: 1.0625rem;
+  }
+  
+  /* Contact */
+  .contact-card {
+    margin-top: 32px;
+  }
+</style>
 
-        <div class="grid three" style="margin-top:48px">
-          <div class="card">
-            <h3 class="h3" style="color:var(--teal-500)">Visibility (Data & Schema)</h3>
-            <p>Clean product feeds, normalized attributes, and JSON-LD so agents can match your items to long-tail intent.</p>
-          </div>
-          <div class="card">
-            <h3 class="h3" style="color:var(--violet-500)">Answers (Content)</h3>
-            <p>Quote-ready Answer Pages, FAQs/How-Tos, and comparisons surfaced from reviews/support—so the model cites you.</p>
-          </div>
-          <div class="card">
-            <h3 class="h3" style="color:var(--ok)">Conversion (On-site)</h3>
-            <p>PDP deep-links, preview/ship-by cues, and clean CTAs—so cited traffic adds to cart and buys.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<script>
+  // Scroll reveal
+  const revealElements = document.querySelectorAll('[data-reveal]');
+  
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  
+  revealElements.forEach(el => revealObserver.observe(el));
+  
+  // FAQ accordion
+  document.querySelectorAll('.faq-question').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = button.parentElement;
+      const isOpen = item?.classList.contains('open');
+      
+      document.querySelectorAll('.faq-item.open').forEach(openItem => {
+        if (openItem !== item) openItem.classList.remove('open');
+      });
+      
+      item?.classList.toggle('open');
+    });
+  });
+  
+  // Analytics
+  fetch('/api/events', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ claim_slug: 'home', page: '/', referrer: document.referrer || '', event_type: 'session' })
+  }).catch(() => {});
 
-    <section class="section">
-      <div class="wrap">
-        <h2 class="h2" style="text-align:center;margin-bottom:48px">Six ways we make your store agent-ready</h2>
-
-        <div class="grid two" style="gap:24px">
-          <div class="card">
-            <h3 class="h3">1. Agent-ready product data</h3>
-            <p style="margin-bottom:12px"><strong>What it is:</strong> Attribute normalization (age, size, material, compatibility, ship times), variant cleanup, and partner/ACP feed submission.</p>
-            <p><strong>Why it matters:</strong> AI can't recommend what it can't parse. Clean data wins matching for specific queries.</p>
-          </div>
-
-          <div class="card">
-            <h3 class="h3">2. Quote-ready Answer Pages</h3>
-            <p style="margin-bottom:12px"><strong>What it is:</strong> One canonical page per recurring question (≤18-word claim, proof table + tiny CSV, FAQ & How-To).</p>
-            <p><strong>Why it matters:</strong> Short, info-dense lines + tables get cited; citations drive qualified clicks.</p>
-          </div>
-
-          <div class="card">
-            <h3 class="h3">3. Review-mined FAQs & comparisons</h3>
-            <p style="margin-bottom:12px"><strong>What it is:</strong> We mine reviews, social, and support tickets to write the exact answers shoppers (and models) look for.</p>
-            <p><strong>Why it matters:</strong> Removes friction, preserves attribution, and stops the model from citing someone else.</p>
-          </div>
-
-          <div class="card">
-            <h3 class="h3">4. Technical SEO that helps AEO</h3>
-            <p style="margin-bottom:12px"><strong>What it is:</strong> JSON-LD (Product/Offer/FAQ/HowTo/Review), internal links from collections/blog, clean canonicals/robots, image alts.</p>
-            <p><strong>Why it matters:</strong> You stay fast, crawlable, and machine-legible—without bloating the theme.</p>
-          </div>
-
-          <div class="card">
-            <h3 class="h3">5. Conversion cues for cited traffic</h3>
-            <p style="margin-bottom:12px"><strong>What it is:</strong> PDP deep-links from Answer Pages (pre-selected options), preview/name builder, ship-by counters, trust badges.</p>
-            <p><strong>Why it matters:</strong> Cited traffic is high-intent; give it the shortest path to add-to-cart.</p>
-          </div>
-
-          <div class="card">
-            <h3 class="h3">6. Proof & measurement</h3>
-            <p style="margin-bottom:12px"><strong>What it is:</strong> Baseline vs. after: AI-attributed sessions, citation CTR to PDP, ATC/checkout deltas, with screenshots of appearances.</p>
-            <p><strong>Why it matters:</strong> You see the lift and know where to double down.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <h2 class="h2" style="text-align:center;margin-bottom:48px">We De-Risk the Outcome</h2>
-
-        <div class="grid three" style="gap:24px">
-          <div class="card" style="border-color:var(--ok)">
-            <h3 class="h3" style="color:var(--ok)">1) Cited-or-We-Work-Free (Tier 1)</h3>
-            <p>Within 30 days of go-live, you'll have at least one "appeared/cited" screenshot for a seeded, long-tail product question (ChatGPT, Perplexity, or Google AI). If not, we work one extra week free and add an extra Answer Page update at no charge.</p>
-          </div>
-          <div class="card" style="border-color:var(--ok)">
-            <h3 class="h3" style="color:var(--ok)">2) Feed & Schema Guarantee</h3>
-            <p>Your product feed ingests and JSON-LD validates (Product/Offer/FAQ/HowTo/Review). If any validator or ingestion error appears in the first 30 days, we fix it free.</p>
-          </div>
-          <div class="card" style="border-color:var(--ok)">
-            <h3 class="h3" style="color:var(--ok)">3) Measurement Transparency</h3>
-            <p>You'll get a baseline vs. after report with AI-attributed sessions, citation→PDP CTR, ATC/checkout deltas, and screenshots. If the dashboard isn't fully wired, we finish it free.</p>
-          </div>
-        </div>
-
-        <div class="card" style="margin:32px auto;max-width:900px;background:rgba(122,92,255,0.1);border-color:var(--violet-500)">
-          <h3 class="h3">Eligibility guardrails</h3>
-          <p>Up to 500 SKUs, reasonable traffic, access to reviews/support logs, and approval of recommended changes within 5 business days.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="pricing">
-      <div class="wrap">
-        <p class="kicker">Packages & Pricing</p>
-        <h2 class="h2" style="text-align:center">Tier 1 — AI Visibility Optimization</h2>
-        <div class="card" style="max-width:900px;margin:32px auto;background:var(--grad-iris)">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:16px">
-            <div>
-              <h3 class="h3" style="margin:0">10-day sprint</h3>
-            </div>
-            <div class="amt" style="margin:0">$5,000</div>
-          </div>
-
-          <h3 class="h3">What's included</h3>
-          <ul class="list">
-            <li>AEO & SEO Audit with prioritized fixes (effort × impact)</li>
-            <li>Product data & description optimization (intent-matching titles, ≤18-word claims where it counts, normalized attributes/variants)</li>
-            <li>Feed & registration (partner/ACP where applicable)</li>
-            <li>On-site content: FAQ & How-To blocks per product/collection, comparison rows</li>
-            <li>Technical SEO: JSON-LD (Product/Offer/FAQ/HowTo/Review), internal links, canonicals/robots, image alts</li>
-            <li>Post-optimization report: citations/appearances, CTR→PDP, ATC/checkout deltas, screenshots, 30-day plan</li>
-          </ul>
-
-          <p style="margin-top:24px;color:var(--ink-300)"><strong>Timeline:</strong> 10 days</p>
-          <p style="margin-top:8px;color:var(--ink-300)"><strong>Inputs:</strong> catalog export, top SKUs, policies/shipping, review & support access</p>
-
-          <div class="bar" style="margin-top:32px">
-            <a href="#audit" class="btn btn-primary" data-cta>Get your Free Audit</a>
-            <a href="#contact" class="btn btn-secondary">Talk to a human</a>
-          </div>
-        </div>
-
-        <div class="grid two" style="gap:24px;margin-top:48px">
-          <div class="card" style="opacity:0.7">
-            <div style="display:inline-block;padding:4px 12px;background:var(--warn);color:#0B0C10;border-radius:6px;font-weight:700;font-size:12px;margin-bottom:16px">COMING SOON</div>
-            <h3 class="h3">Tier 2: Agentic Engagement & Reputation</h3>
-            <div class="amt" style="font-size:24px">$5,000 setup</div>
-            <p style="margin:8px 0 16px;color:var(--ink-500)">+ performance commission (per recovered sale / resolved issue)</p>
-            <ul class="list" style="font-size:14px">
-              <li>Social listening & review monitoring with suggested responses (approve → post)</li>
-              <li>On-site agent: product guide/Q&A trained on your catalog & policies</li>
-              <li>Cart abandonment rescue via web/SMS/email with context-aware nudges</li>
-              <li>Upsell/Cross-sell rules (compatibility, bundles, ship-by deadlines)</li>
-              <li>Reporting: recovered revenue, response SLAs, sentiment shifts</li>
-            </ul>
-            <p style="margin-top:16px;font-size:13px;color:var(--ink-500)"><strong>Commission model (examples):</strong> 3–8% of incremental recovered revenue (configurable)</p>
-            <div class="bar" style="margin-top:24px">
-              <a href="#waitlist" class="btn btn-secondary">Join the Tier 2 waitlist</a>
-            </div>
-          </div>
-
-          <div class="card" style="opacity:0.7">
-            <div style="display:inline-block;padding:4px 12px;background:var(--warn);color:#0B0C10;border-radius:6px;font-weight:700;font-size:12px;margin-bottom:16px">COMING SOON</div>
-            <h3 class="h3">Tier 3: Content OS + Distribution</h3>
-            <div class="amt" style="font-size:24px">$10,000 setup</div>
-            <p style="margin:8px 0 16px;color:var(--ink-500)">+ $5,000/month</p>
-            <ul class="list" style="font-size:14px">
-              <li>Weekly recording → micro-content factory (1 long post, 1 short post, 5–10 clips), all pointing to Answer Pages</li>
-              <li>Creator/UGC program with TikTok Shop & YouTube Shop hooks (codes, briefs, deliverables)</li>
-              <li>Paid amplification of UGC + retargeting to Answer-page viewers (strict CAC guardrails)</li>
-              <li>Answer Page cadence: monthly micro-updates, new pages for emerging questions</li>
-              <li>Analytics: AAQ (AI-attributed) funnel, ROAS, creator CPA/LTV</li>
-            </ul>
-            <div class="bar" style="margin-top:24px">
-              <a href="#waitlist" class="btn btn-secondary">Join tier 3 waitlist</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <div class="grid two" style="gap:48px;align-items:start">
-          <div>
-            <h2 class="h2">What we need from you (for Tier 1)</h2>
-            <ul class="list">
-              <li>Shopify (or platform) access, catalog export, brand/voice guardrails</li>
-              <li>Review & support logs for FAQ mining</li>
-              <li>Approver who can sign off changes within 48–72 hours</li>
-            </ul>
-          </div>
-          <div>
-            <h2 class="h2">Success metrics we track by default</h2>
-            <ul class="list">
-              <li>AI-attributed sessions → PDP CTR → ATC → Checkout</li>
-              <li>Citations/appearances (with screenshots)</li>
-              <li>Ship-by conversion lift & preview/name-builder engagement (when applicable)</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" style="border-bottom:none" id="audit">
-      <div class="wrap">
-        <div class="card" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px;padding:48px;max-width:900px;margin:0 auto">
-          <h2 class="h2" style="margin:0">Make your store the one AI shoppers click.</h2>
-          <p class="lead" style="margin:0">Start with a free audit. See where you're invisible—and how to fix it in 10 days.</p>
-          <div class="divider" style="width:100%;max-width:600px"></div>
-          <div class="bar" style="margin:0">
-            <a href="#contact" class="btn btn-primary" data-cta>Get your Free Audit</a>
-            <a href="#pricing" class="btn btn-secondary">See Tier 1 Pricing</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer" id="contact">
-      <div class="wrap footer-flex">
-        <small>© {new Date().getFullYear()} Become The Answer • AI Search Visibility for E-commerce</small>
-        <nav>
-          <a href="#audit">Get Free Audit</a>
-          <a href="#pricing">Tier 1 Pricing</a>
-          <a href="#waitlist">Coming Soon</a>
-        </nav>
-      </div>
-    </footer>
-
-    <script>
-      const ref = document.referrer || '';
+  document.querySelectorAll('[data-cta]').forEach(el => {
+    el.addEventListener('click', () => {
       fetch('/api/events', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          claim_slug: 'home',
-          page: '/',
-          referrer: ref,
-          event_type: 'session'
-        })
+        body: JSON.stringify({ claim_slug: 'home', page: '/', event_type: 'cta_click' })
       }).catch(() => {});
-
-      document.querySelectorAll('[data-cta]').forEach(el => {
-        el.addEventListener('click', () => {
-          fetch('/api/events', {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({
-              claim_slug: 'home',
-              page: '/',
-              event_type: 'cta_click'
-            })
-          }).catch(() => {});
-        });
-      });
-    </script>
-  </body>
-</html>
+    });
+  });
+</script>
