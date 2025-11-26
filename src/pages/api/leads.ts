@@ -24,7 +24,7 @@ export const POST: APIRoute = async ({ request }) => {
       
       const { error } = await supabase.from('leads').insert({
         email: data.email,
-        company: data.name, // Using name field for now
+        company: data.name,
         icp: {
           name: data.name,
           store_url: data.store_url,
@@ -36,15 +36,52 @@ export const POST: APIRoute = async ({ request }) => {
 
       if (error) {
         console.error('Supabase error:', error);
-        // Continue anyway - we don't want to block the user
       }
     }
 
-    // TODO: Integrate with Folk CRM API
-    // Folk CRM API endpoint: https://api.folk.app/v1/persons
-    // See: https://help.folk.app/en/articles/11666479-folk-api-beta
+    // Send to Folk CRM
+    const folkApiKey = import.meta.env.FOLK_API_KEY;
     
-    // For now, log the lead data
+    if (folkApiKey) {
+      try {
+        // Split name into first and last
+        const nameParts = data.name.trim().split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+
+        const folkResponse = await fetch('https://api.folk.app/v1/persons', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${folkApiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            emails: [{ value: data.email }],
+            customFields: {
+              'Store URL': data.store_url || '',
+              'Message': data.message || '',
+              'Source': 'Website Contact Form',
+              'Submitted At': new Date().toISOString()
+            }
+          })
+        });
+
+        if (!folkResponse.ok) {
+          const errorText = await folkResponse.text();
+          console.error('Folk CRM error:', folkResponse.status, errorText);
+        } else {
+          console.log('Successfully added to Folk CRM');
+        }
+      } catch (folkError) {
+        console.error('Folk CRM request failed:', folkError);
+      }
+    } else {
+      console.log('Folk API key not configured - skipping CRM sync');
+    }
+
+    // Log the lead
     console.log('New lead:', {
       name: data.name,
       email: data.email,
@@ -65,4 +102,3 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 };
-
