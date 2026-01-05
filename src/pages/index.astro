@@ -15,7 +15,7 @@ const siteGraph = [
     "@type": "Service",
     "name": "Buyer Timing Intelligence",
     "provider": {"@type":"Organization","name":"Become The Answer"},
-    "description": "We help professional service firms stop guessing where the next deal will come from by showing them who is ready to buy and why.",
+    "description": "Buyer timing intelligence for B2B professional services. Know who's ready to buy before they start searching.",
     "areaServed": "United States",
     "url": "https://becometheanswer.ai"
   }
@@ -25,955 +25,961 @@ const siteGraph = [
 <Layout title="Become the Answer | Buyer Timing Intelligence for Professional Services">
   <JSONLD graph={siteGraph} slot="head" />
 
-  <!-- ===== HERO ===== -->
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <span class="nav-logo">BECOME THE ANSWER</span>
+      <div class="nav-links">
+        <a href="#problem">Problem</a>
+        <a href="#solution">Solution</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#audit" class="nav-cta">Get your free leads</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
   <section class="hero">
-    <div class="signal-grid"></div>
-    <div class="container hero-content">
-      <h1 class="hero-title">Become the Answer</h1>
-      <p class="hero-subtitle">Get consistent, qualified clients without hiring salespeople or chasing referrals.</p>
-      <p class="hero-body">We help professional service firms stop guessing where the next deal will come from by showing them who is ready to buy and why.</p>
-      <div class="hero-ctas">
-        <a href="#audit" class="btn btn-primary" data-cta>Get free leads that are ready to buy</a>
-        <a href="#problem" class="btn-link">See what is blocking your pipeline</a>
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">Know who's ready to buy<br>before they start searching</h1>
+        <p class="hero-subtitle">Buyer timing intelligence for B2B professional services</p>
+        <p class="hero-desc">We identify the exact moment a company enters a buying window—and position you to be the answer when they're ready to decide.</p>
+        <div class="hero-ctas">
+          <a href="#audit" class="btn btn-primary" data-cta>Find your buying signals</a>
+          <a href="#problem" class="btn btn-secondary">See the problem →</a>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ===== REALITY CHECK ===== -->
-  <section class="section section-light">
-    <div class="container">
-      <div class="split-layout">
-        <div class="split-visual">
-          <!-- Calendar with gaps + Messy CRM -->
-          <div class="visual-container">
-            <div class="calendar-visual">
-              <div class="calendar-header">Your Calendar</div>
-              <div class="calendar-grid">
-                <div class="calendar-slot filled"></div>
-                <div class="calendar-slot empty"></div>
-                <div class="calendar-slot empty"></div>
-                <div class="calendar-slot filled"></div>
-                <div class="calendar-slot empty"></div>
-                <div class="calendar-slot empty"></div>
-                <div class="calendar-slot empty"></div>
-                <div class="calendar-slot filled"></div>
-              </div>
+      <div class="hero-visual">
+        <div class="signal-card">
+          <div class="signal-card-header">
+            <div>
+              <div class="signal-company">Meridian Manufacturing</div>
+              <div class="signal-meta">Cleveland, OH • 340 employees</div>
             </div>
-            <div class="crm-visual">
-              <div class="crm-header">Your CRM</div>
-              <div class="crm-item status-cold">Not now</div>
-              <div class="crm-item status-cold">Follow up later</div>
-              <div class="crm-item status-cold">Went dark</div>
-              <div class="crm-item status-cold">Maybe next quarter</div>
-            </div>
+            <div class="signal-score">94</div>
+          </div>
+          <div class="signal-detail">
+            <div class="signal-label">Primary Signal</div>
+            <div class="signal-text">New COO started 47 days ago</div>
+          </div>
+          <div class="signal-tags">
+            <span class="tag">Facility expansion</span>
+            <span class="tag">PE-backed</span>
+            <span class="tag">$45M revenue</span>
           </div>
         </div>
-        <div class="split-content">
-          <h2>Most firms at your stage live deal to deal</h2>
-          <p class="text-large">Growth usually comes from referrals, networking, events, and the founder pushing for work when things slow down.</p>
-          <p class="text-large">Some months are great.<br>Other months are stressful.</p>
-          <p class="text-large" style="font-weight: 500;">That is the feast or famine cycle.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== THE REAL PROBLEM ===== -->
-  <section class="section" id="problem">
-    <div class="container">
-      <div class="problem-layout">
-        <div class="problem-content">
-          <h2>Buyers decide before they talk to you</h2>
-          <p class="text-large">Your future clients research quietly.<br>They compare options silently.<br>They decide when the timing feels right.</p>
-          <p class="text-large">Most firms never see this happening.</p>
-          <p class="text-large" style="color: var(--slate); font-style: italic;">By the time a deal goes cold, the moment has already passed.</p>
-        </div>
-        <div class="problem-visual">
-          <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Timeline -->
-            <line x1="50" y1="150" x2="350" y2="150" stroke="#CBD5E1" stroke-width="2"/>
-
-            <!-- Buyer researching quietly -->
-            <circle cx="100" cy="150" r="30" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
-            <text x="100" y="155" text-anchor="middle" font-size="28">🔍</text>
-            <text x="100" y="200" text-anchor="middle" font-size="12" fill="#64748B">Researching</text>
-            <text x="100" y="215" text-anchor="middle" font-size="12" fill="#64748B">quietly</text>
-
-            <!-- Comparing options -->
-            <circle cx="200" cy="150" r="30" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
-            <text x="200" y="155" text-anchor="middle" font-size="28">⚖️</text>
-            <text x="200" y="200" text-anchor="middle" font-size="12" fill="#64748B">Comparing</text>
-            <text x="200" y="215" text-anchor="middle" font-size="12" fill="#64748B">options</text>
-
-            <!-- Decision made -->
-            <circle cx="300" cy="150" r="30" fill="#ECFDF5" stroke="#059669" stroke-width="2"/>
-            <text x="300" y="155" text-anchor="middle" font-size="28">✓</text>
-            <text x="300" y="200" text-anchor="middle" font-size="12" fill="#059669">Decision</text>
-            <text x="300" y="215" text-anchor="middle" font-size="12" fill="#059669">made</text>
-
-            <!-- "You never saw this" banner -->
-            <rect x="80" y="50" width="240" height="40" rx="8" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5"/>
-            <text x="200" y="75" text-anchor="middle" font-size="14" font-weight="600" fill="#991B1B">You never saw this happening</text>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== WHAT YOU DO ===== -->
-  <section class="section section-light">
-    <div class="container">
-      <div class="section-header">
-        <h2>We show you who should be contacted today and why</h2>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">👁️</div>
-          <h4>Watches for signs</h4>
-          <p>A company is entering a buying window</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🕐</div>
-          <h4>Flags leads and accounts</h4>
-          <p>That matter right now</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">✓</div>
-          <h4>Explains what changed</h4>
-          <p>So outreach feels natural</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">💬</div>
-          <h4>Helps you follow up</h4>
-          <p>Without sounding desperate</p>
-        </div>
-      </div>
-
-      <div class="callout">
-        <p>No cold lists.<br>No ads.<br>No sales scripts.</p>
-        <p style="font-weight: 600; margin-top: 20px;">Just better timing.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== FREE OFFER ===== -->
-  <section class="section" id="audit">
-    <div class="container">
-      <div class="offer-layout">
-        <div class="offer-content">
-          <h2>Get free leads that are ready to buy</h2>
-          <p class="text-large">We run a buyer timing audit for your business.</p>
-
-          <div class="offer-includes">
-            <h4>You receive:</h4>
-            <ul class="check-list">
-              <li>A list of companies and leads that should be contacted now</li>
-              <li>The signal that triggered each opportunity</li>
-              <li>Clear reasoning for why now matters</li>
-              <li>Insight into where you are missing timing today</li>
-            </ul>
-          </div>
-
-          <div class="offer-cta">
-            <a href="#contact" class="btn btn-primary btn-lg" data-cta>Get free leads that are ready to buy</a>
-            <p class="reassurance">Built around your buyers and your data.</p>
-          </div>
-
-          <div class="offer-note">
-            <p>This is free.</p>
-            <p>No calls required.<br>No obligation.</p>
-          </div>
-        </div>
-
-        <div class="offer-visual">
-          <div class="mockup-card">
-            <div class="mockup-header">Today's Buyer Signals</div>
-            <div class="mockup-item">
-              <div class="mockup-company">Acme Consulting</div>
-              <div class="mockup-signal">🟢 New VP hired • Funding round closed</div>
-              <div class="mockup-reason">Company entering growth phase. Contact now.</div>
+        <div class="signal-card">
+          <div class="signal-card-header">
+            <div>
+              <div class="signal-company">Apex Distribution</div>
+              <div class="signal-meta">Austin, TX • 280 employees</div>
             </div>
-            <div class="mockup-item">
-              <div class="mockup-company">TechStart Partners</div>
-              <div class="mockup-signal">🟡 Website updated • Job postings increased</div>
-              <div class="mockup-reason">Scaling operations. Strong timing for outreach.</div>
-            </div>
-            <div class="mockup-item">
-              <div class="mockup-company">Strategy Group LLC</div>
-              <div class="mockup-signal">🟢 Mentioned your firm • Visiting competitor site</div>
-              <div class="mockup-reason">Active evaluation mode. Reach out today.</div>
-            </div>
+            <div class="signal-score signal-score-high">87</div>
+          </div>
+          <div class="signal-detail">
+            <div class="signal-label">Primary Signal</div>
+            <div class="signal-text">Series B funding ($28M) announced</div>
+          </div>
+          <div class="signal-tags">
+            <span class="tag">Hiring for ops</span>
+            <span class="tag">Tech adoption</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== WHY THIS MATTERS ===== -->
-  <section class="section section-light">
+  <!-- Problem Section -->
+  <section class="section section-light" id="problem">
     <div class="container">
-      <div class="section-header">
-        <h2>Consistency does not come from working harder</h2>
-      </div>
+      <h2 class="section-title">Intent data shows you who's researching.<br>By then, you've already lost.</h2>
 
-      <div class="comparison-grid">
-        <div class="comparison-side before">
-          <h4>Before</h4>
-          <ul class="comparison-list">
-            <li>Scattered follow-ups</li>
-            <li>Empty calendar gaps</li>
-            <li>Constant anxiety about pipeline</li>
-            <li>Guessing who to contact</li>
-          </ul>
+      <div class="problem-grid">
+        <div class="problem-col">
+          <div class="problem-icon">📅</div>
+          <h3 class="problem-heading">Your calendar has gaps</h3>
+          <p>Some months are great. Other months you're scrambling for work. That's the feast or famine cycle.</p>
         </div>
 
-        <div class="comparison-arrow">→</div>
+        <div class="problem-col">
+          <div class="problem-icon">🔍</div>
+          <h3 class="problem-heading">Buyers decide before talking to you</h3>
+          <p>Your future clients research quietly. Compare silently. Decide when the timing feels right. You never see it happening.</p>
+        </div>
 
-        <div class="comparison-side after">
-          <h4>After</h4>
-          <ul class="comparison-list">
-            <li>Short daily action list</li>
-            <li>Steady conversations</li>
-            <li>Clear timing signals</li>
-            <li>Natural outreach moments</li>
-          </ul>
+        <div class="problem-col">
+          <div class="problem-icon">❌</div>
+          <h3 class="problem-heading">Most leads aren't ready</h3>
+          <p>Your CRM is full of "follow up next quarter" and "went dark." By the time they're ready, they've found someone else.</p>
         </div>
       </div>
 
-      <div class="benefits-list">
-        <p class="benefit-intro">When timing is clear:</p>
-        <ul>
-          <li>Follow-ups feel natural</li>
-          <li>Sales cycles shorten</li>
-          <li>Old leads come back to life</li>
-          <li>Conversations start at the right moment</li>
-        </ul>
-        <p style="font-weight: 600; margin-top: 32px; font-size: 1.125rem;">Growth stops feeling random.</p>
+      <div class="timeline-visual">
+        <div class="timeline-line"></div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-label">Weeks 1-4</div>
+            <div class="timeline-text">Company researches quietly</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-label">Weeks 5-8</div>
+            <div class="timeline-text">Shortlist created (you're not on it)</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot timeline-dot-end"></div>
+          <div class="timeline-content">
+            <div class="timeline-label">Week 9</div>
+            <div class="timeline-text">Decision made. They call you as a backup.</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== FULL SERVICE ===== -->
+  <!-- Solution Section -->
+  <section class="section" id="solution">
+    <div class="container">
+      <h2 class="section-title">We show you who just entered a buying window</h2>
+      <p class="section-subtitle">Not who's researching. Who's ready to decide right now.</p>
+
+      <div class="solution-grid">
+        <div class="solution-card">
+          <div class="solution-number">01</div>
+          <h3 class="solution-heading">Hiring signals</h3>
+          <p class="solution-text">New COO, VP Operations, or key hires that indicate growth phase and budget allocation</p>
+          <div class="solution-metric">
+            <div class="metric-value">23</div>
+            <div class="metric-label">companies this week</div>
+          </div>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-number">02</div>
+          <h3 class="solution-heading">Funding events</h3>
+          <p class="solution-text">Series A/B rounds, PE acquisitions, or growth capital that creates immediate buying windows</p>
+          <div class="solution-metric">
+            <div class="metric-value">12</div>
+            <div class="metric-label">companies this week</div>
+          </div>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-number">03</div>
+          <h3 class="solution-heading">Expansion signals</h3>
+          <p class="solution-text">New facilities, office moves, regulatory filings that signal operational changes</p>
+          <div class="solution-metric">
+            <div class="metric-value">8</div>
+            <div class="metric-label">companies this week</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section section-light" id="how-it-works">
+    <div class="container">
+      <h2 class="section-title">Signals → Leads → Outcomes</h2>
+
+      <div class="how-it-works">
+        <div class="hiw-step">
+          <div class="hiw-step-number">1</div>
+          <div class="hiw-step-content">
+            <h3 class="hiw-step-title">We identify your ideal buyer profile</h3>
+            <p class="hiw-step-text">Industry, company size, growth stage, and the specific triggers that indicate they're ready to buy what you sell.</p>
+          </div>
+        </div>
+
+        <div class="hiw-arrow">→</div>
+
+        <div class="hiw-step">
+          <div class="hiw-step-number">2</div>
+          <div class="hiw-step-content">
+            <h3 class="hiw-step-title">We monitor buying signals in real-time</h3>
+            <p class="hiw-step-text">New executives, funding announcements, facility expansions, regulatory changes—any event that creates a buying window.</p>
+          </div>
+        </div>
+
+        <div class="hiw-arrow">→</div>
+
+        <div class="hiw-step">
+          <div class="hiw-step-number">3</div>
+          <div class="hiw-step-content">
+            <h3 class="hiw-step-title">You get decision-ready leads</h3>
+            <p class="hiw-step-text">Companies showing 3+ converging signals, with context on why they're ready now and what triggered their buying window.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="proof-stat">
+        <div class="proof-stat-number">4x</div>
+        <div class="proof-stat-text">Companies showing three or more converging signals convert at 4x the rate</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof -->
   <section class="section">
     <div class="container">
-      <div class="service-layout">
-        <div class="service-visual">
-          <svg viewBox="0 0 500 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Flow: Signals → Follow-up → Conversation → Client -->
-            <g transform="translate(20, 80)">
-              <rect width="100" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.5"/>
-              <text x="50" y="35" text-anchor="middle" font-size="13" fill="#0F172A">Signals</text>
-            </g>
-            <path d="M130 110 L150 110" stroke="#64748B" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-            <g transform="translate(160, 80)">
-              <rect width="100" height="60" rx="8" fill="#FEF3E2" stroke="#E67E22" stroke-width="1.5"/>
-              <text x="50" y="35" text-anchor="middle" font-size="13" fill="#0F172A">Follow-up</text>
-            </g>
-            <path d="M270 110 L290 110" stroke="#E67E22" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-            <g transform="translate(300, 80)">
-              <rect width="100" height="60" rx="8" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1.5"/>
-              <text x="50" y="35" text-anchor="middle" font-size="13" fill="#0F172A">Conversation</text>
-            </g>
-            <path d="M410 110 L430 110" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrowhead)"/>
-
-            <g transform="translate(440, 80)">
-              <rect width="60" height="60" rx="8" fill="#ECFDF5" stroke="#059669" stroke-width="1.5"/>
-              <text x="30" y="35" text-anchor="middle" font-size="13" fill="#059669">Client</text>
-            </g>
-
-            <defs>
-              <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                <polygon points="0 0, 10 3, 0 6" fill="#64748B"/>
-              </marker>
-            </defs>
-          </svg>
-        </div>
-
-        <div class="service-content">
-          <h2>Want this running all the time?</h2>
-          <p class="text-large">If the audit is useful, we can set this up so it runs continuously.</p>
-
-          <div class="service-includes">
-            <h4>That includes:</h4>
-            <ul class="check-list">
-              <li>Daily monitoring of buying signals</li>
-              <li>Follow-up that happens even when you are busy</li>
-              <li>Reactivation of dormant leads</li>
-              <li>Qualification and booking</li>
-              <li>Ongoing improvement</li>
-            </ul>
+      <div class="data-viz">
+        <h3 class="data-viz-title">Signal performance by type</h3>
+        <div class="data-viz-bars">
+          <div class="data-bar">
+            <div class="data-bar-label">New executive</div>
+            <div class="data-bar-track">
+              <div class="data-bar-fill" style="width: 89%"></div>
+            </div>
+            <div class="data-bar-value">89%</div>
           </div>
-
-          <p style="margin-top: 28px; color: var(--slate); font-size: 1.0625rem;">All without hiring sales or marketing staff.</p>
-
-          <a href="#contact" class="btn btn-secondary" style="margin-top: 32px;">See how it works</a>
+          <div class="data-bar">
+            <div class="data-bar-label">Funding round</div>
+            <div class="data-bar-track">
+              <div class="data-bar-fill" style="width: 82%"></div>
+            </div>
+            <div class="data-bar-value">82%</div>
+          </div>
+          <div class="data-bar">
+            <div class="data-bar-label">Facility expansion</div>
+            <div class="data-bar-track">
+              <div class="data-bar-fill" style="width: 76%"></div>
+            </div>
+            <div class="data-bar-value">76%</div>
+          </div>
+          <div class="data-bar">
+            <div class="data-bar-label">PE acquisition</div>
+            <div class="data-bar-track">
+              <div class="data-bar-fill" style="width: 71%"></div>
+            </div>
+            <div class="data-bar-value">71%</div>
+          </div>
         </div>
+        <div class="data-viz-footer">Signal quality score (higher = stronger buying intent)</div>
       </div>
     </div>
   </section>
 
-  <!-- ===== WHO IT'S FOR ===== -->
-  <section class="section section-light" id="who">
+  <!-- Industries -->
+  <section class="section section-light">
     <div class="container">
-      <div class="section-header">
-        <h2>Built for professional service firms</h2>
-      </div>
+      <h2 class="section-title">Built for professional service firms</h2>
+      <p class="section-subtitle">$1M-$10M revenue, selling to mid-market companies</p>
 
       <div class="industries-grid">
-        <div class="industry-card">Agencies</div>
-        <div class="industry-card">IT and managed service firms</div>
-        <div class="industry-card">Law firms</div>
-        <div class="industry-card">Accounting firms</div>
-        <div class="industry-card">Recruiting and staffing firms</div>
-        <div class="industry-card">Boutique consultancies</div>
-      </div>
-
-      <p class="who-footer">Best fit for firms doing $1M to $10M that rely on trust, timing, and expertise to close deals.</p>
-    </div>
-  </section>
-
-  <!-- ===== FINAL CTA ===== -->
-  <section class="section section-dark">
-    <div class="container">
-      <div class="final-cta">
-        <h2>Stop guessing where your next client will come from</h2>
-        <p class="final-subtitle">See who is ready to buy right now.</p>
-        <a href="#contact" class="btn btn-primary btn-lg" data-cta>Get free leads that are ready to buy</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== CONTACT ===== -->
-  <section class="section" id="contact">
-    <div class="container-tight">
-      <div class="section-header">
-        <h2>Get Your Free Buyer Timing Audit</h2>
-        <p>We'll respond within one business day.</p>
-      </div>
-      <div class="contact-form-card">
-        <form id="contact-form" class="contact-form">
-          <div class="form-row">
-            <div class="form-field">
-              <label for="name">Your Name</label>
-              <input type="text" id="name" name="name" required placeholder="Jane Smith" />
-            </div>
-            <div class="form-field">
-              <label for="email">Work Email</label>
-              <input type="email" id="email" name="email" required placeholder="jane@company.com" />
-            </div>
-          </div>
-          <div class="form-field">
-            <label for="company">Company Name</label>
-            <input type="text" id="company" name="company" placeholder="Your firm name" />
-          </div>
-          <div class="form-field">
-            <label for="message">Tell us about your firm</label>
-            <textarea id="message" name="message" rows="3" placeholder="What services do you offer? Who are your ideal clients?"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary btn-full" id="submit-btn">
-            <span class="btn-text">Get Free Buyer Timing Audit</span>
-            <span class="btn-loading" style="display:none;">Sending...</span>
-          </button>
-          <p class="form-note">No spam. We'll reach out to schedule a quick call.</p>
-        </form>
-        <div id="form-success" class="form-success" style="display:none;">
-          <div class="success-icon">✓</div>
-          <h3>Thanks! We'll be in touch soon.</h3>
-          <p>Check your inbox for a confirmation email.</p>
+        <div class="industry-card">
+          <div class="industry-icon">⚖️</div>
+          <div class="industry-name">Law firms</div>
+          <div class="industry-desc">Corporate, M&A, employment</div>
+        </div>
+        <div class="industry-card">
+          <div class="industry-icon">📊</div>
+          <div class="industry-name">Consulting</div>
+          <div class="industry-desc">Strategy, operations, growth</div>
+        </div>
+        <div class="industry-card">
+          <div class="industry-icon">🎯</div>
+          <div class="industry-name">Agencies</div>
+          <div class="industry-desc">Marketing, creative, digital</div>
+        </div>
+        <div class="industry-card">
+          <div class="industry-icon">💼</div>
+          <div class="industry-name">Accounting</div>
+          <div class="industry-desc">Tax, audit, advisory</div>
+        </div>
+        <div class="industry-card">
+          <div class="industry-icon">🏗️</div>
+          <div class="industry-name">Engineering</div>
+          <div class="industry-desc">Civil, structural, MEP</div>
+        </div>
+        <div class="industry-card">
+          <div class="industry-icon">💡</div>
+          <div class="industry-name">Advisory</div>
+          <div class="industry-desc">Financial, tech, HR</div>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- CTA Section -->
+  <section class="section section-cta" id="audit">
+    <div class="container">
+      <div class="cta-content">
+        <h2 class="cta-title">Stop chasing. Start arriving.</h2>
+        <p class="cta-subtitle">Get your first batch of decision-ready leads. Free buyer timing audit.</p>
+
+        <form id="contact-form" class="cta-form">
+          <div class="form-row">
+            <div class="form-field">
+              <label>Your name</label>
+              <input type="text" name="name" required placeholder="John Smith">
+            </div>
+            <div class="form-field">
+              <label>Work email</label>
+              <input type="email" name="email" required placeholder="john@company.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>Company name</label>
+              <input type="text" name="company" required placeholder="Acme Corp">
+            </div>
+            <div class="form-field">
+              <label>What you sell</label>
+              <input type="text" name="message" required placeholder="Operations consulting for manufacturers">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-large" id="submit-btn">
+            <span class="btn-text">Get my free buyer timing audit</span>
+            <span class="btn-loading" style="display: none;">Sending...</span>
+          </button>
+        </form>
+
+        <div id="form-success" style="display: none;" class="form-success">
+          <div class="success-icon">✓</div>
+          <h3>We'll send your leads within 24 hours</h3>
+          <p>Check your email for companies showing buying signals in your target market.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <span class="footer-logo">BECOME THE ANSWER</span>
+        <span class="footer-tagline">Buyer timing intelligence for B2B services</span>
+      </div>
+      <div class="footer-right">
+        <span class="footer-copy">© 2025 Become the Answer</span>
+      </div>
+    </div>
+  </footer>
 </Layout>
 
 <style>
-  /* ===== GLOBAL STYLES ===== */
+  :root {
+    --obsidian: #0D0D0F;
+    --ivory: #FAF9F7;
+    --signal-blue: #2563EB;
+    --graphite: #374151;
+    --smoke: #9CA3AF;
+    --mist: #F3F4F6;
+    --high-signal: #059669;
+    --medium-signal: #D97706;
+  }
 
-  /* ===== HERO ===== */
-  .hero {
-    position: relative;
-    min-height: 90vh;
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Navigation */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--ivory);
+    border-bottom: 1px solid #E5E7EB;
+  }
+
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    overflow: hidden;
-    padding: 100px 20px;
+    justify-content: space-between;
+    height: 72px;
   }
 
-  .signal-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(148, 163, 184, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
-    animation: pulse-grid 8s ease-in-out infinite;
+  .nav-logo {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--obsidian);
   }
 
-  @keyframes pulse-grid {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.5; }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
   }
 
-  .hero-content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    max-width: 800px;
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--graphite);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--obsidian);
+  }
+
+  .nav-cta {
+    padding: 10px 20px;
+    background: var(--obsidian);
+    color: var(--ivory) !important;
+    border-radius: 6px;
+  }
+
+  .nav-cta:hover {
+    background: var(--graphite);
+  }
+
+  /* Hero */
+  .hero {
+    background: var(--ivory);
+    padding: 80px 48px 120px;
+  }
+
+  .hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
   }
 
   .hero-title {
-    font-size: 4rem;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 24px;
-    letter-spacing: -0.02em;
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--obsidian);
+    margin-bottom: 20px;
   }
 
   .hero-subtitle {
-    font-size: 1.5rem;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 20px;
+    font-size: 18px;
     font-weight: 500;
+    color: var(--graphite);
+    margin-bottom: 16px;
   }
 
-  .hero-body {
-    font-size: 1.125rem;
-    color: rgba(255, 255, 255, 0.75);
-    margin-bottom: 48px;
-    line-height: 1.7;
+  .hero-desc {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--graphite);
+    margin-bottom: 32px;
+    max-width: 540px;
   }
 
   .hero-ctas {
     display: flex;
-    gap: 24px;
-    justify-content: center;
+    gap: 16px;
     align-items: center;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+  }
+
+  .btn-primary {
+    background: var(--obsidian);
+    color: var(--ivory);
+  }
+
+  .btn-primary:hover {
+    background: var(--graphite);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--obsidian);
+    border: 2px solid var(--obsidian);
+  }
+
+  .btn-secondary:hover {
+    background: var(--obsidian);
+    color: var(--ivory);
+  }
+
+  .btn-large {
+    padding: 16px 32px;
+    font-size: 16px;
+    width: 100%;
+  }
+
+  .hero-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .signal-card {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .signal-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .signal-company {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--obsidian);
+    margin-bottom: 4px;
+  }
+
+  .signal-meta {
+    font-size: 13px;
+    color: var(--smoke);
+  }
+
+  .signal-score {
+    width: 48px;
+    height: 48px;
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--signal-blue);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .signal-score-high {
+    background: rgba(5, 150, 105, 0.1);
+    color: var(--high-signal);
+  }
+
+  .signal-detail {
+    background: var(--mist);
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+
+  .signal-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--smoke);
+    margin-bottom: 6px;
+  }
+
+  .signal-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--obsidian);
+  }
+
+  .signal-tags {
+    display: flex;
+    gap: 8px;
     flex-wrap: wrap;
   }
 
-  .btn-link {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-size: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    padding-bottom: 2px;
-    transition: all 0.2s ease;
+  .tag {
+    padding: 6px 12px;
+    background: var(--mist);
+    color: var(--graphite);
+    font-size: 13px;
+    border-radius: 6px;
   }
 
-  .btn-link:hover {
-    color: white;
-    border-bottom-color: white;
+  /* Sections */
+  .section {
+    padding: 80px 48px;
+    background: white;
   }
 
-  @media (max-width: 768px) {
-    .hero-title {
-      font-size: 2.5rem;
-    }
-    .hero-subtitle {
-      font-size: 1.25rem;
-    }
+  .section-light {
+    background: var(--ivory);
   }
 
-  /* ===== SPLIT LAYOUT ===== */
-  .split-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-  }
-
-  @media (max-width: 900px) {
-    .split-layout {
-      grid-template-columns: 1fr;
-      gap: 48px;
-    }
-  }
-
-  /* ===== VISUAL CONTAINERS ===== */
-  .visual-container {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .calendar-visual,
-  .crm-visual {
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 24px;
-  }
-
-  .calendar-header,
-  .crm-header {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--slate);
-    margin-bottom: 16px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-  }
-
-  .calendar-slot {
-    height: 60px;
-    border-radius: var(--radius-md);
-    border: 2px solid var(--border);
-  }
-
-  .calendar-slot.filled {
-    background: var(--accent-light);
-    border-color: var(--accent);
-  }
-
-  .calendar-slot.empty {
-    background: var(--soft);
-    border-style: dashed;
-  }
-
-  .crm-item {
-    padding: 12px 16px;
-    border-radius: var(--radius-md);
-    margin-bottom: 8px;
-    font-size: 0.9375rem;
-  }
-
-  .crm-item.status-cold {
-    background: #FEF2F2;
-    color: #991B1B;
-    border: 1px solid #FEE2E2;
-  }
-
-  /* ===== PROBLEM LAYOUT ===== */
-  .problem-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-  }
-
-  .problem-visual svg {
-    width: 100%;
-    height: auto;
-  }
-
-  @media (max-width: 900px) {
-    .problem-layout {
-      grid-template-columns: 1fr;
-      gap: 48px;
-    }
-  }
-
-  /* ===== FEATURES GRID ===== */
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    margin-bottom: 64px;
-  }
-
-  .feature-card {
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 32px 24px;
-    text-align: center;
-  }
-
-  .feature-icon {
-    font-size: 2.5rem;
-    margin-bottom: 16px;
-  }
-
-  .feature-card h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--ink);
-  }
-
-  .feature-card p {
-    font-size: 0.9375rem;
-    color: var(--slate);
-  }
-
-  @media (max-width: 900px) {
-    .features-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 640px) {
-    .features-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* ===== CALLOUT ===== */
-  .callout {
-    background: var(--paper);
-    border: 2px solid var(--accent);
-    border-radius: var(--radius-lg);
-    padding: 48px;
-    text-align: center;
-    font-size: 1.125rem;
-    line-height: 1.8;
-  }
-
-  /* ===== OFFER LAYOUT ===== */
-  .offer-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start;
-  }
-
-  .offer-includes {
-    margin: 40px 0;
-  }
-
-  .offer-includes h4 {
-    margin-bottom: 20px;
-  }
-
-  .offer-cta {
-    margin-top: 40px;
-  }
-
-  .reassurance {
-    font-size: 0.9375rem;
-    color: var(--slate);
-    margin-top: 16px;
-    text-align: center;
-  }
-
-  .offer-note {
-    margin-top: 48px;
-    padding-top: 32px;
-    border-top: 1px solid var(--border);
-    text-align: center;
-    color: var(--slate);
-  }
-
-  .offer-note p {
-    margin: 8px 0;
-  }
-
-  @media (max-width: 900px) {
-    .offer-layout {
-      grid-template-columns: 1fr;
-      gap: 48px;
-    }
-  }
-
-  /* ===== MOCKUP CARD ===== */
-  .mockup-card {
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
-    padding: 32px;
-    box-shadow: var(--shadow-xl);
-  }
-
-  .mockup-header {
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin-bottom: 24px;
-    color: var(--ink);
-  }
-
-  .mockup-item {
-    background: var(--soft);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 20px;
-    margin-bottom: 16px;
-  }
-
-  .mockup-company {
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--ink);
-  }
-
-  .mockup-signal {
-    font-size: 0.875rem;
-    color: var(--slate);
-    margin-bottom: 8px;
-  }
-
-  .mockup-reason {
-    font-size: 0.875rem;
-    color: var(--ink-light);
-    font-style: italic;
-  }
-
-  /* ===== COMPARISON GRID ===== */
-  .comparison-grid {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 48px;
-    align-items: center;
-    margin-bottom: 64px;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .comparison-side {
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 32px;
-  }
-
-  .comparison-side h4 {
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 20px;
-    color: var(--slate);
-  }
-
-  .comparison-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .comparison-list li {
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .comparison-list li:last-child {
-    border-bottom: none;
-  }
-
-  .comparison-side.before {
-    border-color: #FEE2E2;
-    background: #FEF2F2;
-  }
-
-  .comparison-side.after {
-    border-color: #D1FAE5;
-    background: #ECFDF5;
-  }
-
-  .comparison-arrow {
-    font-size: 2rem;
-    color: var(--accent);
-    font-weight: 700;
-  }
-
-  @media (max-width: 768px) {
-    .comparison-grid {
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-    .comparison-arrow {
-      text-align: center;
-      transform: rotate(90deg);
-    }
-  }
-
-  /* ===== BENEFITS LIST ===== */
-  .benefits-list {
-    max-width: 600px;
+  .container {
+    max-width: 1200px;
     margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--obsidian);
     text-align: center;
+    margin-bottom: 16px;
   }
 
-  .benefit-intro {
-    font-size: 1.125rem;
-    font-weight: 500;
-    margin-bottom: 24px;
+  .section-subtitle {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--graphite);
+    text-align: center;
+    margin-bottom: 64px;
   }
 
-  .benefits-list ul {
-    list-style: none;
-    padding: 0;
-    text-align: left;
-    display: inline-block;
-  }
-
-  .benefits-list li {
-    padding: 8px 0;
-    padding-left: 32px;
-    position: relative;
-  }
-
-  .benefits-list li::before {
-    content: "→";
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-weight: 700;
-  }
-
-  /* ===== SERVICE LAYOUT ===== */
-  .service-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-  }
-
-  .service-visual svg {
-    width: 100%;
-    height: auto;
-  }
-
-  .service-includes {
-    margin: 32px 0;
-  }
-
-  .service-includes h4 {
-    margin-bottom: 20px;
-  }
-
-  @media (max-width: 900px) {
-    .service-layout {
-      grid-template-columns: 1fr;
-      gap: 48px;
-    }
-  }
-
-  /* ===== INDUSTRIES GRID ===== */
-  .industries-grid {
+  /* Problem Grid */
+  .problem-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 48px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+    gap: 40px;
+    margin-bottom: 80px;
   }
 
-  .industry-card {
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 24px;
+  .problem-col {
     text-align: center;
-    font-weight: 500;
-    transition: all 0.2s ease;
   }
 
-  .industry-card:hover {
-    border-color: var(--accent);
-    background: var(--accent-light);
-  }
-
-  .who-footer {
-    text-align: center;
-    color: var(--slate);
-    font-size: 1.0625rem;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  @media (max-width: 768px) {
-    .industries-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 480px) {
-    .industries-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* ===== FINAL CTA ===== */
-  .final-cta {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  .final-cta h2 {
-    color: white;
+  .problem-icon {
+    font-size: 48px;
     margin-bottom: 20px;
   }
 
-  .final-subtitle {
-    font-size: 1.25rem;
-    color: rgba(255, 255, 255, 0.8);
+  .problem-heading {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--obsidian);
+    margin-bottom: 12px;
+  }
+
+  .problem-col p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--graphite);
+  }
+
+  /* Timeline */
+  .timeline-visual {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    padding: 40px 0;
+  }
+
+  .timeline-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 60px;
+    height: 2px;
+    background: #E5E7EB;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 24px;
     margin-bottom: 40px;
+    position: relative;
   }
 
-  /* ===== SECTION VARIATIONS ===== */
-  .section-light {
-    background: var(--soft);
+  .timeline-dot {
+    width: 16px;
+    height: 16px;
+    background: var(--signal-blue);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+    z-index: 1;
+    position: relative;
   }
 
-  .section-dark {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    color: white;
+  .timeline-dot-end {
+    background: #EF4444;
   }
 
-  /* ===== UTILITIES ===== */
-  .text-large {
-    font-size: 1.125rem;
-    line-height: 1.7;
+  .timeline-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--smoke);
+    margin-bottom: 6px;
+  }
+
+  .timeline-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--obsidian);
+  }
+
+  /* Solution Grid */
+  .solution-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  .solution-card {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 32px;
+  }
+
+  .solution-number {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--signal-blue);
     margin-bottom: 16px;
   }
 
-  .check-list {
-    list-style: none;
-    padding: 0;
+  .solution-heading {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--obsidian);
+    margin-bottom: 12px;
   }
 
-  .check-list li {
-    padding: 12px 0;
-    padding-left: 32px;
-    position: relative;
-    border-bottom: 1px solid var(--border);
+  .solution-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--graphite);
+    margin-bottom: 24px;
   }
 
-  .check-list li:last-child {
-    border-bottom: none;
+  .solution-metric {
+    text-align: center;
+    padding: 20px;
+    background: var(--mist);
+    border-radius: 8px;
   }
 
-  .check-list li::before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: var(--accent);
+  .metric-value {
+    font-size: 32px;
     font-weight: 700;
+    color: var(--obsidian);
+    margin-bottom: 4px;
   }
 
-  .btn-lg {
-    padding: 20px 40px;
-    font-size: 1.0625rem;
+  .metric-label {
+    font-size: 13px;
+    color: var(--smoke);
   }
 
-  /* ===== CONTACT FORM ===== */
-  .contact-form-card {
-    max-width: 560px;
-    margin: 32px auto 0;
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
+  /* How It Works */
+  .how-it-works {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 64px;
+  }
+
+  .hiw-step {
+    flex: 1;
+    max-width: 320px;
+  }
+
+  .hiw-step-number {
+    width: 48px;
+    height: 48px;
+    background: var(--obsidian);
+    color: var(--ivory);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .hiw-step-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--obsidian);
+    margin-bottom: 12px;
+  }
+
+  .hiw-step-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--graphite);
+  }
+
+  .hiw-arrow {
+    font-size: 32px;
+    color: var(--smoke);
+    flex-shrink: 0;
+  }
+
+  .proof-stat {
+    text-align: center;
+    padding: 48px;
+    background: var(--obsidian);
+    border-radius: 16px;
+  }
+
+  .proof-stat-number {
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--signal-blue);
+    margin-bottom: 16px;
+  }
+
+  .proof-stat-text {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--ivory);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Data Visualization */
+  .data-viz {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
     padding: 40px;
   }
 
-  .contact-form {
+  .data-viz-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--obsidian);
+    margin-bottom: 32px;
+  }
+
+  .data-viz-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .data-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .data-bar-label {
+    width: 140px;
+    font-size: 14px;
+    color: var(--graphite);
+    flex-shrink: 0;
+  }
+
+  .data-bar-track {
+    flex: 1;
+    height: 32px;
+    background: var(--mist);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .data-bar-fill {
+    height: 100%;
+    background: var(--signal-blue);
+    border-radius: 6px;
+    transition: width 0.3s;
+  }
+
+  .data-bar-value {
+    width: 60px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--obsidian);
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .data-viz-footer {
+    font-size: 13px;
+    color: var(--smoke);
+    text-align: center;
+  }
+
+  /* Industries Grid */
+  .industries-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .industry-card {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .industry-card:hover {
+    border-color: var(--signal-blue);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .industry-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+  }
+
+  .industry-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--obsidian);
+    margin-bottom: 6px;
+  }
+
+  .industry-desc {
+    font-size: 14px;
+    color: var(--smoke);
+  }
+
+  /* CTA Section */
+  .section-cta {
+    background: var(--mist);
+  }
+
+  .cta-content {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .cta-title {
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--obsidian);
+    margin-bottom: 16px;
+  }
+
+  .cta-subtitle {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--graphite);
+    margin-bottom: 48px;
+  }
+
+  .cta-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -982,113 +988,177 @@ const siteGraph = [
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 20px;
   }
 
   .form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    text-align: left;
   }
 
   .form-field label {
-    font-size: 0.875rem;
+    display: block;
+    font-size: 13px;
     font-weight: 600;
-    color: var(--ink);
+    color: var(--graphite);
+    margin-bottom: 8px;
   }
 
-  .form-field input,
-  .form-field textarea {
-    padding: 12px 16px;
-    font-size: 1rem;
-    font-family: var(--font-sans);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    background: var(--canvas);
-    color: var(--ink);
-    transition: all 0.2s ease;
-  }
-
-  .form-field input::placeholder,
-  .form-field textarea::placeholder {
-    color: var(--slate-light);
-  }
-
-  .form-field input:focus,
-  .form-field textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    background: var(--paper);
-    box-shadow: 0 0 0 3px var(--accent-light);
-  }
-
-  .form-field textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
-
-  .btn-full {
+  .form-field input {
     width: 100%;
-    padding: 16px 24px;
-    font-size: 1rem;
+    padding: 14px 16px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--obsidian);
+    background: white;
+    border: 2px solid #E5E7EB;
+    border-radius: 8px;
+    transition: border-color 0.2s;
   }
 
-  .form-note {
-    font-size: 0.8125rem;
-    color: var(--slate);
-    text-align: center;
-    margin-top: 4px;
+  .form-field input:focus {
+    outline: none;
+    border-color: var(--signal-blue);
+  }
+
+  .form-field input::placeholder {
+    color: var(--smoke);
   }
 
   .form-success {
-    text-align: center;
-    padding: 40px 20px;
+    padding: 48px;
+    background: white;
+    border-radius: 12px;
+    border: 2px solid var(--high-signal);
   }
 
   .success-icon {
     width: 64px;
     height: 64px;
-    background: var(--insight-light);
-    color: var(--insight);
+    margin: 0 auto 20px;
+    background: var(--high-signal);
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
-    font-weight: 700;
-    margin: 0 auto 20px;
   }
 
   .form-success h3 {
-    font-size: 1.25rem;
-    margin-bottom: 8px;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--obsidian);
+    margin-bottom: 12px;
   }
 
   .form-success p {
-    color: var(--slate);
+    font-size: 16px;
+    color: var(--graphite);
+    line-height: 1.6;
   }
 
-  @media (max-width: 600px) {
+  /* Footer */
+  .footer {
+    background: var(--obsidian);
+    padding: 48px;
+    border-top: 1px solid #1F2937;
+  }
+
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--ivory);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .footer-tagline {
+    font-size: 14px;
+    color: var(--smoke);
+  }
+
+  .footer-copy {
+    font-size: 14px;
+    color: var(--smoke);
+  }
+
+  /* Responsive */
+  @media (max-width: 968px) {
+    .nav-container {
+      padding: 0 24px;
+    }
+
+    .nav-links {
+      gap: 20px;
+    }
+
+    .nav-links a:not(.nav-cta) {
+      display: none;
+    }
+
+    .hero {
+      padding: 60px 24px 80px;
+    }
+
+    .hero-container {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .hero-title {
+      font-size: 36px;
+    }
+
+    .section {
+      padding: 60px 24px;
+    }
+
+    .section-title {
+      font-size: 28px;
+    }
+
+    .problem-grid,
+    .solution-grid,
+    .industries-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .how-it-works {
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .hiw-arrow {
+      transform: rotate(90deg);
+    }
+
     .form-row {
       grid-template-columns: 1fr;
     }
 
-    .contact-form-card {
-      padding: 28px 20px;
+    .footer-container {
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
     }
   }
 </style>
 
 <script>
-  // Analytics
-  fetch('/api/events', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ claim_slug: 'home', page: '/', referrer: document.referrer || '', event_type: 'session' })
-  }).catch(() => {});
-
-  document.querySelectorAll('[data-cta]').forEach(el => {
-    el.addEventListener('click', () => {
+  // Track CTA clicks
+  document.querySelectorAll('[data-cta]').forEach(btn => {
+    btn.addEventListener('click', () => {
       fetch('/api/events', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -1150,5 +1220,17 @@ const siteGraph = [
       if (btnLoading && btnLoading instanceof HTMLElement) btnLoading.style.display = 'none';
       if (submitBtn && 'disabled' in submitBtn) submitBtn.disabled = false;
     }
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e: Event) {
+      e.preventDefault();
+      const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+      const target = document.querySelector(href || '');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
   });
 </script>
