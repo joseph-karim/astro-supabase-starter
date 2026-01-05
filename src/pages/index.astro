@@ -13,524 +13,350 @@ const siteGraph = [
   },
   {
     "@type": "Service",
-    "name": "AI Answer Citation Sprint",
+    "name": "Buyer Timing Intelligence",
     "provider": {"@type":"Organization","name":"Become The Answer"},
-    "description": "We make your products visible, quotable, and purchasable inside AI answers so high-intent shoppers find you first.",
-    "areaServed": "Global",
+    "description": "We help professional service firms stop guessing where the next deal will come from by showing them who is ready to buy and why.",
+    "areaServed": "United States",
     "url": "https://becometheanswer.ai"
   }
 ];
 ---
 
-<Layout title="Become the Answer | AI Search Visibility for E-commerce">
+<Layout title="Become the Answer | Buyer Timing Intelligence for Professional Services">
   <JSONLD graph={siteGraph} slot="head" />
-  
+
   <!-- ===== HERO ===== -->
   <section class="hero">
+    <div class="signal-grid"></div>
     <div class="container hero-content">
-      <p class="overline animate-fade-in-up">AI Search Visibility for E-commerce</p>
-      <h1 class="hero-title animate-fade-in-up animate-delay-1">When shoppers ask AI for the best product, make sure they hear your name.</h1>
-      <p class="hero-subtitle animate-fade-in-up animate-delay-2">Millions of buyers now ask ChatGPT, Perplexity, and Google AI which products to buy. We make sure those AI assistants recommend your products, link to your pages, and send ready-to-buy customers your way.</p>
-      <div class="hero-ctas animate-fade-in-up animate-delay-3">
-        <a href="#audit" class="btn btn-primary" data-cta>Get Your Free AI Audit</a>
-        <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
-      </div>
-      
-      <!-- Hero Illustration -->
-      <div class="hero-illustration animate-fade-in-up animate-delay-4">
-        <svg viewBox="0 0 800 320" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Background -->
-          <rect x="40" y="40" width="720" height="240" rx="16" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2"/>
-          
-          <!-- AI Chat Interface -->
-          <rect x="80" y="80" width="280" height="160" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
-          <circle cx="104" cy="104" r="8" fill="#E67E22"/>
-          <text x="120" y="108" font-family="Inter" font-size="12" font-weight="600" fill="#0F172A">AI Assistant</text>
-          
-          <!-- User Question -->
-          <rect x="100" y="130" width="200" height="32" rx="6" fill="#F1F5F9"/>
-          <text x="112" y="150" font-family="Inter" font-size="11" fill="#475569">"Best running shoes for flat feet?"</text>
-          
-          <!-- AI Answer -->
-          <rect x="100" y="172" width="240" height="50" rx="6" fill="#FEF3E2"/>
-          <text x="112" y="192" font-family="Inter" font-size="11" fill="#0F172A" font-weight="500">Based on my research, the top pick is</text>
-          <text x="112" y="208" font-family="Inter" font-size="11" fill="#E67E22" font-weight="600">YourBrand Pro Runner →</text>
-          
-          <!-- Arrow -->
-          <path d="M380 160 L440 160" stroke="#E67E22" stroke-width="3" stroke-linecap="round" stroke-dasharray="8 4">
-            <animate attributeName="stroke-dashoffset" from="0" to="-24" dur="1s" repeatCount="indefinite"/>
-          </path>
-          <polygon points="450,160 438,154 438,166" fill="#E67E22"/>
-          
-          <!-- Product Page -->
-          <rect x="480" y="80" width="240" height="160" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
-          <rect x="500" y="100" width="80" height="80" rx="8" fill="#F1F5F9"/>
-          <rect x="508" y="108" width="64" height="64" rx="4" fill="#E2E8F0"/>
-          <text x="596" y="116" font-family="Inter" font-size="11" font-weight="600" fill="#0F172A">Pro Runner</text>
-          <text x="596" y="132" font-family="Inter" font-size="10" fill="#475569">Perfect for flat feet</text>
-          <text x="596" y="156" font-family="Inter" font-size="14" font-weight="700" fill="#0F172A">$149</text>
-          <rect x="596" y="168" width="100" height="28" rx="6" fill="#E67E22"/>
-          <text x="620" y="186" font-family="Inter" font-size="10" font-weight="600" fill="white">Add to Cart</text>
-          
-          <!-- Conversion Icon -->
-          <circle cx="680" cy="220" r="20" fill="#ECFDF5" stroke="#059669" stroke-width="2"/>
-          <path d="M672 220 L678 226 L690 214" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+      <h1 class="hero-title">Become the Answer</h1>
+      <p class="hero-subtitle">Get consistent, qualified clients without hiring salespeople or chasing referrals.</p>
+      <p class="hero-body">We help professional service firms stop guessing where the next deal will come from by showing them who is ready to buy and why.</p>
+      <div class="hero-ctas">
+        <a href="#audit" class="btn btn-primary" data-cta>Get free leads that are ready to buy</a>
+        <a href="#problem" class="btn-link">See what is blocking your pipeline</a>
       </div>
     </div>
   </section>
 
-  <!-- ===== THE SHIFT ===== -->
+  <!-- ===== REALITY CHECK ===== -->
+  <section class="section section-light">
+    <div class="container">
+      <div class="split-layout">
+        <div class="split-visual">
+          <!-- Calendar with gaps + Messy CRM -->
+          <div class="visual-container">
+            <div class="calendar-visual">
+              <div class="calendar-header">Your Calendar</div>
+              <div class="calendar-grid">
+                <div class="calendar-slot filled"></div>
+                <div class="calendar-slot empty"></div>
+                <div class="calendar-slot empty"></div>
+                <div class="calendar-slot filled"></div>
+                <div class="calendar-slot empty"></div>
+                <div class="calendar-slot empty"></div>
+                <div class="calendar-slot empty"></div>
+                <div class="calendar-slot filled"></div>
+              </div>
+            </div>
+            <div class="crm-visual">
+              <div class="crm-header">Your CRM</div>
+              <div class="crm-item status-cold">Not now</div>
+              <div class="crm-item status-cold">Follow up later</div>
+              <div class="crm-item status-cold">Went dark</div>
+              <div class="crm-item status-cold">Maybe next quarter</div>
+            </div>
+          </div>
+        </div>
+        <div class="split-content">
+          <h2>Most firms at your stage live deal to deal</h2>
+          <p class="text-large">Growth usually comes from referrals, networking, events, and the founder pushing for work when things slow down.</p>
+          <p class="text-large">Some months are great.<br>Other months are stressful.</p>
+          <p class="text-large" style="font-weight: 500;">That is the feast or famine cycle.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== THE REAL PROBLEM ===== -->
   <section class="section" id="problem">
     <div class="container">
-      <div class="split-grid" data-reveal>
-        <div class="split-content">
-          <p class="overline">The Shift Is Happening</p>
-          <h2>Shopping has changed. Your buyers are asking AI what to buy.</h2>
-          <p class="text-large">Instead of scrolling through endless search results, today's shoppers simply ask: "What's the best espresso machine under $500?" or "Which running shoes are best for beginners?"</p>
-          <p class="text-large">AI gives them a short list. Sometimes just one recommendation. And that's what they buy.</p>
-          <p class="text-large" style="color: var(--ink); font-weight: 500;">If your products aren't in that answer, those customers never see you.</p>
+      <div class="problem-layout">
+        <div class="problem-content">
+          <h2>Buyers decide before they talk to you</h2>
+          <p class="text-large">Your future clients research quietly.<br>They compare options silently.<br>They decide when the timing feels right.</p>
+          <p class="text-large">Most firms never see this happening.</p>
+          <p class="text-large" style="color: var(--slate); font-style: italic;">By the time a deal goes cold, the moment has already passed.</p>
         </div>
-        <div class="split-visual">
-          <!-- Before/After Illustration -->
-          <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" class="illustration-svg">
-            <!-- Old Way -->
-            <text x="20" y="30" font-family="Inter" font-size="12" font-weight="600" fill="#64748B">OLD WAY</text>
-            <rect x="20" y="50" width="160" height="140" rx="12" fill="#F8FAFC" stroke="#E2E8F0"/>
-            <rect x="35" y="70" width="130" height="16" rx="3" fill="#E2E8F0"/>
-            <rect x="35" y="94" width="100" height="10" rx="2" fill="#E2E8F0"/>
-            <rect x="35" y="114" width="130" height="10" rx="2" fill="#E2E8F0"/>
-            <rect x="35" y="128" width="80" height="10" rx="2" fill="#E2E8F0"/>
-            <rect x="35" y="148" width="130" height="10" rx="2" fill="#E2E8F0"/>
-            <rect x="35" y="162" width="110" height="10" rx="2" fill="#E2E8F0"/>
-            <text x="100" y="210" font-family="Inter" font-size="10" fill="#94A3B8" text-anchor="middle">10+ results to compare</text>
-            
-            <!-- Arrow -->
-            <path d="M200 120 L220 120" stroke="#CBD5E1" stroke-width="2"/>
-            <polygon points="228,120 220,116 220,124" fill="#CBD5E1"/>
-            
-            <!-- New Way -->
-            <text x="240" y="30" font-family="Inter" font-size="12" font-weight="600" fill="#E67E22">NEW WAY</text>
-            <rect x="240" y="50" width="140" height="100" rx="12" fill="#FEF7ED" stroke="#E67E22" stroke-width="1.5"/>
-            <circle cx="262" cy="72" r="10" fill="#E67E22"/>
-            <text x="280" y="76" font-family="Inter" font-size="11" font-weight="600" fill="#0F172A">AI says:</text>
-            <text x="256" y="100" font-family="Inter" font-size="12" fill="#0F172A">"The best option is</text>
-            <text x="256" y="118" font-family="Inter" font-size="12" font-weight="600" fill="#E67E22">YourProduct Pro"</text>
-            <text x="310" y="170" font-family="Inter" font-size="10" fill="#059669" text-anchor="middle">One clear answer</text>
-            
-            <!-- Lower Section: Pain Points -->
-            <text x="20" y="260" font-family="Inter" font-size="11" font-weight="600" fill="#0F172A">Without AI visibility, you're missing:</text>
-            <g transform="translate(20, 280)">
-              <circle cx="8" cy="8" r="4" fill="#EF4444"/>
-              <text x="20" y="12" font-family="Inter" font-size="11" fill="#475569">High-intent buyers ready to purchase</text>
-            </g>
-            <g transform="translate(20, 305)">
-              <circle cx="8" cy="8" r="4" fill="#EF4444"/>
-              <text x="20" y="12" font-family="Inter" font-size="11" fill="#475569">Free traffic from AI recommendations</text>
-            </g>
-            <g transform="translate(20, 330)">
-              <circle cx="8" cy="8" r="4" fill="#EF4444"/>
-              <text x="20" y="12" font-family="Inter" font-size="11" fill="#475569">Sales going to competitors instead</text>
-            </g>
+        <div class="problem-visual">
+          <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Timeline -->
+            <line x1="50" y1="150" x2="350" y2="150" stroke="#CBD5E1" stroke-width="2"/>
+
+            <!-- Buyer researching quietly -->
+            <circle cx="100" cy="150" r="30" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+            <text x="100" y="155" text-anchor="middle" font-size="28">🔍</text>
+            <text x="100" y="200" text-anchor="middle" font-size="12" fill="#64748B">Researching</text>
+            <text x="100" y="215" text-anchor="middle" font-size="12" fill="#64748B">quietly</text>
+
+            <!-- Comparing options -->
+            <circle cx="200" cy="150" r="30" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+            <text x="200" y="155" text-anchor="middle" font-size="28">⚖️</text>
+            <text x="200" y="200" text-anchor="middle" font-size="12" fill="#64748B">Comparing</text>
+            <text x="200" y="215" text-anchor="middle" font-size="12" fill="#64748B">options</text>
+
+            <!-- Decision made -->
+            <circle cx="300" cy="150" r="30" fill="#ECFDF5" stroke="#059669" stroke-width="2"/>
+            <text x="300" y="155" text-anchor="middle" font-size="28">✓</text>
+            <text x="300" y="200" text-anchor="middle" font-size="12" fill="#059669">Decision</text>
+            <text x="300" y="215" text-anchor="middle" font-size="12" fill="#059669">made</text>
+
+            <!-- "You never saw this" banner -->
+            <rect x="80" y="50" width="240" height="40" rx="8" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5"/>
+            <text x="200" y="75" text-anchor="middle" font-size="14" font-weight="600" fill="#991B1B">You never saw this happening</text>
           </svg>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== HOW IT WORKS ===== -->
-  <section class="section section-alt" id="how-it-works">
+  <!-- ===== WHAT YOU DO ===== -->
+  <section class="section section-light">
     <div class="container">
-      <div class="section-header" data-reveal>
-        <p class="overline">How It Works</p>
-        <h2>We make AI engines recommend your products in three steps.</h2>
-        <p class="section-desc">AI assistants need specific information to confidently recommend products. We make sure your store provides exactly what they're looking for.</p>
+      <div class="section-header">
+        <h2>We show you who should be contacted today and why</h2>
       </div>
-      
-      <!-- Three Pillars -->
-      <div class="pillars-row" data-reveal>
-        <div class="pillar-card">
-          <div class="pillar-number">1</div>
-          <div class="pillar-icon">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-              <rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
-              <path d="M16 18H32M16 24H28M16 30H32" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h3>Structure Your Data</h3>
-          <p>We organize your product information so AI can easily read and understand it. This includes proper formatting, complete specifications, and machine-readable markup that AI systems look for.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">👁️</div>
+          <h4>Watches for signs</h4>
+          <p>A company is entering a buying window</p>
         </div>
-        
-        <div class="pillar-card">
-          <div class="pillar-number">2</div>
-          <div class="pillar-icon">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-              <path d="M24 8V40M8 24H40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="2"/>
-              <circle cx="24" cy="24" r="6" fill="currentColor"/>
-            </svg>
-          </div>
-          <h3>Create Answer Content</h3>
-          <p>We build pages that directly answer the questions shoppers ask AI. When someone asks "what's the best X for Y," your site has the perfect, quotable answer ready.</p>
+
+        <div class="feature-card">
+          <div class="feature-icon">🕐</div>
+          <h4>Flags leads and accounts</h4>
+          <p>That matter right now</p>
         </div>
-        
-        <div class="pillar-card">
-          <div class="pillar-number">3</div>
-          <div class="pillar-icon">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-              <path d="M12 36L24 8L36 36" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M16 28H32" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <circle cx="24" cy="40" r="4" fill="currentColor"/>
-            </svg>
-          </div>
-          <h3>Build Authority</h3>
-          <p>AI trusts sources that are mentioned across the web. We help you get featured in reviews, discussions, and guides that AI systems use to verify recommendations.</p>
+
+        <div class="feature-card">
+          <div class="feature-icon">✓</div>
+          <h4>Explains what changed</h4>
+          <p>So outreach feels natural</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h4>Helps you follow up</h4>
+          <p>Without sounding desperate</p>
         </div>
       </div>
-      
-      <!-- Visual Flow Diagram -->
-      <div class="flow-diagram" data-reveal>
-        <svg viewBox="0 0 900 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Step 1 -->
-          <g transform="translate(50, 20)">
-            <rect width="200" height="140" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
-            <rect x="16" y="16" width="168" height="24" rx="4" fill="#FEF3E2"/>
-            <text x="100" y="33" font-family="Inter" font-size="11" font-weight="600" fill="#E67E22" text-anchor="middle">YOUR STORE DATA</text>
-            <rect x="24" y="52" width="152" height="8" rx="2" fill="#E2E8F0"/>
-            <rect x="24" y="68" width="120" height="8" rx="2" fill="#E2E8F0"/>
-            <rect x="24" y="84" width="140" height="8" rx="2" fill="#E2E8F0"/>
-            <rect x="24" y="100" width="100" height="8" rx="2" fill="#E2E8F0"/>
-            <text x="100" y="128" font-family="Inter" font-size="10" fill="#64748B" text-anchor="middle">Structured + Optimized</text>
-          </g>
-          
-          <!-- Arrow 1 -->
-          <g transform="translate(270, 80)">
-            <path d="M0 10 L60 10" stroke="#E67E22" stroke-width="2" stroke-dasharray="6 4">
-              <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="0.8s" repeatCount="indefinite"/>
-            </path>
-            <polygon points="68,10 58,5 58,15" fill="#E67E22"/>
-          </g>
-          
-          <!-- Step 2 -->
-          <g transform="translate(350, 20)">
-            <rect width="200" height="140" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
-            <circle cx="100" cy="50" r="24" fill="#FEF3E2" stroke="#E67E22" stroke-width="1.5"/>
-            <text x="100" y="54" font-family="Inter" font-size="16" fill="#E67E22" text-anchor="middle">AI</text>
-            <text x="100" y="96" font-family="Inter" font-size="11" font-weight="500" fill="#0F172A" text-anchor="middle">AI reads your content</text>
-            <text x="100" y="112" font-family="Inter" font-size="10" fill="#64748B" text-anchor="middle">and recommends you</text>
-          </g>
-          
-          <!-- Arrow 2 -->
-          <g transform="translate(570, 80)">
-            <path d="M0 10 L60 10" stroke="#E67E22" stroke-width="2" stroke-dasharray="6 4">
-              <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="0.8s" repeatCount="indefinite"/>
-            </path>
-            <polygon points="68,10 58,5 58,15" fill="#E67E22"/>
-          </g>
-          
-          <!-- Step 3 -->
-          <g transform="translate(650, 20)">
-            <rect width="200" height="140" rx="12" fill="#ECFDF5" stroke="#059669" stroke-width="1.5"/>
-            <text x="100" y="50" font-family="Inter" font-size="32" text-anchor="middle">🛒</text>
-            <text x="100" y="85" font-family="Inter" font-size="13" font-weight="600" fill="#059669" text-anchor="middle">Customer Buys</text>
-            <text x="100" y="105" font-family="Inter" font-size="11" fill="#047857" text-anchor="middle">From your store</text>
-            <text x="100" y="125" font-family="Inter" font-size="10" fill="#047857" text-anchor="middle">Zero ad spend</text>
-          </g>
-        </svg>
+
+      <div class="callout">
+        <p>No cold lists.<br>No ads.<br>No sales scripts.</p>
+        <p style="font-weight: 600; margin-top: 20px;">Just better timing.</p>
       </div>
     </div>
   </section>
 
-  <!-- ===== WHAT YOU GET ===== -->
-  <section class="section" id="services">
+  <!-- ===== FREE OFFER ===== -->
+  <section class="section" id="audit">
     <div class="container">
-      <div class="section-header" data-reveal>
-        <p class="overline">What You Get</p>
-        <h2>Everything you need to become the answer AI gives.</h2>
-      </div>
-      
-      <div class="services-grid" data-reveal>
-        <div class="service-item">
-          <div class="service-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-            </svg>
-          </div>
-          <h4>Decision Answer Pages</h4>
-          <p>Custom pages built to answer the exact questions shoppers ask. When AI looks for "best X for Y," it finds your clear, authoritative answer.</p>
-        </div>
-        
-        <div class="service-item">
-          <div class="service-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="16 18 22 12 16 6"/>
-              <polyline points="8 6 2 12 8 18"/>
-            </svg>
-          </div>
-          <h4>Product Schema Markup</h4>
-          <p>Technical code that helps AI understand your products perfectly. Prices, availability, reviews, and specifications in a format AI loves.</p>
-        </div>
-        
-        <div class="service-item">
-          <div class="service-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-              <line x1="12" y1="22.08" x2="12" y2="12"/>
-            </svg>
-          </div>
-          <h4>Clean Product Feeds</h4>
-          <p>Your product data formatted perfectly for AI commerce platforms. Complete attributes, normalized categories, and optimized descriptions.</p>
-        </div>
-        
-        <div class="service-item">
-          <div class="service-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="20" x2="18" y2="10"/>
-              <line x1="12" y1="20" x2="12" y2="4"/>
-              <line x1="6" y1="20" x2="6" y2="14"/>
-            </svg>
-          </div>
-          <h4>AI Traffic Dashboard</h4>
-          <p>See exactly how many visitors come from AI recommendations. Track the journey from AI citation to product view to purchase.</p>
-        </div>
-        
-        <div class="service-item">
-          <div class="service-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-              <line x1="12" y1="17" x2="12.01" y2="17"/>
-            </svg>
-          </div>
-          <h4>FAQ Optimization</h4>
-          <p>Answer blocks built from real customer questions. The exact format AI engines prefer to quote and recommend.</p>
-        </div>
-        
-        <div class="service-item">
-          <div class="service-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-          </div>
-          <h4>Visibility Report</h4>
-          <p>Before and after screenshots showing your products appearing in AI answers. Proof that the strategy is working.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+      <div class="offer-layout">
+        <div class="offer-content">
+          <h2>Get free leads that are ready to buy</h2>
+          <p class="text-large">We run a buyer timing audit for your business.</p>
 
-  <!-- ===== PRICING ===== -->
-  <section class="section section-warm" id="pricing">
-    <div class="container">
-      <div class="pricing-layout" data-reveal>
-        <div class="pricing-content">
-          <p class="overline">The Citation Sprint</p>
-          <h2>Go from invisible to recommended in 10 business days.</h2>
-          <p class="text-large">Our flagship service takes one product category and makes it fully optimized for AI visibility. You get live pages, clean data, and a dashboard showing real results.</p>
-          
-          <div class="pricing-includes">
-            <h4>What's included:</h4>
+          <div class="offer-includes">
+            <h4>You receive:</h4>
             <ul class="check-list">
-              <li>1 to 3 Decision Answer Pages for your top category</li>
-              <li>Product schema implemented on 10 to 20 product pages</li>
-              <li>Cleaned product feed ready for AI commerce</li>
-              <li>GA4 dashboard tracking AI referral traffic</li>
-              <li>Before and after AI visibility report with screenshots</li>
-              <li>60 day roadmap for continued optimization</li>
+              <li>A list of companies and leads that should be contacted now</li>
+              <li>The signal that triggered each opportunity</li>
+              <li>Clear reasoning for why now matters</li>
+              <li>Insight into where you are missing timing today</li>
             </ul>
           </div>
-        </div>
-        
-        <div class="pricing-card">
-          <div class="price-badge">10-Day Sprint</div>
-          <div class="price-display">
-            <span class="price-amount">$5,000</span>
-            <span class="price-unit">per product category</span>
+
+          <div class="offer-cta">
+            <a href="#contact" class="btn btn-primary btn-lg" data-cta>Get free leads that are ready to buy</a>
+            <p class="reassurance">Built around your buyers and your data.</p>
           </div>
-          <p class="price-note">Most stores start with their best-selling category, then expand from there.</p>
-          <div class="pricing-ctas">
-            <a href="#audit" class="btn btn-primary" data-cta>Get Your Free AI Audit</a>
-            <a href="#contact" class="btn btn-secondary">Schedule a Call</a>
+
+          <div class="offer-note">
+            <p>This is free.</p>
+            <p>No calls required.<br>No obligation.</p>
+          </div>
+        </div>
+
+        <div class="offer-visual">
+          <div class="mockup-card">
+            <div class="mockup-header">Today's Buyer Signals</div>
+            <div class="mockup-item">
+              <div class="mockup-company">Acme Consulting</div>
+              <div class="mockup-signal">🟢 New VP hired • Funding round closed</div>
+              <div class="mockup-reason">Company entering growth phase. Contact now.</div>
+            </div>
+            <div class="mockup-item">
+              <div class="mockup-company">TechStart Partners</div>
+              <div class="mockup-signal">🟡 Website updated • Job postings increased</div>
+              <div class="mockup-reason">Scaling operations. Strong timing for outreach.</div>
+            </div>
+            <div class="mockup-item">
+              <div class="mockup-company">Strategy Group LLC</div>
+              <div class="mockup-signal">🟢 Mentioned your firm • Visiting competitor site</div>
+              <div class="mockup-reason">Active evaluation mode. Reach out today.</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== ONGOING SERVICES ===== -->
+  <!-- ===== WHY THIS MATTERS ===== -->
+  <section class="section section-light">
+    <div class="container">
+      <div class="section-header">
+        <h2>Consistency does not come from working harder</h2>
+      </div>
+
+      <div class="comparison-grid">
+        <div class="comparison-side before">
+          <h4>Before</h4>
+          <ul class="comparison-list">
+            <li>Scattered follow-ups</li>
+            <li>Empty calendar gaps</li>
+            <li>Constant anxiety about pipeline</li>
+            <li>Guessing who to contact</li>
+          </ul>
+        </div>
+
+        <div class="comparison-arrow">→</div>
+
+        <div class="comparison-side after">
+          <h4>After</h4>
+          <ul class="comparison-list">
+            <li>Short daily action list</li>
+            <li>Steady conversations</li>
+            <li>Clear timing signals</li>
+            <li>Natural outreach moments</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="benefits-list">
+        <p class="benefit-intro">When timing is clear:</p>
+        <ul>
+          <li>Follow-ups feel natural</li>
+          <li>Sales cycles shorten</li>
+          <li>Old leads come back to life</li>
+          <li>Conversations start at the right moment</li>
+        </ul>
+        <p style="font-weight: 600; margin-top: 32px; font-size: 1.125rem;">Growth stops feeling random.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FULL SERVICE ===== -->
   <section class="section">
     <div class="container">
-      <div class="section-header" data-reveal>
-        <p class="overline">Keep Growing</p>
-        <h2>Optional ongoing services to maintain your AI visibility.</h2>
-      </div>
-      
-      <div class="grid grid-2" data-reveal>
-        <div class="card">
-          <div class="badge">Monthly</div>
-          <h4 style="margin-top: 16px;">Decision Content OS</h4>
-          <p style="margin: 12px 0 16px;">Keep your AI visibility growing after the initial sprint.</p>
-          <ul class="bullet-list">
-            <li>1 to 2 new or refreshed Answer Pages per month</li>
-            <li>10 to 20 product page updates with new FAQs</li>
-            <li>Monthly AI visibility checks on your priority queries</li>
-            <li>Quarterly strategy recommendations</li>
-          </ul>
-          <p style="margin-top: 20px; font-size: 1.25rem; font-weight: 600; color: var(--ink);">$2,500 to $4,000/month</p>
+      <div class="service-layout">
+        <div class="service-visual">
+          <svg viewBox="0 0 500 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Flow: Signals → Follow-up → Conversation → Client -->
+            <g transform="translate(20, 80)">
+              <rect width="100" height="60" rx="8" fill="#F1F5F9" stroke="#64748B" stroke-width="1.5"/>
+              <text x="50" y="35" text-anchor="middle" font-size="13" fill="#0F172A">Signals</text>
+            </g>
+            <path d="M130 110 L150 110" stroke="#64748B" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+            <g transform="translate(160, 80)">
+              <rect width="100" height="60" rx="8" fill="#FEF3E2" stroke="#E67E22" stroke-width="1.5"/>
+              <text x="50" y="35" text-anchor="middle" font-size="13" fill="#0F172A">Follow-up</text>
+            </g>
+            <path d="M270 110 L290 110" stroke="#E67E22" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+            <g transform="translate(300, 80)">
+              <rect width="100" height="60" rx="8" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1.5"/>
+              <text x="50" y="35" text-anchor="middle" font-size="13" fill="#0F172A">Conversation</text>
+            </g>
+            <path d="M410 110 L430 110" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+            <g transform="translate(440, 80)">
+              <rect width="60" height="60" rx="8" fill="#ECFDF5" stroke="#059669" stroke-width="1.5"/>
+              <text x="30" y="35" text-anchor="middle" font-size="13" fill="#059669">Client</text>
+            </g>
+
+            <defs>
+              <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                <polygon points="0 0, 10 3, 0 6" fill="#64748B"/>
+              </marker>
+            </defs>
+          </svg>
         </div>
-        
-        <div class="card">
-          <div class="badge">Add-On</div>
-          <h4 style="margin-top: 16px;">Authority Building</h4>
-          <p style="margin: 12px 0 16px;">Get mentioned where AI looks for trusted sources.</p>
-          <ul class="bullet-list">
-            <li>Identify key YouTube, Reddit, and blog opportunities</li>
-            <li>Creator outreach and product seeding for reviews</li>
-            <li>Editorial pitches to buying guides and newsletters</li>
-            <li>Monthly tracking of new mentions and citations</li>
-          </ul>
-          <p style="margin-top: 20px; font-size: 1.25rem; font-weight: 600; color: var(--ink);">$10k setup + $4k to $6k/month</p>
+
+        <div class="service-content">
+          <h2>Want this running all the time?</h2>
+          <p class="text-large">If the audit is useful, we can set this up so it runs continuously.</p>
+
+          <div class="service-includes">
+            <h4>That includes:</h4>
+            <ul class="check-list">
+              <li>Daily monitoring of buying signals</li>
+              <li>Follow-up that happens even when you are busy</li>
+              <li>Reactivation of dormant leads</li>
+              <li>Qualification and booking</li>
+              <li>Ongoing improvement</li>
+            </ul>
+          </div>
+
+          <p style="margin-top: 28px; color: var(--slate); font-size: 1.0625rem;">All without hiring sales or marketing staff.</p>
+
+          <a href="#contact" class="btn btn-secondary" style="margin-top: 32px;">See how it works</a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ===== WHO IT'S FOR ===== -->
-  <section class="section section-alt" id="who">
+  <section class="section section-light" id="who">
     <div class="container">
-      <div class="who-layout" data-reveal>
-        <div class="who-content">
-          <p class="overline">Is This Right For You?</p>
-          <h2>Built for brands selling products people research before buying.</h2>
-          <p class="text-large">We work with e-commerce brands in the US and Canada. Typically Shopify or modern platforms, $80+ average order value, and 50 to 500 products in a category.</p>
-          <p>If your customers ask questions like "what's the best..." or "which one should I get for..." before purchasing, AI visibility can transform your business.</p>
-        </div>
-        <div class="who-categories">
-          <h4>Categories we work with:</h4>
-          <div class="category-tags">
-            <span class="category-tag">Cycling & Bike Gear</span>
-            <span class="category-tag">Photo & Video Equipment</span>
-            <span class="category-tag">Tools & Workshop</span>
-            <span class="category-tag">Kitchen Appliances</span>
-            <span class="category-tag">PC Parts & Gaming</span>
-            <span class="category-tag">Outdoor & Sports</span>
-            <span class="category-tag">Musical Instruments</span>
-            <span class="category-tag">Home & Garden</span>
-          </div>
-        </div>
+      <div class="section-header">
+        <h2>Built for professional service firms</h2>
       </div>
-    </div>
-  </section>
 
-  <!-- ===== FAQ ===== -->
-  <section class="section" id="faq">
-    <div class="container-narrow">
-      <div class="section-header" data-reveal>
-        <p class="overline">Common Questions</p>
-        <h2>Answers to questions you might have.</h2>
+      <div class="industries-grid">
+        <div class="industry-card">Agencies</div>
+        <div class="industry-card">IT and managed service firms</div>
+        <div class="industry-card">Law firms</div>
+        <div class="industry-card">Accounting firms</div>
+        <div class="industry-card">Recruiting and staffing firms</div>
+        <div class="industry-card">Boutique consultancies</div>
       </div>
-      
-      <div class="faq-list" data-reveal>
-        <div class="faq-item">
-          <button class="faq-question">
-            How is this different from regular SEO?
-            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-content">
-              Traditional SEO focuses on ranking in Google's search results. AI visibility focuses on getting your products recommended in AI-generated answers from ChatGPT, Perplexity, and Google's AI features. The tactics overlap (structured data, quality content), but AI engines need information formatted in specific ways and look for different trust signals than traditional search.
-            </div>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <button class="faq-question">
-            Do I need to be on Shopify?
-            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-content">
-              No. We work with Shopify, WooCommerce, BigCommerce, and custom platforms. What matters is that your product data is accessible and your site can support structured markup and new pages.
-            </div>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <button class="faq-question">
-            Can you guarantee I'll get more sales?
-            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-content">
-              No one can guarantee sales. What we guarantee is that you'll be more visible in AI answers and we'll show you exactly how much traffic is coming from AI recommendations. You'll have real data to see whether the investment is paying off.
-            </div>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <button class="faq-question">
-            What do you need from my team?
-            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-content">
-              We need read-only access to your store, Google Merchant Center, and analytics. Plus a product catalog export for the category we're focusing on and any customer reviews or support logs you can share. No development work required from your team. We handle implementation or provide clear specs for your developers.
-            </div>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <button class="faq-question">
-            How quickly will I see results?
-            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-content">
-              Some changes show up in AI answers within days of going live. Meaningful traffic and conversion trends typically become clear within 4 to 8 weeks. We measure at baseline, 30 days, and 90 days to give you a complete picture.
-            </div>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <button class="faq-question">
-            What if AI search technology changes?
-            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-content">
-              It will change, and that's expected. Our approach focuses on fundamentals that work across AI systems: clean data, clear answers, and genuine authority. When platforms update their methods, we adapt our strategies. The ongoing Content OS service keeps you current with these changes.
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <p class="who-footer">Best fit for firms doing $1M to $10M that rely on trust, timing, and expertise to close deals.</p>
     </div>
   </section>
 
   <!-- ===== FINAL CTA ===== -->
-  <section class="section section-dark" id="audit">
+  <section class="section section-dark">
     <div class="container">
-      <div class="cta-content" data-reveal>
-        <h2>Find out if AI is recommending your products or your competitors.</h2>
-        <p class="text-large" style="color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto 40px;">Get a free audit showing exactly where you appear (or don't) when shoppers ask AI what to buy in your category.</p>
-        <div class="cta-buttons">
-          <a href="#contact" class="btn btn-primary btn-lg" data-cta>Get Your Free AI Audit</a>
-        </div>
+      <div class="final-cta">
+        <h2>Stop guessing where your next client will come from</h2>
+        <p class="final-subtitle">See who is ready to buy right now.</p>
+        <a href="#contact" class="btn btn-primary btn-lg" data-cta>Get free leads that are ready to buy</a>
       </div>
     </div>
   </section>
-  
+
   <!-- ===== CONTACT ===== -->
   <section class="section" id="contact">
     <div class="container-tight">
-      <div class="section-header" data-reveal>
-        <h2>Let's talk about your store.</h2>
+      <div class="section-header">
+        <h2>Get Your Free Buyer Timing Audit</h2>
         <p>We'll respond within one business day.</p>
       </div>
-      <div class="contact-form-card" data-reveal>
+      <div class="contact-form-card">
         <form id="contact-form" class="contact-form">
           <div class="form-row">
             <div class="form-field">
@@ -543,15 +369,15 @@ const siteGraph = [
             </div>
           </div>
           <div class="form-field">
-            <label for="store_url">Store URL</label>
-            <input type="url" id="store_url" name="store_url" placeholder="https://yourstore.com" />
+            <label for="company">Company Name</label>
+            <input type="text" id="company" name="company" placeholder="Your firm name" />
           </div>
           <div class="form-field">
-            <label for="message">What would you like to discuss?</label>
-            <textarea id="message" name="message" rows="3" placeholder="Tell us about your store and what you're looking to achieve..."></textarea>
+            <label for="message">Tell us about your firm</label>
+            <textarea id="message" name="message" rows="3" placeholder="What services do you offer? Who are your ideal clients?"></textarea>
           </div>
           <button type="submit" class="btn btn-primary btn-full" id="submit-btn">
-            <span class="btn-text">Request Free AI Audit</span>
+            <span class="btn-text">Get Free Buyer Timing Audit</span>
             <span class="btn-loading" style="display:none;">Sending...</span>
           </button>
           <p class="form-note">No spam. We'll reach out to schedule a quick call.</p>
@@ -567,384 +393,577 @@ const siteGraph = [
 </Layout>
 
 <style>
-  /* Hero */
+  /* ===== GLOBAL STYLES ===== */
+
+  /* ===== HERO ===== */
   .hero {
-    padding: 160px 0 100px;
-    background: var(--grad-hero);
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    overflow: hidden;
+    padding: 100px 20px;
   }
-  
+
+  .signal-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(148, 163, 184, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: pulse-grid 8s ease-in-out infinite;
+  }
+
+  @keyframes pulse-grid {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.5; }
+  }
+
   .hero-content {
+    position: relative;
+    z-index: 1;
     text-align: center;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  
-  .hero-title {
-    margin: 20px 0 28px;
     max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
   }
-  
+
+  .hero-title {
+    font-size: 4rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+
   .hero-subtitle {
-    font-size: 1.25rem;
-    color: var(--slate);
-    max-width: 680px;
-    margin: 0 auto 40px;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  .hero-body {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 48px;
     line-height: 1.7;
   }
-  
+
   .hero-ctas {
     display: flex;
-    gap: 16px;
+    gap: 24px;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
-    margin-bottom: 64px;
   }
-  
-  .hero-illustration {
-    max-width: 800px;
-    margin: 0 auto;
+
+  .btn-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 2px;
+    transition: all 0.2s ease;
   }
-  
-  .hero-illustration svg {
-    width: 100%;
-    height: auto;
-    filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.06));
+
+  .btn-link:hover {
+    color: white;
+    border-bottom-color: white;
   }
-  
-  /* Split Grid */
-  .split-grid {
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+    .hero-subtitle {
+      font-size: 1.25rem;
+    }
+  }
+
+  /* ===== SPLIT LAYOUT ===== */
+  .split-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 80px;
     align-items: center;
   }
-  
-  .split-content h2 {
-    margin-bottom: 24px;
+
+  @media (max-width: 900px) {
+    .split-layout {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
   }
-  
-  .split-content .text-large {
-    margin-bottom: 20px;
+
+  /* ===== VISUAL CONTAINERS ===== */
+  .visual-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
-  
-  .split-visual {
-    background: var(--soft);
-    border-radius: var(--radius-xl);
-    padding: 32px;
+
+  .calendar-visual,
+  .crm-visual {
+    background: var(--paper);
     border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
   }
-  
-  .illustration-svg {
+
+  .calendar-header,
+  .crm-header {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--slate);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .calendar-slot {
+    height: 60px;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border);
+  }
+
+  .calendar-slot.filled {
+    background: var(--accent-light);
+    border-color: var(--accent);
+  }
+
+  .calendar-slot.empty {
+    background: var(--soft);
+    border-style: dashed;
+  }
+
+  .crm-item {
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+    font-size: 0.9375rem;
+  }
+
+  .crm-item.status-cold {
+    background: #FEF2F2;
+    color: #991B1B;
+    border: 1px solid #FEE2E2;
+  }
+
+  /* ===== PROBLEM LAYOUT ===== */
+  .problem-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .problem-visual svg {
     width: 100%;
     height: auto;
   }
-  
+
   @media (max-width: 900px) {
-    .split-grid {
+    .problem-layout {
       grid-template-columns: 1fr;
       gap: 48px;
     }
   }
-  
-  /* Section Header */
-  .section-header {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 64px;
-  }
-  
-  .section-header h2 {
-    margin: 16px 0;
-  }
-  
-  .section-desc {
-    font-size: 1.125rem;
-    color: var(--slate);
-  }
-  
-  /* Pillars */
-  .pillars-row {
+
+  /* ===== FEATURES GRID ===== */
+  .features-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-    margin-bottom: 80px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 64px;
   }
-  
-  .pillar-card {
+
+  .feature-card {
     background: var(--paper);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 40px 32px;
+    padding: 32px 24px;
     text-align: center;
-    position: relative;
-    transition: all 0.3s ease;
   }
-  
-  .pillar-card:hover {
-    border-color: var(--accent);
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-4px);
-  }
-  
-  .pillar-number {
-    position: absolute;
-    top: -16px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 32px;
-    height: 32px;
-    background: var(--accent);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 14px;
-  }
-  
-  .pillar-icon {
-    width: 80px;
-    height: 80px;
-    background: var(--accent-light);
-    border-radius: var(--radius-lg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 24px;
-    color: var(--accent);
-  }
-  
-  .pillar-card h3 {
-    font-family: var(--font-sans);
-    font-size: 1.25rem;
-    font-weight: 600;
+
+  .feature-icon {
+    font-size: 2.5rem;
     margin-bottom: 16px;
   }
-  
-  .pillar-card p {
+
+  .feature-card h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+
+  .feature-card p {
     font-size: 0.9375rem;
-    line-height: 1.6;
+    color: var(--slate);
   }
-  
+
   @media (max-width: 900px) {
-    .pillars-row {
-      grid-template-columns: 1fr;
-      gap: 48px;
-    }
-  }
-  
-  /* Flow Diagram */
-  .flow-diagram {
-    background: var(--paper);
-    border-radius: var(--radius-xl);
-    padding: 32px;
-    border: 1px solid var(--border);
-    overflow-x: auto;
-  }
-  
-  .flow-diagram svg {
-    min-width: 800px;
-    height: auto;
-  }
-  
-  /* Services Grid */
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-  }
-  
-  .service-item {
-    padding: 32px;
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    transition: all 0.3s ease;
-  }
-  
-  .service-item:hover {
-    border-color: var(--accent);
-    box-shadow: var(--shadow-md);
-  }
-  
-  .service-icon {
-    width: 56px;
-    height: 56px;
-    background: var(--accent-light);
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    color: var(--accent);
-  }
-  
-  .service-item h4 {
-    margin-bottom: 12px;
-  }
-  
-  .service-item p {
-    font-size: 0.9375rem;
-    line-height: 1.6;
-  }
-  
-  @media (max-width: 900px) {
-    .services-grid {
+    .features-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
-  
+
   @media (max-width: 640px) {
-    .services-grid {
+    .features-grid {
       grid-template-columns: 1fr;
     }
   }
-  
-  /* Pricing */
-  .pricing-layout {
+
+  /* ===== CALLOUT ===== */
+  .callout {
+    background: var(--paper);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius-lg);
+    padding: 48px;
+    text-align: center;
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+
+  /* ===== OFFER LAYOUT ===== */
+  .offer-layout {
     display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 64px;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
     align-items: start;
   }
-  
-  .pricing-content h2 {
-    margin: 16px 0 20px;
+
+  .offer-includes {
+    margin: 40px 0;
   }
-  
-  .pricing-includes {
-    margin-top: 40px;
-  }
-  
-  .pricing-includes h4 {
+
+  .offer-includes h4 {
     margin-bottom: 20px;
   }
-  
-  .pricing-card {
-    background: var(--paper);
-    border-radius: var(--radius-xl);
-    padding: 48px 40px;
-    box-shadow: var(--shadow-xl);
-    text-align: center;
-    position: sticky;
-    top: 120px;
+
+  .offer-cta {
+    margin-top: 40px;
   }
-  
-  .price-badge {
-    display: inline-block;
-    padding: 8px 20px;
-    background: var(--accent);
-    color: white;
-    border-radius: 999px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin-bottom: 24px;
-  }
-  
-  .pricing-card .price-display {
-    align-items: center;
-    margin-bottom: 16px;
-  }
-  
-  .price-note {
-    font-size: 0.875rem;
+
+  .reassurance {
+    font-size: 0.9375rem;
     color: var(--slate);
-    margin-bottom: 32px;
+    margin-top: 16px;
+    text-align: center;
   }
-  
-  .pricing-ctas {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+
+  .offer-note {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--slate);
   }
-  
-  .pricing-ctas .btn {
-    width: 100%;
+
+  .offer-note p {
+    margin: 8px 0;
   }
-  
+
   @media (max-width: 900px) {
-    .pricing-layout {
+    .offer-layout {
       grid-template-columns: 1fr;
       gap: 48px;
     }
-    
-    .pricing-card {
-      position: static;
-    }
   }
-  
-  /* Who It's For */
-  .who-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-    align-items: start;
-  }
-  
-  .who-content h2 {
-    margin: 16px 0 24px;
-  }
-  
-  .who-categories h4 {
-    margin-bottom: 20px;
-  }
-  
-  .category-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  
-  .category-tag {
-    display: inline-flex;
-    padding: 12px 20px;
+
+  /* ===== MOCKUP CARD ===== */
+  .mockup-card {
     background: var(--paper);
     border: 1px solid var(--border);
-    border-radius: 999px;
-    font-size: 0.9375rem;
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    box-shadow: var(--shadow-xl);
+  }
+
+  .mockup-header {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--ink);
+  }
+
+  .mockup-item {
+    background: var(--soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .mockup-company {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+
+  .mockup-signal {
+    font-size: 0.875rem;
+    color: var(--slate);
+    margin-bottom: 8px;
+  }
+
+  .mockup-reason {
+    font-size: 0.875rem;
     color: var(--ink-light);
+    font-style: italic;
+  }
+
+  /* ===== COMPARISON GRID ===== */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 48px;
+    align-items: center;
+    margin-bottom: 64px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .comparison-side {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+  }
+
+  .comparison-side h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+    color: var(--slate);
+  }
+
+  .comparison-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .comparison-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-list li:last-child {
+    border-bottom: none;
+  }
+
+  .comparison-side.before {
+    border-color: #FEE2E2;
+    background: #FEF2F2;
+  }
+
+  .comparison-side.after {
+    border-color: #D1FAE5;
+    background: #ECFDF5;
+  }
+
+  .comparison-arrow {
+    font-size: 2rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  @media (max-width: 768px) {
+    .comparison-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .comparison-arrow {
+      text-align: center;
+      transform: rotate(90deg);
+    }
+  }
+
+  /* ===== BENEFITS LIST ===== */
+  .benefits-list {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .benefit-intro {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+
+  .benefits-list ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    display: inline-block;
+  }
+
+  .benefits-list li {
+    padding: 8px 0;
+    padding-left: 32px;
+    position: relative;
+  }
+
+  .benefits-list li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ===== SERVICE LAYOUT ===== */
+  .service-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .service-visual svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .service-includes {
+    margin: 32px 0;
+  }
+
+  .service-includes h4 {
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 900px) {
+    .service-layout {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+
+  /* ===== INDUSTRIES GRID ===== */
+  .industries-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .industry-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    text-align: center;
+    font-weight: 500;
     transition: all 0.2s ease;
   }
-  
-  .category-tag:hover {
+
+  .industry-card:hover {
     border-color: var(--accent);
     background: var(--accent-light);
   }
-  
+
+  .who-footer {
+    text-align: center;
+    color: var(--slate);
+    font-size: 1.0625rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
   @media (max-width: 768px) {
-    .who-layout {
-      grid-template-columns: 1fr;
-      gap: 40px;
+    .industries-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
-  
-  /* CTA Section */
-  .cta-content {
+
+  @media (max-width: 480px) {
+    .industries-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== FINAL CTA ===== */
+  .final-cta {
     text-align: center;
     max-width: 700px;
     margin: 0 auto;
   }
-  
-  .cta-content h2 {
+
+  .final-cta h2 {
     color: white;
     margin-bottom: 20px;
   }
-  
-  .cta-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
+
+  .final-subtitle {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 40px;
   }
-  
+
+  /* ===== SECTION VARIATIONS ===== */
+  .section-light {
+    background: var(--soft);
+  }
+
+  .section-dark {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: white;
+  }
+
+  /* ===== UTILITIES ===== */
+  .text-large {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .check-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .check-list li {
+    padding: 12px 0;
+    padding-left: 32px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .check-list li:last-child {
+    border-bottom: none;
+  }
+
+  .check-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
   .btn-lg {
     padding: 20px 40px;
     font-size: 1.0625rem;
   }
-  
-  /* Contact Form */
+
+  /* ===== CONTACT FORM ===== */
   .contact-form-card {
     max-width: 560px;
     margin: 32px auto 0;
@@ -1053,7 +1072,7 @@ const siteGraph = [
     .form-row {
       grid-template-columns: 1fr;
     }
-    
+
     .contact-form-card {
       padding: 28px 20px;
     }
@@ -1061,33 +1080,6 @@ const siteGraph = [
 </style>
 
 <script>
-  // Scroll reveal
-  const revealElements = document.querySelectorAll('[data-reveal]');
-  
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-  
-  revealElements.forEach(el => revealObserver.observe(el));
-  
-  // FAQ accordion
-  document.querySelectorAll('.faq-question').forEach(button => {
-    button.addEventListener('click', () => {
-      const item = button.parentElement;
-      const isOpen = item?.classList.contains('open');
-      
-      document.querySelectorAll('.faq-item.open').forEach(openItem => {
-        if (openItem !== item) openItem.classList.remove('open');
-      });
-      
-      item?.classList.toggle('open');
-    });
-  });
-  
   // Analytics
   fetch('/api/events', {
     method: 'POST',
@@ -1112,10 +1104,10 @@ const siteGraph = [
 
   contactForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const btnText = submitBtn?.querySelector('.btn-text');
     const btnLoading = submitBtn?.querySelector('.btn-loading');
-    
+
     if (btnText) btnText.style.display = 'none';
     if (btnLoading) btnLoading.style.display = 'inline';
     if (submitBtn) submitBtn.disabled = true;
@@ -1124,9 +1116,9 @@ const siteGraph = [
     const data = {
       name: formData.get('name'),
       email: formData.get('email'),
-      store_url: formData.get('store_url'),
+      company: formData.get('company'),
       message: formData.get('message'),
-      source: 'website_contact_form',
+      source: 'buyer_timing_audit',
       submitted_at: new Date().toISOString()
     };
 
@@ -1140,7 +1132,7 @@ const siteGraph = [
       if (response.ok) {
         contactForm.style.display = 'none';
         if (formSuccess) formSuccess.style.display = 'block';
-        
+
         // Track conversion
         fetch('/api/events', {
           method: 'POST',
