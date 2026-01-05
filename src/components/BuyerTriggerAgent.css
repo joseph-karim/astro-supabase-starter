@@ -330,6 +330,68 @@
   font-weight: 500;
 }
 
+/* Analyzing State */
+.bta-analyzing {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: rgba(37, 99, 235, 0.05);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 6px;
+  color: var(--signal-blue);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Analysis Box */
+.bta-analysis-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: var(--mist);
+  border-radius: 8px;
+}
+
+.bta-analysis-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bta-analysis-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--smoke);
+}
+
+.bta-analysis-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--obsidian);
+}
+
+.bta-helper {
+  font-size: 14px;
+  color: var(--smoke);
+  margin-bottom: 16px;
+}
+
+.bta-priority-badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 8px;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--signal-blue);
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 /* Success Screen */
 .bta-success {
   text-align: center;

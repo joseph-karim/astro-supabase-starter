@@ -13,10 +13,31 @@ interface SessionData {
   frequency: string;
 }
 
+interface Analysis {
+  companyProfile: any;
+  idealCustomerProfile: any;
+  recommendedSignals: any[];
+  confidence: number;
+}
+
+interface Lead {
+  company: string;
+  location: string;
+  employees: number;
+  revenue: string;
+  score: number;
+  primarySignal: string;
+  tags: string[];
+  matchReason: string;
+}
+
 export default function BuyerTriggerAgent() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [analysis, setAnalysis] = useState<Analysis | null>(null);
+  const [leads, setLeads] = useState<Lead[]>([]);
 
   const [data, setData] = useState<SessionData>({
     email: '',
@@ -30,7 +51,7 @@ export default function BuyerTriggerAgent() {
     frequency: 'daily'
   });
 
-  const totalSteps = 7;
+  const totalSteps = 3;
 
   // Signal types available for selection
   const signalTypes = [
@@ -54,9 +75,12 @@ export default function BuyerTriggerAgent() {
   ];
 
   const handleNext = async () => {
-    if (step === totalSteps) {
-      // Complete onboarding
-      await completeOnboarding();
+    if (step === 1) {
+      // Analyze website after step 1
+      await analyzeWebsite();
+    } else if (step === 3) {
+      // Generate leads after final step
+      await generateLeads();
     } else {
       setStep(step + 1);
     }
@@ -66,21 +90,59 @@ export default function BuyerTriggerAgent() {
     if (step > 1) setStep(step - 1);
   };
 
-  const completeOnboarding = async () => {
+  const analyzeWebsite = async () => {
+    setAnalyzing(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/buyer-trigger-agent/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          website: data.website,
+          companyName: data.companyName
+        })
+      });
+
+      if (!response.ok) throw new Error('Failed to analyze website');
+
+      const result = await response.json();
+      setAnalysis(result);
+
+      // Pre-fill ICP and signals from analysis
+      setData({
+        ...data,
+        industry: result.companyProfile.industry,
+        targetBuyer: result.idealCustomerProfile.title,
+        signals: result.recommendedSignals
+          .filter((s: any) => s.enabled)
+          .map((s: any) => s.id)
+      });
+
+      setStep(2);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
+  const generateLeads = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      // Save complete session data - create session and complete in one call
-      const response = await fetch(`/api/buyer-trigger-agent/complete`, {
+      const response = await fetch('/api/buyer-trigger-agent/generate-leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
 
-      if (!response.ok) throw new Error('Failed to complete onboarding');
+      if (!response.ok) throw new Error('Failed to generate leads');
 
-      setStep(totalSteps + 1); // Show success screen
+      const result = await response.json();
+      setLeads(result.leads);
+      setStep(totalSteps + 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
@@ -102,13 +164,9 @@ export default function BuyerTriggerAgent() {
 
   const canProceed = () => {
     switch (step) {
-      case 1: return data.companyName.length > 0;
-      case 2: return data.website.length > 0;
-      case 3: return data.industry.length > 0;
-      case 4: return data.targetBuyer.length > 0;
-      case 5: return data.painPoints.length > 0;
-      case 6: return data.buyerJourneyStage.length > 0;
-      case 7: return data.signals.length > 0;
+      case 1: return data.companyName.length > 0 && data.website.length > 0;
+      case 2: return analysis !== null && data.signals.length > 0;
+      case 3: return data.buyerJourneyStage.length > 0;
       default: return true;
     }
   };
@@ -118,60 +176,30 @@ export default function BuyerTriggerAgent() {
       <div className="bta-container">
         <div className="bta-report">
           <div className="bta-report-header">
-            <h2>Here are 25 companies ready to buy</h2>
+            <h2>Here are {leads.length} companies ready to buy</h2>
             <p className="bta-report-subtitle">Based on your criteria: {data.industry} companies showing {data.signals.length} signal types</p>
           </div>
 
           <div className="bta-leads">
-            <div className="bta-lead-card">
-              <div className="bta-lead-header">
-                <div>
-                  <div className="bta-lead-company">Meridian Manufacturing</div>
-                  <div className="bta-lead-meta">Cleveland, OH • 340 employees • $45M revenue</div>
+            {leads.map((lead, idx) => (
+              <div key={idx} className="bta-lead-card">
+                <div className="bta-lead-header">
+                  <div>
+                    <div className="bta-lead-company">{lead.company}</div>
+                    <div className="bta-lead-meta">{lead.location} • {lead.employees} employees • {lead.revenue} revenue</div>
+                  </div>
+                  <div className="bta-lead-score">{lead.score}</div>
                 </div>
-                <div className="bta-lead-score">94</div>
-              </div>
-              <div className="bta-lead-signal">
-                <span className="bta-signal-label">Primary Signal:</span> New COO started 47 days ago
-              </div>
-              <div className="bta-lead-tags">
-                <span className="bta-tag">Facility expansion</span>
-                <span className="bta-tag">PE-backed</span>
-              </div>
-            </div>
-
-            <div className="bta-lead-card">
-              <div className="bta-lead-header">
-                <div>
-                  <div className="bta-lead-company">Apex Distribution</div>
-                  <div className="bta-lead-meta">Austin, TX • 280 employees • $38M revenue</div>
+                <div className="bta-lead-signal">
+                  <span className="bta-signal-label">Primary Signal:</span> {lead.primarySignal}
                 </div>
-                <div className="bta-lead-score">87</div>
-              </div>
-              <div className="bta-lead-signal">
-                <span className="bta-signal-label">Primary Signal:</span> Series B funding ($28M) announced
-              </div>
-              <div className="bta-lead-tags">
-                <span className="bta-tag">Hiring for ops</span>
-                <span className="bta-tag">Tech adoption</span>
-              </div>
-            </div>
-
-            <div className="bta-lead-card">
-              <div className="bta-lead-header">
-                <div>
-                  <div className="bta-lead-company">Vanguard Systems</div>
-                  <div className="bta-lead-meta">Denver, CO • 195 employees • $32M revenue</div>
+                <div className="bta-lead-tags">
+                  {lead.tags.map((tag, i) => (
+                    <span key={i} className="bta-tag">{tag}</span>
+                  ))}
                 </div>
-                <div className="bta-lead-score">82</div>
               </div>
-              <div className="bta-lead-signal">
-                <span className="bta-signal-label">Primary Signal:</span> PE acquisition announced 3 weeks ago
-              </div>
-              <div className="bta-lead-tags">
-                <span className="bta-tag">Leadership transition</span>
-              </div>
-            </div>
+            ))}
 
             <div className="bta-more-leads">+ 22 more qualified leads in your full report</div>
           </div>
@@ -216,11 +244,11 @@ export default function BuyerTriggerAgent() {
         <div className="bta-content">
           {step === 1 && (
             <div className="bta-step">
-              <h2>What's your company name?</h2>
-              <p className="bta-subtitle">We'll use this to personalize your leads.</p>
+              <h2>Let's find companies ready to buy from you</h2>
+              <p className="bta-subtitle">We'll analyze your website and generate a personalized list of leads showing buying signals.</p>
 
               <div className="bta-field">
-                <label>Company Name</label>
+                <label>Your Company Name</label>
                 <input
                   type="text"
                   value={data.companyName}
@@ -229,95 +257,70 @@ export default function BuyerTriggerAgent() {
                   autoFocus
                 />
               </div>
-            </div>
-          )}
-
-          {step === 2 && (
-            <div className="bta-step">
-              <h2>What's your company website?</h2>
-              <p className="bta-subtitle">We'll analyze your positioning to better understand your ideal customers.</p>
 
               <div className="bta-field">
-                <label>Website URL</label>
+                <label>Your Website</label>
                 <input
                   type="url"
                   value={data.website}
                   onChange={(e) => updateData('website', e.target.value)}
                   placeholder="https://acme.com"
-                  autoFocus
                 />
+              </div>
+
+              {analyzing && <div className="bta-analyzing">🔍 Analyzing your website to understand your business...</div>}
+              {error && <div className="bta-error">{error}</div>}
+            </div>
+          )}
+
+          {step === 2 && analysis && (
+            <div className="bta-step">
+              <h2>We found your ideal customers</h2>
+              <p className="bta-subtitle">Based on analyzing {data.website}, here's who we think you should target:</p>
+
+              <div className="bta-analysis-box">
+                <div className="bta-analysis-item">
+                  <div className="bta-analysis-label">Your Industry</div>
+                  <div className="bta-analysis-value">{analysis.companyProfile.industry}</div>
+                </div>
+                <div className="bta-analysis-item">
+                  <div className="bta-analysis-label">Your Ideal Buyer</div>
+                  <div className="bta-analysis-value">{analysis.idealCustomerProfile.title}</div>
+                </div>
+                <div className="bta-analysis-item">
+                  <div className="bta-analysis-label">Target Company Size</div>
+                  <div className="bta-analysis-value">{analysis.idealCustomerProfile.companySize}</div>
+                </div>
+              </div>
+
+              <div className="bta-field">
+                <label>Select the signals that indicate readiness to buy</label>
+                <p className="bta-helper">We've pre-selected the most relevant signals for your business:</p>
+
+                <div className="bta-signal-grid">
+                  {analysis.recommendedSignals.map((signal: any) => (
+                    <label key={signal.id} className="bta-signal-card">
+                      <input
+                        type="checkbox"
+                        checked={data.signals.includes(signal.id)}
+                        onChange={() => toggleArrayItem('signals', signal.id)}
+                      />
+                      <div className="bta-signal-content">
+                        <strong>{signal.label}</strong>
+                        <p>{signal.reason}</p>
+                        {signal.priority === 'high' && <span className="bta-priority-badge">High Priority</span>}
+                      </div>
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
           )}
 
           {step === 3 && (
             <div className="bta-step">
-              <h2>What industry are you in?</h2>
-              <p className="bta-subtitle">This helps us understand the buying patterns in your market.</p>
-
-              <div className="bta-field">
-                <label>Industry</label>
-                <select
-                  value={data.industry}
-                  onChange={(e) => updateData('industry', e.target.value)}
-                  autoFocus
-                >
-                  <option value="">Select an industry...</option>
-                  <option value="saas">SaaS / Software</option>
-                  <option value="marketing">Marketing Agency</option>
-                  <option value="consulting">Consulting</option>
-                  <option value="legal">Legal Services</option>
-                  <option value="accounting">Accounting / Finance</option>
-                  <option value="design">Design Agency</option>
-                  <option value="recruiting">Recruiting</option>
-                  <option value="other">Other Professional Services</option>
-                </select>
-              </div>
-            </div>
-          )}
-
-          {step === 4 && (
-            <div className="bta-step">
-              <h2>Who's your ideal buyer?</h2>
-              <p className="bta-subtitle">Be specific. For example: "VP Marketing at Series B SaaS companies"</p>
-
-              <div className="bta-field">
-                <label>Target Buyer Profile</label>
-                <textarea
-                  value={data.targetBuyer}
-                  onChange={(e) => updateData('targetBuyer', e.target.value)}
-                  placeholder="VP Marketing at B2B SaaS companies with 50-200 employees, focused on demand generation..."
-                  rows={4}
-                  autoFocus
-                />
-              </div>
-            </div>
-          )}
-
-          {step === 5 && (
-            <div className="bta-step">
-              <h2>What problems keep your prospects up at night?</h2>
-              <p className="bta-subtitle">Select all that apply. We'll use this to identify relevant buying signals.</p>
-
-              <div className="bta-checkbox-grid">
-                {painPointOptions.map(option => (
-                  <label key={option} className="bta-checkbox">
-                    <input
-                      type="checkbox"
-                      checked={data.painPoints.includes(option)}
-                      onChange={() => toggleArrayItem('painPoints', option)}
-                    />
-                    <span>{option}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {step === 6 && (
-            <div className="bta-step">
-              <h2>When in the buyer journey do you want to engage?</h2>
-              <p className="bta-subtitle">Earlier = more opportunities but more nurturing required.</p>
+              <h2>When should we reach out?</h2>
+              <p className="bta-subtitle">Choose the buyer journey stage where you want to engage.</p>
 
               <div className="bta-radio-group">
                 <label className="bta-radio">
@@ -327,10 +330,11 @@ export default function BuyerTriggerAgent() {
                     value="awareness"
                     checked={data.buyerJourneyStage === 'awareness'}
                     onChange={(e) => updateData('buyerJourneyStage', e.target.value)}
+                    autoFocus
                   />
                   <div>
                     <strong>Early (Awareness)</strong>
-                    <p>Just starting to experience the problem</p>
+                    <p>Just starting to experience the problem - more opportunities, more nurturing needed</p>
                   </div>
                 </label>
 
@@ -344,7 +348,7 @@ export default function BuyerTriggerAgent() {
                   />
                   <div>
                     <strong>Middle (Consideration)</strong>
-                    <p>Actively researching solutions</p>
+                    <p>Actively researching solutions - balanced volume and readiness</p>
                   </div>
                 </label>
 
@@ -358,32 +362,9 @@ export default function BuyerTriggerAgent() {
                   />
                   <div>
                     <strong>Late (Decision)</strong>
-                    <p>Ready to buy, evaluating vendors</p>
+                    <p>Ready to buy, evaluating vendors - highest intent, lowest volume</p>
                   </div>
                 </label>
-              </div>
-            </div>
-          )}
-
-          {step === 7 && (
-            <div className="bta-step">
-              <h2>Which signals matter most to you?</h2>
-              <p className="bta-subtitle">We'll monitor these triggers and alert you when companies match.</p>
-
-              <div className="bta-signal-grid">
-                {signalTypes.map(signal => (
-                  <label key={signal.id} className="bta-signal-card">
-                    <input
-                      type="checkbox"
-                      checked={data.signals.includes(signal.id)}
-                      onChange={() => toggleArrayItem('signals', signal.id)}
-                    />
-                    <div className="bta-signal-content">
-                      <strong>{signal.label}</strong>
-                      <p>{signal.description}</p>
-                    </div>
-                  </label>
-                ))}
               </div>
 
               {error && <div className="bta-error">{error}</div>}
@@ -408,9 +389,9 @@ export default function BuyerTriggerAgent() {
           <button
             onClick={handleNext}
             className="bta-btn bta-btn-primary"
-            disabled={!canProceed() || loading}
+            disabled={!canProceed() || loading || analyzing}
           >
-            {loading ? 'Processing...' : step === totalSteps ? 'Complete Setup' : 'Continue'}
+            {analyzing ? 'Analyzing Website...' : loading ? 'Generating Leads...' : step === 1 ? 'Analyze My Business' : step === totalSteps ? 'Show Me the Leads' : 'Continue'}
           </button>
         </div>
       </div>
