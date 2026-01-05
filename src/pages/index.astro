@@ -775,14 +775,15 @@ const siteGraph = [
   .visual-container {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
+    max-width: 480px;
   }
 
   .calendar-visual,
   .crm-visual {
     background: white;
     border: 1px solid #E5E7EB;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
   }
 
@@ -791,31 +792,32 @@ const siteGraph = [
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 24px;
+    padding: 12px 16px;
     border-bottom: 1px solid #E5E7EB;
   }
 
   .cal-month {
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--obsidian);
   }
 
   .cal-nav {
     display: flex;
-    gap: 8px;
+    gap: 4px;
   }
 
   .cal-nav span {
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
+    border-radius: 4px;
     color: var(--graphite);
     cursor: pointer;
     transition: background 0.2s;
+    font-size: 12px;
   }
 
   .cal-nav span:hover {
@@ -825,12 +827,12 @@ const siteGraph = [
   .cal-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    padding: 16px 24px 12px;
-    gap: 4px;
+    padding: 8px 16px 6px;
+    gap: 2px;
   }
 
   .cal-weekdays div {
-    font-size: 11px;
+    font-size: 9px;
     font-weight: 600;
     color: var(--smoke);
     text-align: center;
@@ -841,8 +843,8 @@ const siteGraph = [
   .cal-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    padding: 0 24px 24px;
-    gap: 4px;
+    padding: 0 16px 16px;
+    gap: 2px;
   }
 
   .cal-day {
@@ -851,9 +853,9 @@ const siteGraph = [
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 11px;
     color: var(--obsidian);
-    border-radius: 6px;
+    border-radius: 4px;
     position: relative;
     transition: background 0.2s;
   }
@@ -866,23 +868,23 @@ const siteGraph = [
   .cal-day.has-event {
     background: rgba(37, 99, 235, 0.05);
     border: 1px solid rgba(37, 99, 235, 0.2);
-    padding: 4px;
+    padding: 2px;
     justify-content: flex-start;
   }
 
   .cal-day-num {
-    font-size: 13px;
+    font-size: 10px;
     color: var(--obsidian);
     font-weight: 500;
   }
 
   .cal-event {
-    font-size: 9px;
+    font-size: 7px;
     color: var(--signal-blue);
     background: rgba(37, 99, 235, 0.1);
-    padding: 2px 4px;
-    border-radius: 3px;
-    margin-top: 2px;
+    padding: 1px 3px;
+    border-radius: 2px;
+    margin-top: 1px;
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
@@ -895,46 +897,46 @@ const siteGraph = [
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 24px;
+    padding: 12px 16px;
     border-bottom: 1px solid #E5E7EB;
     background: var(--mist);
   }
 
   .crm-title {
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--obsidian);
   }
 
   .crm-value {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--graphite);
     font-family: 'JetBrains Mono', monospace;
   }
 
   .crm-pipeline {
-    padding: 16px 24px 24px;
+    padding: 12px 16px 16px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
   }
 
   .crm-stage {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
 
   .stage-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   .stage-name {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
     color: var(--smoke);
     text-transform: uppercase;
@@ -942,22 +944,22 @@ const siteGraph = [
   }
 
   .stage-count {
-    font-size: 11px;
+    font-size: 9px;
     font-weight: 600;
     color: var(--smoke);
     background: var(--mist);
-    padding: 2px 8px;
-    border-radius: 12px;
+    padding: 2px 6px;
+    border-radius: 10px;
   }
 
   .crm-deal {
-    padding: 12px;
+    padding: 8px;
     background: white;
     border: 1px solid #E5E7EB;
-    border-radius: 8px;
+    border-radius: 6px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
   }
 
   .crm-deal.cold {
@@ -965,20 +967,20 @@ const siteGraph = [
   }
 
   .deal-company {
-    font-size: 14px;
+    font-size: 11px;
     font-weight: 600;
     color: var(--obsidian);
   }
 
   .deal-value {
-    font-size: 13px;
+    font-size: 10px;
     font-weight: 600;
     color: var(--graphite);
     font-family: 'JetBrains Mono', monospace;
   }
 
   .deal-status {
-    font-size: 12px;
+    font-size: 9px;
     color: var(--smoke);
     font-style: italic;
   }

@@ -15,7 +15,6 @@ interface SessionData {
 
 export default function BuyerTriggerAgent() {
   const [step, setStep] = useState(1);
-  const [sessionId, setSessionId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,7 +30,7 @@ export default function BuyerTriggerAgent() {
     frequency: 'daily'
   });
 
-  const totalSteps = 9;
+  const totalSteps = 8;
 
   // Signal types available for selection
   const signalTypes = [
@@ -55,10 +54,7 @@ export default function BuyerTriggerAgent() {
   ];
 
   const handleNext = async () => {
-    if (step === 1) {
-      // Initialize session
-      await initializeSession();
-    } else if (step === totalSteps) {
+    if (step === totalSteps) {
       // Complete onboarding
       await completeOnboarding();
     } else {
@@ -70,42 +66,16 @@ export default function BuyerTriggerAgent() {
     if (step > 1) setStep(step - 1);
   };
 
-  const initializeSession = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch('/api/buyer-trigger-agent/start', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: data.email })
-      });
-
-      if (!response.ok) throw new Error('Failed to start session');
-
-      const result = await response.json();
-      setSessionId(result.sessionId);
-      setStep(2);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const completeOnboarding = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      // Save complete session data
+      // Save complete session data - create session and complete in one call
       const response = await fetch(`/api/buyer-trigger-agent/complete`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          sessionId,
-          ...data
-        })
+        body: JSON.stringify(data)
       });
 
       if (!response.ok) throw new Error('Failed to complete onboarding');
@@ -132,15 +102,14 @@ export default function BuyerTriggerAgent() {
 
   const canProceed = () => {
     switch (step) {
-      case 1: return data.email.includes('@');
-      case 2: return data.companyName.length > 0;
-      case 3: return data.website.length > 0;
-      case 4: return data.industry.length > 0;
-      case 5: return data.targetBuyer.length > 0;
-      case 6: return data.painPoints.length > 0;
-      case 7: return data.buyerJourneyStage.length > 0;
-      case 8: return data.signals.length > 0;
-      case 9: return data.frequency.length > 0;
+      case 1: return data.companyName.length > 0;
+      case 2: return data.website.length > 0;
+      case 3: return data.industry.length > 0;
+      case 4: return data.targetBuyer.length > 0;
+      case 5: return data.painPoints.length > 0;
+      case 6: return data.buyerJourneyStage.length > 0;
+      case 7: return data.signals.length > 0;
+      case 8: return data.email.includes('@');
       default: return true;
     }
   };
@@ -175,28 +144,8 @@ export default function BuyerTriggerAgent() {
         <div className="bta-content">
           {step === 1 && (
             <div className="bta-step">
-              <h2>Let's find companies ready to buy</h2>
-              <p className="bta-subtitle">Enter your email to get started. No credit card required.</p>
-
-              <div className="bta-field">
-                <label>Email Address</label>
-                <input
-                  type="email"
-                  value={data.email}
-                  onChange={(e) => updateData('email', e.target.value)}
-                  placeholder="you@company.com"
-                  autoFocus
-                />
-              </div>
-
-              {error && <div className="bta-error">{error}</div>}
-            </div>
-          )}
-
-          {step === 2 && (
-            <div className="bta-step">
               <h2>What's your company name?</h2>
-              <p className="bta-subtitle">We'll use this to personalize your experience.</p>
+              <p className="bta-subtitle">We'll use this to personalize your leads.</p>
 
               <div className="bta-field">
                 <label>Company Name</label>
@@ -211,7 +160,7 @@ export default function BuyerTriggerAgent() {
             </div>
           )}
 
-          {step === 3 && (
+          {step === 2 && (
             <div className="bta-step">
               <h2>What's your company website?</h2>
               <p className="bta-subtitle">We'll analyze your positioning to better understand your ideal customers.</p>
@@ -229,7 +178,7 @@ export default function BuyerTriggerAgent() {
             </div>
           )}
 
-          {step === 4 && (
+          {step === 3 && (
             <div className="bta-step">
               <h2>What industry are you in?</h2>
               <p className="bta-subtitle">This helps us understand the buying patterns in your market.</p>
@@ -255,7 +204,7 @@ export default function BuyerTriggerAgent() {
             </div>
           )}
 
-          {step === 5 && (
+          {step === 4 && (
             <div className="bta-step">
               <h2>Who's your ideal buyer?</h2>
               <p className="bta-subtitle">Be specific. For example: "VP Marketing at Series B SaaS companies"</p>
@@ -273,7 +222,7 @@ export default function BuyerTriggerAgent() {
             </div>
           )}
 
-          {step === 6 && (
+          {step === 5 && (
             <div className="bta-step">
               <h2>What problems keep your prospects up at night?</h2>
               <p className="bta-subtitle">Select all that apply. We'll use this to identify relevant buying signals.</p>
@@ -293,7 +242,7 @@ export default function BuyerTriggerAgent() {
             </div>
           )}
 
-          {step === 7 && (
+          {step === 6 && (
             <div className="bta-step">
               <h2>When in the buyer journey do you want to engage?</h2>
               <p className="bta-subtitle">Earlier = more opportunities but more nurturing required.</p>
@@ -344,7 +293,7 @@ export default function BuyerTriggerAgent() {
             </div>
           )}
 
-          {step === 8 && (
+          {step === 7 && (
             <div className="bta-step">
               <h2>Which signals matter most to you?</h2>
               <p className="bta-subtitle">We'll monitor these triggers and alert you when companies match.</p>
@@ -367,53 +316,20 @@ export default function BuyerTriggerAgent() {
             </div>
           )}
 
-          {step === 9 && (
+          {step === 8 && (
             <div className="bta-step">
-              <h2>How often do you want updates?</h2>
-              <p className="bta-subtitle">Choose your notification frequency.</p>
+              <h2>Where should we send your 25 free leads?</h2>
+              <p className="bta-subtitle">You'll receive qualified companies showing buying signals within 24 hours.</p>
 
-              <div className="bta-radio-group">
-                <label className="bta-radio">
-                  <input
-                    type="radio"
-                    name="frequency"
-                    value="realtime"
-                    checked={data.frequency === 'realtime'}
-                    onChange={(e) => updateData('frequency', e.target.value)}
-                  />
-                  <div>
-                    <strong>Real-time</strong>
-                    <p>Instant alerts when new matches are found</p>
-                  </div>
-                </label>
-
-                <label className="bta-radio">
-                  <input
-                    type="radio"
-                    name="frequency"
-                    value="daily"
-                    checked={data.frequency === 'daily'}
-                    onChange={(e) => updateData('frequency', e.target.value)}
-                  />
-                  <div>
-                    <strong>Daily Digest</strong>
-                    <p>One email per day with all new matches</p>
-                  </div>
-                </label>
-
-                <label className="bta-radio">
-                  <input
-                    type="radio"
-                    name="frequency"
-                    value="weekly"
-                    checked={data.frequency === 'weekly'}
-                    onChange={(e) => updateData('frequency', e.target.value)}
-                  />
-                  <div>
-                    <strong>Weekly Summary</strong>
-                    <p>Weekly roundup of all matches</p>
-                  </div>
-                </label>
+              <div className="bta-field">
+                <label>Email Address</label>
+                <input
+                  type="email"
+                  value={data.email}
+                  onChange={(e) => updateData('email', e.target.value)}
+                  placeholder="you@company.com"
+                  autoFocus
+                />
               </div>
 
               {error && <div className="bta-error">{error}</div>}

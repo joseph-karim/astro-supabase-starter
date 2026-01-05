@@ -5,7 +5,7 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
     const {
-      sessionId,
+      email,
       companyName,
       website,
       industry,
@@ -16,8 +16,8 @@ export const POST: APIRoute = async ({ request }) => {
       frequency
     } = body;
 
-    if (!sessionId) {
-      return new Response(JSON.stringify({ error: 'Session ID is required' }), {
+    if (!email || !email.includes('@')) {
+      return new Response(JSON.stringify({ error: 'Valid email is required' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -30,32 +30,36 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Update onboarding session with complete data
-    const { error: sessionError } = await supabase
+    // Create onboarding session with all data in one call
+    const { data: session, error: sessionError } = await supabase
       .from('onboarding_sessions')
-      .update({
+      .insert({
+        email,
         company_name: companyName,
         website_url: website,
         industry,
         target_buyer: targetBuyer,
         buyer_journey_stage: buyerJourneyStage,
-        current_step: 9,
+        current_step: 8,
         completed: true,
         session_data: {
           painPoints,
           signals,
-          frequency
+          frequency: frequency || 'daily'
         }
       })
-      .eq('id', sessionId);
+      .select()
+      .single();
 
-    if (sessionError) {
-      console.error('Error updating session:', sessionError);
-      return new Response(JSON.stringify({ error: 'Failed to update session' }), {
+    if (sessionError || !session) {
+      console.error('Error creating session:', sessionError);
+      return new Response(JSON.stringify({ error: 'Failed to create session' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
       });
     }
+
+    const sessionId = session.id;
 
     // Create signal configurations
     if (signals && signals.length > 0) {
@@ -76,28 +80,19 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    // Get session email for subscription
-    const { data: session } = await supabase
-      .from('onboarding_sessions')
-      .select('email')
-      .eq('id', sessionId)
-      .single();
-
     // Create subscription
-    if (session?.email) {
-      const { error: subError } = await supabase
-        .from('buyer_trigger_subscriptions')
-        .insert({
-          session_id: sessionId,
-          email: session.email,
-          frequency: frequency || 'daily',
-          active: true
-        });
+    const { error: subError } = await supabase
+      .from('buyer_trigger_subscriptions')
+      .insert({
+        session_id: sessionId,
+        email,
+        frequency: frequency || 'daily',
+        active: true
+      });
 
-      if (subError) {
-        console.error('Error creating subscription:', subError);
-        // Don't fail the request if subscription fails, just log it
-      }
+    if (subError) {
+      console.error('Error creating subscription:', subError);
+      // Don't fail the request if subscription fails, just log it
     }
 
     return new Response(JSON.stringify({ success: true }), {
