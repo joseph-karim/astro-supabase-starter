@@ -30,7 +30,7 @@ export default function BuyerTriggerAgent() {
     frequency: 'daily'
   });
 
-  const totalSteps = 8;
+  const totalSteps = 7;
 
   // Signal types available for selection
   const signalTypes = [
@@ -109,7 +109,6 @@ export default function BuyerTriggerAgent() {
       case 5: return data.painPoints.length > 0;
       case 6: return data.buyerJourneyStage.length > 0;
       case 7: return data.signals.length > 0;
-      case 8: return data.email.includes('@');
       default: return true;
     }
   };
@@ -117,14 +116,87 @@ export default function BuyerTriggerAgent() {
   if (step === totalSteps + 1) {
     return (
       <div className="bta-container">
-        <div className="bta-success">
-          <div className="bta-success-icon">✓</div>
-          <h2>You're all set!</h2>
-          <p>We're now scanning for companies matching your trigger criteria.</p>
-          <p>You'll receive your first batch of qualified leads within 24 hours at <strong>{data.email}</strong></p>
-          <div className="bta-success-actions">
-            <a href="/dashboard" className="bta-btn bta-btn-primary">View Dashboard</a>
-            <a href="/" className="bta-btn bta-btn-secondary">Back to Home</a>
+        <div className="bta-report">
+          <div className="bta-report-header">
+            <h2>Here are 25 companies ready to buy</h2>
+            <p className="bta-report-subtitle">Based on your criteria: {data.industry} companies showing {data.signals.length} signal types</p>
+          </div>
+
+          <div className="bta-leads">
+            <div className="bta-lead-card">
+              <div className="bta-lead-header">
+                <div>
+                  <div className="bta-lead-company">Meridian Manufacturing</div>
+                  <div className="bta-lead-meta">Cleveland, OH • 340 employees • $45M revenue</div>
+                </div>
+                <div className="bta-lead-score">94</div>
+              </div>
+              <div className="bta-lead-signal">
+                <span className="bta-signal-label">Primary Signal:</span> New COO started 47 days ago
+              </div>
+              <div className="bta-lead-tags">
+                <span className="bta-tag">Facility expansion</span>
+                <span className="bta-tag">PE-backed</span>
+              </div>
+            </div>
+
+            <div className="bta-lead-card">
+              <div className="bta-lead-header">
+                <div>
+                  <div className="bta-lead-company">Apex Distribution</div>
+                  <div className="bta-lead-meta">Austin, TX • 280 employees • $38M revenue</div>
+                </div>
+                <div className="bta-lead-score">87</div>
+              </div>
+              <div className="bta-lead-signal">
+                <span className="bta-signal-label">Primary Signal:</span> Series B funding ($28M) announced
+              </div>
+              <div className="bta-lead-tags">
+                <span className="bta-tag">Hiring for ops</span>
+                <span className="bta-tag">Tech adoption</span>
+              </div>
+            </div>
+
+            <div className="bta-lead-card">
+              <div className="bta-lead-header">
+                <div>
+                  <div className="bta-lead-company">Vanguard Systems</div>
+                  <div className="bta-lead-meta">Denver, CO • 195 employees • $32M revenue</div>
+                </div>
+                <div className="bta-lead-score">82</div>
+              </div>
+              <div className="bta-lead-signal">
+                <span className="bta-signal-label">Primary Signal:</span> PE acquisition announced 3 weeks ago
+              </div>
+              <div className="bta-lead-tags">
+                <span className="bta-tag">Leadership transition</span>
+              </div>
+            </div>
+
+            <div className="bta-more-leads">+ 22 more qualified leads in your full report</div>
+          </div>
+
+          <div className="bta-cta-section">
+            <h3>Get daily updates with fresh leads</h3>
+            <p>Enter your email to receive new matches automatically, customize signals, and track your pipeline.</p>
+
+            <div className="bta-field">
+              <input
+                type="email"
+                value={data.email}
+                onChange={(e) => updateData('email', e.target.value)}
+                placeholder="you@company.com"
+              />
+            </div>
+
+            <div className="bta-cta-actions">
+              <button className="bta-btn bta-btn-primary" disabled={!data.email.includes('@')}>
+                Get Daily Notifications
+              </button>
+              <button className="bta-btn bta-btn-secondary" onClick={() => setStep(1)}>
+                Do Another Search
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -312,24 +384,6 @@ export default function BuyerTriggerAgent() {
                     </div>
                   </label>
                 ))}
-              </div>
-            </div>
-          )}
-
-          {step === 8 && (
-            <div className="bta-step">
-              <h2>Where should we send your 25 free leads?</h2>
-              <p className="bta-subtitle">You'll receive qualified companies showing buying signals within 24 hours.</p>
-
-              <div className="bta-field">
-                <label>Email Address</label>
-                <input
-                  type="email"
-                  value={data.email}
-                  onChange={(e) => updateData('email', e.target.value)}
-                  placeholder="you@company.com"
-                  autoFocus
-                />
               </div>
 
               {error && <div className="bta-error">{error}</div>}

@@ -386,6 +386,155 @@
   justify-content: center;
 }
 
+/* Report View */
+.bta-report {
+  width: 100%;
+  max-width: 900px;
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(13, 13, 15, 0.08);
+  overflow: hidden;
+}
+
+.bta-report-header {
+  padding: 40px;
+  background: var(--mist);
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.bta-report-header h2 {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--obsidian);
+  margin: 0 0 8px 0;
+  letter-spacing: -0.01em;
+}
+
+.bta-report-subtitle {
+  font-size: 16px;
+  color: var(--graphite);
+  margin: 0;
+}
+
+.bta-leads {
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bta-lead-card {
+  padding: 20px;
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.bta-lead-card:hover {
+  border-color: var(--signal-blue);
+  box-shadow: 0 2px 8px rgba(13, 13, 15, 0.04);
+}
+
+.bta-lead-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.bta-lead-company {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--obsidian);
+  margin-bottom: 4px;
+}
+
+.bta-lead-meta {
+  font-size: 13px;
+  color: var(--smoke);
+}
+
+.bta-lead-score {
+  width: 48px;
+  height: 48px;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--signal-blue);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.bta-lead-signal {
+  font-size: 14px;
+  color: var(--graphite);
+  margin-bottom: 12px;
+  padding: 12px;
+  background: var(--mist);
+  border-radius: 6px;
+}
+
+.bta-signal-label {
+  font-weight: 600;
+  color: var(--obsidian);
+}
+
+.bta-lead-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.bta-tag {
+  padding: 4px 10px;
+  background: var(--mist);
+  color: var(--graphite);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+.bta-more-leads {
+  text-align: center;
+  padding: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--smoke);
+  background: var(--mist);
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.bta-cta-section {
+  padding: 32px 40px 40px;
+  background: var(--mist);
+  border-top: 1px solid #E5E7EB;
+}
+
+.bta-cta-section h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--obsidian);
+  margin: 0 0 8px 0;
+}
+
+.bta-cta-section p {
+  font-size: 15px;
+  color: var(--graphite);
+  margin: 0 0 24px 0;
+}
+
+.bta-cta-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
 /* Responsive */
 @media (max-width: 640px) {
   .bta-content {
@@ -417,6 +566,34 @@
   }
 
   .bta-success-actions .bta-btn {
+    width: 100%;
+  }
+
+  .bta-report-header {
+    padding: 24px;
+  }
+
+  .bta-report-header h2 {
+    font-size: 24px;
+  }
+
+  .bta-leads {
+    padding: 24px;
+  }
+
+  .bta-lead-card {
+    padding: 16px;
+  }
+
+  .bta-cta-section {
+    padding: 24px;
+  }
+
+  .bta-cta-actions {
+    flex-direction: column;
+  }
+
+  .bta-cta-actions .bta-btn {
     width: 100%;
   }
 }

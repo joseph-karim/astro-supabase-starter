@@ -16,13 +16,6 @@ export const POST: APIRoute = async ({ request }) => {
       frequency
     } = body;
 
-    if (!email || !email.includes('@')) {
-      return new Response(JSON.stringify({ error: 'Valid email is required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
     if (!supabase) {
       return new Response(JSON.stringify({ error: 'Database not configured' }), {
         status: 500,
@@ -30,17 +23,17 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Create onboarding session with all data in one call
+    // Create onboarding session with all data in one call (email is optional)
     const { data: session, error: sessionError } = await supabase
       .from('onboarding_sessions')
       .insert({
-        email,
+        email: email || null,
         company_name: companyName,
         website_url: website,
         industry,
         target_buyer: targetBuyer,
         buyer_journey_stage: buyerJourneyStage,
-        current_step: 8,
+        current_step: 7,
         completed: true,
         session_data: {
           painPoints,
@@ -80,22 +73,24 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    // Create subscription
-    const { error: subError } = await supabase
-      .from('buyer_trigger_subscriptions')
-      .insert({
-        session_id: sessionId,
-        email,
-        frequency: frequency || 'daily',
-        active: true
-      });
+    // Create subscription only if email is provided
+    if (email && email.includes('@')) {
+      const { error: subError } = await supabase
+        .from('buyer_trigger_subscriptions')
+        .insert({
+          session_id: sessionId,
+          email,
+          frequency: frequency || 'daily',
+          active: true
+        });
 
-    if (subError) {
-      console.error('Error creating subscription:', subError);
-      // Don't fail the request if subscription fails, just log it
+      if (subError) {
+        console.error('Error creating subscription:', subError);
+        // Don't fail the request if subscription fails, just log it
+      }
     }
 
-    return new Response(JSON.stringify({ success: true }), {
+    return new Response(JSON.stringify({ success: true, sessionId }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
