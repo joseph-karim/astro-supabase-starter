@@ -1105,6 +1105,8 @@ const siteGraph = [
   contactForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    if (!(contactForm instanceof HTMLFormElement)) return;
+
     const btnText = submitBtn?.querySelector('.btn-text');
     const btnLoading = submitBtn?.querySelector('.btn-loading');
 
