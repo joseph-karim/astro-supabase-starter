@@ -162,7 +162,12 @@ const avg = audits.length ? Math.round(audits.reduce((s, a) => s + (a.overall_sc
   const form = document.getElementById('form')
 
   const open = () => modal?.classList.remove('hidden')
-  const close = () => { modal?.classList.add('hidden'); form?.reset() }
+  const close = () => {
+    modal?.classList.add('hidden')
+    if (form && 'reset' in form && typeof form.reset === 'function') {
+      form.reset()
+    }
+  }
 
   document.getElementById('add-btn')?.addEventListener('click', open)
   document.querySelectorAll('.close-btn').forEach(b => b.addEventListener('click', close))

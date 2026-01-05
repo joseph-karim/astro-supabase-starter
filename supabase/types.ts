@@ -543,6 +543,8 @@ export interface Database {
 }
 
 // Helper types
+export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row']
+
 export type Client = Database['public']['Tables']['clients']['Row']
 export type DecisionQuery = Database['public']['Tables']['decision_queries']['Row']
 export type VisibilitySnapshot = Database['public']['Tables']['visibility_snapshots']['Row']

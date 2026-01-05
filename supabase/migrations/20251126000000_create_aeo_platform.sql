@@ -409,3 +409,6 @@ CREATE TRIGGER agentic_commerce_status_updated_at
   BEFORE UPDATE ON public.agentic_commerce_status
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
+
+
+

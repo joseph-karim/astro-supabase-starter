@@ -8,3 +8,6 @@ export const GET: APIRoute = async ({ cookies, redirect }) => {
   return redirect('/login')
 }
 
+
+
+

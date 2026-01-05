@@ -1108,9 +1108,9 @@ const siteGraph = [
     const btnText = submitBtn?.querySelector('.btn-text');
     const btnLoading = submitBtn?.querySelector('.btn-loading');
 
-    if (btnText) btnText.style.display = 'none';
-    if (btnLoading) btnLoading.style.display = 'inline';
-    if (submitBtn) submitBtn.disabled = true;
+    if (btnText && btnText instanceof HTMLElement) btnText.style.display = 'none';
+    if (btnLoading && btnLoading instanceof HTMLElement) btnLoading.style.display = 'inline';
+    if (submitBtn && 'disabled' in submitBtn) submitBtn.disabled = true;
 
     const formData = new FormData(contactForm);
     const data = {
@@ -1130,8 +1130,8 @@ const siteGraph = [
       });
 
       if (response.ok) {
-        contactForm.style.display = 'none';
-        if (formSuccess) formSuccess.style.display = 'block';
+        if (contactForm instanceof HTMLElement) contactForm.style.display = 'none';
+        if (formSuccess instanceof HTMLElement) formSuccess.style.display = 'block';
 
         // Track conversion
         fetch('/api/events', {
@@ -1144,9 +1144,9 @@ const siteGraph = [
       }
     } catch (error) {
       alert('Something went wrong. Please try again or email us directly.');
-      if (btnText) btnText.style.display = 'inline';
-      if (btnLoading) btnLoading.style.display = 'none';
-      if (submitBtn) submitBtn.disabled = false;
+      if (btnText && btnText instanceof HTMLElement) btnText.style.display = 'inline';
+      if (btnLoading && btnLoading instanceof HTMLElement) btnLoading.style.display = 'none';
+      if (submitBtn && 'disabled' in submitBtn) submitBtn.disabled = false;
     }
   });
 </script>

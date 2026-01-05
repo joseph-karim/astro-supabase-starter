@@ -10,8 +10,11 @@ if (supabase) {
   client = clients?.[0] || null
 }
 
-// Mock data for display
-const displayClient = client || { name: '', domain: '', industry: '', competitors: [] }
+// Mock data for display - extend with extra fields
+type DisplayClient = { name: string; domain: string; industry?: string; competitors?: string[] }
+const displayClient: DisplayClient = client
+  ? { ...client, industry: undefined, competitors: undefined }
+  : { name: '', domain: '', industry: '', competitors: [] }
 ---
 
 <DashboardLayout title="Settings" client={client} currentPath="/dashboard/settings">
@@ -73,28 +76,34 @@ const displayClient = client || { name: '', domain: '', industry: '', competitor
   .btn-p:hover { background: #c2410c; }
 </style>
 
-<script define:vars={{ existingClient: client }}>
+<script define:vars={{ existingClient: client }} is:inline>
   import { createClient } from '@supabase/supabase-js'
   const url = import.meta.env.PUBLIC_SUPABASE_URL
   const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
   const db = url && key ? createClient(url, key) : null
 
-  const form = document.getElementById('form') as HTMLFormElement
+  const form = document.getElementById('form')
   const msg = document.getElementById('msg')
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault()
     if (!db) { if(msg) { msg.textContent = 'Database not configured'; msg.className = 'msg error' } return }
-    
-    const btn = document.getElementById('save-btn') as HTMLButtonElement
-    btn.disabled = true; btn.textContent = 'Saving...'
+
+    const btn = document.getElementById('save-btn')
+    if (btn) {
+      btn.disabled = true
+      btn.textContent = 'Saving...'
+    }
     const fd = new FormData(form)
 
+    const competitorsRaw = fd.get('competitors')
+    const competitorsList = competitorsRaw ? String(competitorsRaw).split(',').map(s => s.trim()).filter(Boolean) : []
+
     const data = {
-      name: fd.get('name') as string,
-      domain: fd.get('domain') as string,
-      industry: (fd.get('industry') as string) || null,
-      competitors: (fd.get('competitors') as string)?.split(',').map(s => s.trim()).filter(Boolean) || [],
+      name: String(fd.get('name') || ''),
+      domain: String(fd.get('domain') || ''),
+      industry: fd.get('industry') ? String(fd.get('industry')) : null,
+      competitors: competitorsList,
       active: true
     }
 
@@ -108,11 +117,14 @@ const displayClient = client || { name: '', domain: '', industry: '', competitor
         if (error) throw error
         window.location.href = '/dashboard'
       }
-    } catch (err: any) {
-      if(msg) { msg.textContent = err.message || 'Failed to save'; msg.className = 'msg error' }
+    } catch (err) {
+      const errorMessage = err && typeof err === 'object' && 'message' in err ? err.message : 'Failed to save'
+      if(msg) { msg.textContent = errorMessage; msg.className = 'msg error' }
     } finally {
-      btn.disabled = false
-      btn.textContent = existingClient ? 'Update' : 'Create Client'
+      if (btn) {
+        btn.disabled = false
+        btn.textContent = existingClient ? 'Update' : 'Create Client'
+      }
     }
   })
 </script>
