@@ -1,189 +1,58 @@
 ---
-// Footer.astro - Premium dark footer
 const currentYear = new Date().getFullYear();
 ---
 
 <footer class="footer">
-  <div class="footer-container container">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="/" class="footer-logo">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" rx="8" fill="#E67E22"/>
-            <path d="M16 8L10 20H14L13 24L22 14H17L19 8H16Z" fill="white"/>
-          </svg>
-          <span>Become the Answer</span>
-        </a>
-        <p class="footer-tagline">Make your products the answer AI gives to buying questions.</p>
-      </div>
-      
-      <div class="footer-nav">
-        <div class="footer-nav-group">
-          <h4>Services</h4>
-          <a href="#audit">Free AI Audit</a>
-          <a href="#pricing">Citation Sprint</a>
-          <a href="#services">Ongoing Content</a>
-        </div>
-        
-        <div class="footer-nav-group">
-          <h4>Company</h4>
-          <a href="#how-it-works">How It Works</a>
-          <a href="#faq">FAQ</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </div>
+  <div class="footer-container">
+    <div class="footer-left">
+      <span class="footer-logo">BECOME THE ANSWER</span>
+      <span class="footer-tagline">Buyer timing intelligence for B2B services</span>
     </div>
-    
-    <div class="footer-bottom">
-      <p>© {currentYear} Become the Answer. All rights reserved.</p>
-      <div class="footer-legal">
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-      </div>
+    <div class="footer-right">
+      <span class="footer-copy">© {currentYear} Become the Answer</span>
     </div>
   </div>
 </footer>
 
 <style>
   .footer {
-    background: var(--grad-dark);
-    color: rgba(255, 255, 255, 0.9);
-    padding: 80px 0 40px;
+    background: #0D0D0F;
+    padding: 48px;
+    border-top: 1px solid #1F2937;
   }
-  
+
   .footer-container {
-    display: flex;
-    flex-direction: column;
-    gap: 64px;
-  }
-  
-  .footer-top {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 64px;
-    flex-wrap: wrap;
-  }
-  
-  .footer-brand {
-    max-width: 320px;
-  }
-  
-  .footer-logo {
-    display: flex;
     align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: white;
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    margin-bottom: 16px;
   }
-  
-  .footer-logo:hover {
-    color: white;
-    opacity: 0.9;
-  }
-  
-  .footer-tagline {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.9375rem;
-    line-height: 1.6;
-  }
-  
-  .footer-nav {
-    display: flex;
-    gap: 80px;
-  }
-  
-  .footer-nav-group {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .footer-nav-group h4 {
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.4);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+
+  .footer-logo {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: #FAF9F7;
+    display: block;
     margin-bottom: 8px;
   }
-  
-  .footer-nav-group a {
-    font-size: 0.9375rem;
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    transition: color 0.2s ease;
+
+  .footer-tagline {
+    font-size: 14px;
+    color: #9CA3AF;
   }
-  
-  .footer-nav-group a:hover {
-    color: var(--accent);
+
+  .footer-copy {
+    font-size: 14px;
+    color: #9CA3AF;
   }
-  
-  .footer-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 40px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  
-  .footer-bottom p {
-    font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.5);
-  }
-  
-  .footer-legal {
-    display: flex;
-    gap: 24px;
-  }
-  
-  .footer-legal a {
-    font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.5);
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-  
-  .footer-legal a:hover {
-    color: rgba(255, 255, 255, 0.8);
-  }
-  
+
   @media (max-width: 768px) {
-    .footer {
-      padding: 64px 0 32px;
-    }
-    
-    .footer-top {
+    .footer-container {
       flex-direction: column;
-      gap: 48px;
-    }
-    
-    .footer-nav {
-      width: 100%;
-      justify-content: space-between;
-    }
-    
-    .footer-bottom {
-      flex-direction: column;
+      gap: 24px;
       text-align: center;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .footer-nav {
-      flex-direction: column;
-      gap: 40px;
-    }
-    
-    .footer-legal {
-      flex-direction: column;
-      gap: 8px;
-      align-items: center;
     }
   }
 </style>

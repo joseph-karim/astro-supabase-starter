@@ -15,7 +15,7 @@ const siteGraph = [
     "@type": "Service",
     "name": "Buyer Timing Intelligence",
     "provider": {"@type":"Organization","name":"Become The Answer"},
-    "description": "Buyer timing intelligence for B2B professional services. Know who's ready to buy before they start searching.",
+    "description": "We help professional service firms stop guessing where the next deal will come from by showing them who is ready to buy and why.",
     "areaServed": "United States",
     "url": "https://becometheanswer.ai"
   }
@@ -33,7 +33,7 @@ const siteGraph = [
         <a href="#problem">Problem</a>
         <a href="#solution">Solution</a>
         <a href="#how-it-works">How it works</a>
-        <a href="#audit" class="nav-cta">Get your free leads</a>
+        <a href="/tools/buyer-trigger-agent" class="nav-cta">Get 25 free leads</a>
       </div>
     </div>
   </nav>
@@ -42,12 +42,12 @@ const siteGraph = [
   <section class="hero">
     <div class="hero-container">
       <div class="hero-content">
-        <h1 class="hero-title">Know who's ready to buy<br>before they start searching</h1>
-        <p class="hero-subtitle">Buyer timing intelligence for B2B professional services</p>
-        <p class="hero-desc">We identify the exact moment a company enters a buying window—and position you to be the answer when they're ready to decide.</p>
+        <h1 class="hero-title">Become the Answer</h1>
+        <p class="hero-subtitle">Get consistent, qualified clients without hiring salespeople or chasing referrals.</p>
+        <p class="hero-desc">We help professional service firms stop guessing where the next deal will come from by showing them who is ready to buy and why.</p>
         <div class="hero-ctas">
-          <a href="#audit" class="btn btn-primary" data-cta>Find your buying signals</a>
-          <a href="#problem" class="btn btn-secondary">See the problem →</a>
+          <a href="/tools/buyer-trigger-agent" class="btn btn-primary" data-cta>Get 25 free leads that are ready to buy</a>
+          <a href="#problem" class="btn btn-secondary">See what's blocking your pipeline →</a>
         </div>
       </div>
       <div class="hero-visual">
@@ -90,60 +90,86 @@ const siteGraph = [
     </div>
   </section>
 
-  <!-- Problem Section -->
+  <!-- Reality Check -->
   <section class="section section-light" id="problem">
     <div class="container">
-      <h2 class="section-title">Intent data shows you who's researching.<br>By then, you've already lost.</h2>
-
-      <div class="problem-grid">
-        <div class="problem-col">
-          <div class="problem-icon">📅</div>
-          <h3 class="problem-heading">Your calendar has gaps</h3>
-          <p>Some months are great. Other months you're scrambling for work. That's the feast or famine cycle.</p>
+      <div class="split-layout">
+        <div class="split-visual">
+          <div class="visual-container">
+            <div class="calendar-visual">
+              <div class="calendar-header">Your Calendar</div>
+              <div class="calendar-grid">
+                <div class="calendar-slot filled"></div>
+                <div class="calendar-slot empty"></div>
+                <div class="calendar-slot empty"></div>
+                <div class="calendar-slot filled"></div>
+                <div class="calendar-slot empty"></div>
+                <div class="calendar-slot empty"></div>
+                <div class="calendar-slot empty"></div>
+                <div class="calendar-slot filled"></div>
+              </div>
+            </div>
+            <div class="crm-visual">
+              <div class="crm-header">Your CRM</div>
+              <div class="crm-item status-cold">Not now</div>
+              <div class="crm-item status-cold">Follow up later</div>
+              <div class="crm-item status-cold">Went dark</div>
+              <div class="crm-item status-cold">Maybe next quarter</div>
+            </div>
+          </div>
         </div>
-
-        <div class="problem-col">
-          <div class="problem-icon">🔍</div>
-          <h3 class="problem-heading">Buyers decide before talking to you</h3>
-          <p>Your future clients research quietly. Compare silently. Decide when the timing feels right. You never see it happening.</p>
-        </div>
-
-        <div class="problem-col">
-          <div class="problem-icon">❌</div>
-          <h3 class="problem-heading">Most leads aren't ready</h3>
-          <p>Your CRM is full of "follow up next quarter" and "went dark." By the time they're ready, they've found someone else.</p>
+        <div class="split-content">
+          <h2>Most firms at your stage live deal to deal</h2>
+          <p class="text-large">Growth usually comes from referrals, networking, events, and the founder pushing for work when things slow down.</p>
+          <p class="text-large">Some months are great.<br>Other months are stressful.</p>
+          <p class="text-large" style="font-weight: 500;">That is the feast or famine cycle.</p>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="timeline-visual">
-        <div class="timeline-line"></div>
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-label">Weeks 1-4</div>
-            <div class="timeline-text">Company researches quietly</div>
-          </div>
+  <!-- The Real Problem -->
+  <section class="section" id="solution">
+    <div class="container">
+      <div class="problem-layout">
+        <div class="problem-content">
+          <h2>Buyers decide before they talk to you</h2>
+          <p class="text-large">Your future clients research quietly.<br>They compare options silently.<br>They decide when the timing feels right.</p>
+          <p class="text-large">Most firms never see this happening.</p>
+          <p class="text-large" style="color: var(--smoke); font-style: italic;">By the time a deal goes cold, the moment has already passed.</p>
         </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-label">Weeks 5-8</div>
-            <div class="timeline-text">Shortlist created (you're not on it)</div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-dot timeline-dot-end"></div>
-          <div class="timeline-content">
-            <div class="timeline-label">Week 9</div>
-            <div class="timeline-text">Decision made. They call you as a backup.</div>
+        <div class="problem-visual">
+          <div class="timeline-visual">
+            <div class="timeline-line"></div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-label">Weeks 1-4</div>
+                <div class="timeline-text">Company researches quietly</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-label">Weeks 5-8</div>
+                <div class="timeline-text">Shortlist created (you're not on it)</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot timeline-dot-end"></div>
+              <div class="timeline-content">
+                <div class="timeline-label">Week 9</div>
+                <div class="timeline-text">Decision made. They call you as a backup.</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Solution Section -->
-  <section class="section" id="solution">
+  <!-- Solution -->
+  <section class="section section-light">
     <div class="container">
       <h2 class="section-title">We show you who just entered a buying window</h2>
       <p class="section-subtitle">Not who's researching. Who's ready to decide right now.</p>
@@ -183,16 +209,16 @@ const siteGraph = [
   </section>
 
   <!-- How It Works -->
-  <section class="section section-light" id="how-it-works">
+  <section class="section" id="how-it-works">
     <div class="container">
-      <h2 class="section-title">Signals → Leads → Outcomes</h2>
+      <h2 class="section-title">Here's what happens next</h2>
 
       <div class="how-it-works">
         <div class="hiw-step">
           <div class="hiw-step-number">1</div>
           <div class="hiw-step-content">
-            <h3 class="hiw-step-title">We identify your ideal buyer profile</h3>
-            <p class="hiw-step-text">Industry, company size, growth stage, and the specific triggers that indicate they're ready to buy what you sell.</p>
+            <h3 class="hiw-step-title">Tell us who you sell to</h3>
+            <p class="hiw-step-text">Quick 2-minute form. We'll ask about your ideal customer, what you sell, and what signals matter most to you.</p>
           </div>
         </div>
 
@@ -201,8 +227,8 @@ const siteGraph = [
         <div class="hiw-step">
           <div class="hiw-step-number">2</div>
           <div class="hiw-step-content">
-            <h3 class="hiw-step-title">We monitor buying signals in real-time</h3>
-            <p class="hiw-step-text">New executives, funding announcements, facility expansions, regulatory changes—any event that creates a buying window.</p>
+            <h3 class="hiw-step-title">We find companies showing buying signals</h3>
+            <p class="hiw-step-text">Our system scans for hiring, funding, expansion, and other triggers that indicate they're ready to buy.</p>
           </div>
         </div>
 
@@ -211,8 +237,8 @@ const siteGraph = [
         <div class="hiw-step">
           <div class="hiw-step-number">3</div>
           <div class="hiw-step-content">
-            <h3 class="hiw-step-title">You get decision-ready leads</h3>
-            <p class="hiw-step-text">Companies showing 3+ converging signals, with context on why they're ready now and what triggered their buying window.</p>
+            <h3 class="hiw-step-title">Get 25 decision-ready leads</h3>
+            <p class="hiw-step-text">Delivered to your inbox within 24 hours. Each lead includes the signal that triggered it and why they're ready now.</p>
           </div>
         </div>
       </div>
@@ -224,48 +250,39 @@ const siteGraph = [
     </div>
   </section>
 
-  <!-- Social Proof -->
-  <section class="section">
+  <!-- Before / After -->
+  <section class="section section-light">
     <div class="container">
-      <div class="data-viz">
-        <h3 class="data-viz-title">Signal performance by type</h3>
-        <div class="data-viz-bars">
-          <div class="data-bar">
-            <div class="data-bar-label">New executive</div>
-            <div class="data-bar-track">
-              <div class="data-bar-fill" style="width: 89%"></div>
-            </div>
-            <div class="data-bar-value">89%</div>
-          </div>
-          <div class="data-bar">
-            <div class="data-bar-label">Funding round</div>
-            <div class="data-bar-track">
-              <div class="data-bar-fill" style="width: 82%"></div>
-            </div>
-            <div class="data-bar-value">82%</div>
-          </div>
-          <div class="data-bar">
-            <div class="data-bar-label">Facility expansion</div>
-            <div class="data-bar-track">
-              <div class="data-bar-fill" style="width: 76%"></div>
-            </div>
-            <div class="data-bar-value">76%</div>
-          </div>
-          <div class="data-bar">
-            <div class="data-bar-label">PE acquisition</div>
-            <div class="data-bar-track">
-              <div class="data-bar-fill" style="width: 71%"></div>
-            </div>
-            <div class="data-bar-value">71%</div>
+      <h2 class="section-title">Before vs After</h2>
+
+      <div class="comparison-grid">
+        <div class="comparison-card">
+          <div class="comparison-header comparison-before">Before</div>
+          <div class="comparison-content">
+            <div class="comparison-item">❌ Calendar has gaps between projects</div>
+            <div class="comparison-item">❌ CRM full of "follow up next quarter"</div>
+            <div class="comparison-item">❌ Outreach feels like cold calling</div>
+            <div class="comparison-item">❌ Don't know when buyers are ready</div>
+            <div class="comparison-item">❌ Competitors get there first</div>
           </div>
         </div>
-        <div class="data-viz-footer">Signal quality score (higher = stronger buying intent)</div>
+
+        <div class="comparison-card">
+          <div class="comparison-header comparison-after">After</div>
+          <div class="comparison-content">
+            <div class="comparison-item">✓ Pipeline always has qualified leads</div>
+            <div class="comparison-item">✓ Reach out at the perfect moment</div>
+            <div class="comparison-item">✓ Conversations start warm, not cold</div>
+            <div class="comparison-item">✓ Know exactly why they're ready to buy</div>
+            <div class="comparison-item">✓ Arrive before your competitors</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Industries -->
-  <section class="section section-light">
+  <section class="section">
     <div class="container">
       <h2 class="section-title">Built for professional service firms</h2>
       <p class="section-subtitle">$1M-$10M revenue, selling to mid-market companies</p>
@@ -305,45 +322,47 @@ const siteGraph = [
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="section section-cta" id="audit">
+  <!-- Free Offer -->
+  <section class="section section-cta">
     <div class="container">
       <div class="cta-content">
-        <h2 class="cta-title">Stop chasing. Start arriving.</h2>
-        <p class="cta-subtitle">Get your first batch of decision-ready leads. Free buyer timing audit.</p>
+        <h2 class="cta-title">Get your first 25 leads for free</h2>
+        <p class="cta-subtitle">No credit card. No commitment. Just qualified companies showing buying signals in your target market.</p>
 
-        <form id="contact-form" class="cta-form">
-          <div class="form-row">
-            <div class="form-field">
-              <label>Your name</label>
-              <input type="text" name="name" required placeholder="John Smith">
+        <div class="cta-mockup">
+          <div class="mockup-header">
+            <div class="mockup-title">Your Free Lead Report</div>
+            <div class="mockup-count">25 companies ready to buy</div>
+          </div>
+          <div class="mockup-items">
+            <div class="mockup-item">
+              <div class="mockup-item-left">
+                <div class="mockup-company">Meridian Manufacturing</div>
+                <div class="mockup-signal">New COO hired 47 days ago • Facility expansion planned</div>
+              </div>
+              <div class="mockup-score">94</div>
             </div>
-            <div class="form-field">
-              <label>Work email</label>
-              <input type="email" name="email" required placeholder="john@company.com">
+            <div class="mockup-item">
+              <div class="mockup-item-left">
+                <div class="mockup-company">Apex Distribution</div>
+                <div class="mockup-signal">Series B funding ($28M) • Hiring for operations roles</div>
+              </div>
+              <div class="mockup-score">87</div>
+            </div>
+            <div class="mockup-item">
+              <div class="mockup-item-left">
+                <div class="mockup-company">Vanguard Systems</div>
+                <div class="mockup-signal">PE acquisition announced • Leadership transition</div>
+              </div>
+              <div class="mockup-score">82</div>
             </div>
           </div>
-          <div class="form-row">
-            <div class="form-field">
-              <label>Company name</label>
-              <input type="text" name="company" required placeholder="Acme Corp">
-            </div>
-            <div class="form-field">
-              <label>What you sell</label>
-              <input type="text" name="message" required placeholder="Operations consulting for manufacturers">
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary btn-large" id="submit-btn">
-            <span class="btn-text">Get my free buyer timing audit</span>
-            <span class="btn-loading" style="display: none;">Sending...</span>
-          </button>
-        </form>
-
-        <div id="form-success" style="display: none;" class="form-success">
-          <div class="success-icon">✓</div>
-          <h3>We'll send your leads within 24 hours</h3>
-          <p>Check your email for companies showing buying signals in your target market.</p>
         </div>
+
+        <a href="/tools/buyer-trigger-agent" class="btn btn-primary btn-large btn-cta">
+          Start the 2-minute form →
+        </a>
+        <p class="cta-footnote">Takes 2 minutes • Get leads in 24 hours • 100% free</p>
       </div>
     </div>
   </section>
@@ -477,6 +496,7 @@ const siteGraph = [
     display: flex;
     gap: 16px;
     align-items: center;
+    flex-wrap: wrap;
   }
 
   .btn {
@@ -517,7 +537,12 @@ const siteGraph = [
   .btn-large {
     padding: 16px 32px;
     font-size: 16px;
+  }
+
+  .btn-cta {
     width: 100%;
+    max-width: 400px;
+    margin: 32px auto 16px;
   }
 
   .hero-visual {
@@ -639,50 +664,114 @@ const siteGraph = [
     margin-bottom: 64px;
   }
 
-  /* Problem Grid */
-  .problem-grid {
+  /* Split Layout (Reality Check) */
+  .split-layout {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    margin-bottom: 80px;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
   }
 
-  .problem-col {
-    text-align: center;
-  }
-
-  .problem-icon {
-    font-size: 48px;
-    margin-bottom: 20px;
-  }
-
-  .problem-heading {
-    font-size: 18px;
+  .split-content h2 {
+    font-size: 36px;
     font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
     color: var(--obsidian);
-    margin-bottom: 12px;
+    margin-bottom: 24px;
   }
 
-  .problem-col p {
-    font-size: 15px;
-    line-height: 1.6;
+  .text-large {
+    font-size: 17px;
+    line-height: 1.7;
     color: var(--graphite);
+    margin-bottom: 16px;
+  }
+
+  .visual-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .calendar-visual,
+  .crm-visual {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .calendar-header,
+  .crm-header {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--smoke);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .calendar-slot {
+    height: 60px;
+    border-radius: 8px;
+    border: 2px solid #E5E7EB;
+  }
+
+  .calendar-slot.filled {
+    background: var(--signal-blue);
+    border-color: var(--signal-blue);
+    opacity: 0.2;
+  }
+
+  .crm-item {
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--graphite);
+    background: var(--mist);
+  }
+
+  .crm-item:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Problem Layout */
+  .problem-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .problem-content h2 {
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--obsidian);
+    margin-bottom: 24px;
   }
 
   /* Timeline */
   .timeline-visual {
-    max-width: 800px;
-    margin: 0 auto;
     position: relative;
     padding: 40px 0;
   }
 
   .timeline-line {
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 8px;
     top: 60px;
-    height: 2px;
+    bottom: 60px;
+    width: 2px;
     background: #E5E7EB;
   }
 
@@ -691,6 +780,10 @@ const siteGraph = [
     gap: 24px;
     margin-bottom: 40px;
     position: relative;
+  }
+
+  .timeline-item:last-child {
+    margin-bottom: 0;
   }
 
   .timeline-dot {
@@ -846,72 +939,53 @@ const siteGraph = [
     margin: 0 auto;
   }
 
-  /* Data Visualization */
-  .data-viz {
-    max-width: 800px;
+  /* Comparison Grid */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    max-width: 1000px;
     margin: 0 auto;
+  }
+
+  .comparison-card {
     background: white;
     border: 1px solid #E5E7EB;
     border-radius: 12px;
-    padding: 40px;
-  }
-
-  .data-viz-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--obsidian);
-    margin-bottom: 32px;
-  }
-
-  .data-viz-bars {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    margin-bottom: 24px;
-  }
-
-  .data-bar {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .data-bar-label {
-    width: 140px;
-    font-size: 14px;
-    color: var(--graphite);
-    flex-shrink: 0;
-  }
-
-  .data-bar-track {
-    flex: 1;
-    height: 32px;
-    background: var(--mist);
-    border-radius: 6px;
     overflow: hidden;
   }
 
-  .data-bar-fill {
-    height: 100%;
-    background: var(--signal-blue);
-    border-radius: 6px;
-    transition: width 0.3s;
-  }
-
-  .data-bar-value {
-    width: 60px;
-    font-size: 14px;
+  .comparison-header {
+    padding: 16px 24px;
+    font-size: 16px;
     font-weight: 600;
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--obsidian);
-    text-align: right;
-    flex-shrink: 0;
+    text-align: center;
   }
 
-  .data-viz-footer {
-    font-size: 13px;
-    color: var(--smoke);
-    text-align: center;
+  .comparison-before {
+    background: #FEF2F2;
+    color: #991B1B;
+  }
+
+  .comparison-after {
+    background: #ECFDF5;
+    color: #065F46;
+  }
+
+  .comparison-content {
+    padding: 24px;
+  }
+
+  .comparison-item {
+    padding: 12px 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--graphite);
+    border-bottom: 1px solid #F3F4F6;
+  }
+
+  .comparison-item:last-child {
+    border-bottom: none;
   }
 
   /* Industries Grid */
@@ -979,83 +1053,80 @@ const siteGraph = [
     margin-bottom: 48px;
   }
 
-  .cta-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  .form-field {
+  .cta-mockup {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 24px;
     text-align: left;
   }
 
-  .form-field label {
-    display: block;
+  .mockup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #E5E7EB;
+    margin-bottom: 20px;
+  }
+
+  .mockup-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--obsidian);
+  }
+
+  .mockup-count {
     font-size: 13px;
     font-weight: 600;
-    color: var(--graphite);
-    margin-bottom: 8px;
+    color: var(--signal-blue);
   }
 
-  .form-field input {
-    width: 100%;
-    padding: 14px 16px;
-    font-size: 15px;
-    font-family: inherit;
-    color: var(--obsidian);
-    background: white;
-    border: 2px solid #E5E7EB;
+  .mockup-items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .mockup-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: var(--mist);
     border-radius: 8px;
-    transition: border-color 0.2s;
   }
 
-  .form-field input:focus {
-    outline: none;
-    border-color: var(--signal-blue);
+  .mockup-company {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--obsidian);
+    margin-bottom: 4px;
   }
 
-  .form-field input::placeholder {
-    color: var(--smoke);
+  .mockup-signal {
+    font-size: 13px;
+    color: var(--graphite);
   }
 
-  .form-success {
-    padding: 48px;
-    background: white;
-    border-radius: 12px;
-    border: 2px solid var(--high-signal);
-  }
-
-  .success-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 20px;
-    background: var(--high-signal);
-    color: white;
-    font-size: 32px;
-    font-weight: bold;
-    border-radius: 50%;
+  .mockup-score {
+    width: 40px;
+    height: 40px;
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--signal-blue);
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .form-success h3 {
-    font-size: 24px;
-    font-weight: 600;
-    color: var(--obsidian);
-    margin-bottom: 12px;
-  }
-
-  .form-success p {
     font-size: 16px;
-    color: var(--graphite);
-    line-height: 1.6;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .cta-footnote {
+    font-size: 14px;
+    color: var(--smoke);
+    margin-top: 8px;
   }
 
   /* Footer */
@@ -1127,11 +1198,17 @@ const siteGraph = [
       font-size: 28px;
     }
 
-    .problem-grid,
-    .solution-grid,
-    .industries-grid {
+    .split-layout,
+    .problem-layout {
       grid-template-columns: 1fr;
-      gap: 32px;
+      gap: 48px;
+    }
+
+    .solution-grid,
+    .industries-grid,
+    .comparison-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
     }
 
     .how-it-works {
@@ -1141,10 +1218,6 @@ const siteGraph = [
 
     .hiw-arrow {
       transform: rotate(90deg);
-    }
-
-    .form-row {
-      grid-template-columns: 1fr;
     }
 
     .footer-container {
@@ -1165,61 +1238,6 @@ const siteGraph = [
         body: JSON.stringify({ claim_slug: 'home', page: '/', event_type: 'cta_click' })
       }).catch(() => {});
     });
-  });
-
-  // Contact form submission
-  const contactForm = document.getElementById('contact-form');
-  const formSuccess = document.getElementById('form-success');
-  const submitBtn = document.getElementById('submit-btn');
-
-  contactForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    if (!(contactForm instanceof HTMLFormElement)) return;
-
-    const btnText = submitBtn?.querySelector('.btn-text');
-    const btnLoading = submitBtn?.querySelector('.btn-loading');
-
-    if (btnText && btnText instanceof HTMLElement) btnText.style.display = 'none';
-    if (btnLoading && btnLoading instanceof HTMLElement) btnLoading.style.display = 'inline';
-    if (submitBtn && 'disabled' in submitBtn) submitBtn.disabled = true;
-
-    const formData = new FormData(contactForm);
-    const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      company: formData.get('company'),
-      message: formData.get('message'),
-      source: 'buyer_timing_audit',
-      submitted_at: new Date().toISOString()
-    };
-
-    try {
-      const response = await fetch('/api/leads', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-
-      if (response.ok) {
-        if (contactForm instanceof HTMLElement) contactForm.style.display = 'none';
-        if (formSuccess instanceof HTMLElement) formSuccess.style.display = 'block';
-
-        // Track conversion
-        fetch('/api/events', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ claim_slug: 'home', page: '/', event_type: 'lead_submitted' })
-        }).catch(() => {});
-      } else {
-        throw new Error('Submission failed');
-      }
-    } catch (error) {
-      alert('Something went wrong. Please try again or email us directly.');
-      if (btnText && btnText instanceof HTMLElement) btnText.style.display = 'inline';
-      if (btnLoading && btnLoading instanceof HTMLElement) btnLoading.style.display = 'none';
-      if (submitBtn && 'disabled' in submitBtn) submitBtn.disabled = false;
-    }
   });
 
   // Smooth scroll for anchor links
