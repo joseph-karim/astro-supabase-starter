@@ -97,24 +97,108 @@ const siteGraph = [
         <div class="split-visual">
           <div class="visual-container">
             <div class="calendar-visual">
-              <div class="calendar-header">Your Calendar</div>
-              <div class="calendar-grid">
-                <div class="calendar-slot filled"></div>
-                <div class="calendar-slot empty"></div>
-                <div class="calendar-slot empty"></div>
-                <div class="calendar-slot filled"></div>
-                <div class="calendar-slot empty"></div>
-                <div class="calendar-slot empty"></div>
-                <div class="calendar-slot empty"></div>
-                <div class="calendar-slot filled"></div>
+              <div class="cal-header">
+                <div class="cal-month">January 2025</div>
+                <div class="cal-nav">
+                  <span>‹</span>
+                  <span>›</span>
+                </div>
+              </div>
+              <div class="cal-weekdays">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+              </div>
+              <div class="cal-days">
+                <div class="cal-day inactive">29</div>
+                <div class="cal-day inactive">30</div>
+                <div class="cal-day inactive">31</div>
+                <div class="cal-day">1</div>
+                <div class="cal-day">2</div>
+                <div class="cal-day">3</div>
+                <div class="cal-day">4</div>
+                <div class="cal-day">5</div>
+                <div class="cal-day has-event">
+                  <div class="cal-day-num">6</div>
+                  <div class="cal-event">Client call</div>
+                </div>
+                <div class="cal-day">7</div>
+                <div class="cal-day">8</div>
+                <div class="cal-day">9</div>
+                <div class="cal-day">10</div>
+                <div class="cal-day">11</div>
+                <div class="cal-day">12</div>
+                <div class="cal-day has-event">
+                  <div class="cal-day-num">13</div>
+                  <div class="cal-event">Proposal</div>
+                </div>
+                <div class="cal-day">14</div>
+                <div class="cal-day">15</div>
+                <div class="cal-day">16</div>
+                <div class="cal-day">17</div>
+                <div class="cal-day">18</div>
+                <div class="cal-day">19</div>
+                <div class="cal-day">20</div>
+                <div class="cal-day">21</div>
+                <div class="cal-day">22</div>
+                <div class="cal-day">23</div>
+                <div class="cal-day has-event">
+                  <div class="cal-day-num">24</div>
+                  <div class="cal-event">Discovery</div>
+                </div>
+                <div class="cal-day">25</div>
+                <div class="cal-day">26</div>
+                <div class="cal-day">27</div>
+                <div class="cal-day">28</div>
+                <div class="cal-day">29</div>
+                <div class="cal-day">30</div>
+                <div class="cal-day">31</div>
               </div>
             </div>
+
             <div class="crm-visual">
-              <div class="crm-header">Your CRM</div>
-              <div class="crm-item status-cold">Not now</div>
-              <div class="crm-item status-cold">Follow up later</div>
-              <div class="crm-item status-cold">Went dark</div>
-              <div class="crm-item status-cold">Maybe next quarter</div>
+              <div class="crm-header">
+                <div class="crm-title">Pipeline</div>
+                <div class="crm-value">$127K</div>
+              </div>
+              <div class="crm-pipeline">
+                <div class="crm-stage">
+                  <div class="stage-header">
+                    <span class="stage-name">Discovery</span>
+                    <span class="stage-count">4</span>
+                  </div>
+                  <div class="crm-deal cold">
+                    <div class="deal-company">Acme Manufacturing</div>
+                    <div class="deal-value">$28K</div>
+                    <div class="deal-status">Not now</div>
+                  </div>
+                  <div class="crm-deal cold">
+                    <div class="deal-company">Beta Consulting</div>
+                    <div class="deal-value">$35K</div>
+                    <div class="deal-status">Maybe Q2</div>
+                  </div>
+                </div>
+                <div class="crm-stage">
+                  <div class="stage-header">
+                    <span class="stage-name">Proposal</span>
+                    <span class="stage-count">2</span>
+                  </div>
+                  <div class="crm-deal cold">
+                    <div class="deal-company">Delta Corp</div>
+                    <div class="deal-value">$42K</div>
+                    <div class="deal-status">Went dark</div>
+                  </div>
+                  <div class="crm-deal cold">
+                    <div class="deal-company">Gamma Ltd</div>
+                    <div class="deal-value">$22K</div>
+                    <div class="deal-status">Follow up later</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -699,48 +783,204 @@ const siteGraph = [
     background: white;
     border: 1px solid #E5E7EB;
     border-radius: 12px;
-    padding: 24px;
+    overflow: hidden;
   }
 
-  .calendar-header,
-  .crm-header {
-    font-size: 13px;
+  /* Calendar Styles */
+  .cal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #E5E7EB;
+  }
+
+  .cal-month {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--obsidian);
+  }
+
+  .cal-nav {
+    display: flex;
+    gap: 8px;
+  }
+
+  .cal-nav span {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    color: var(--graphite);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .cal-nav span:hover {
+    background: var(--mist);
+  }
+
+  .cal-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 16px 24px 12px;
+    gap: 4px;
+  }
+
+  .cal-weekdays div {
+    font-size: 11px;
     font-weight: 600;
     color: var(--smoke);
-    margin-bottom: 16px;
+    text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
-  .calendar-grid {
+  .cal-days {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 0 24px 24px;
+    gap: 4px;
   }
 
-  .calendar-slot {
-    height: 60px;
-    border-radius: 8px;
-    border: 2px solid #E5E7EB;
-  }
-
-  .calendar-slot.filled {
-    background: var(--signal-blue);
-    border-color: var(--signal-blue);
-    opacity: 0.2;
-  }
-
-  .crm-item {
-    padding: 12px;
-    margin-bottom: 8px;
-    border-radius: 6px;
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     font-size: 14px;
-    color: var(--graphite);
+    color: var(--obsidian);
+    border-radius: 6px;
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .cal-day.inactive {
+    color: var(--smoke);
+    opacity: 0.3;
+  }
+
+  .cal-day.has-event {
+    background: rgba(37, 99, 235, 0.05);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    padding: 4px;
+    justify-content: flex-start;
+  }
+
+  .cal-day-num {
+    font-size: 13px;
+    color: var(--obsidian);
+    font-weight: 500;
+  }
+
+  .cal-event {
+    font-size: 9px;
+    color: var(--signal-blue);
+    background: rgba(37, 99, 235, 0.1);
+    padding: 2px 4px;
+    border-radius: 3px;
+    margin-top: 2px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  /* CRM Styles */
+  .crm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #E5E7EB;
     background: var(--mist);
   }
 
-  .crm-item:last-child {
-    margin-bottom: 0;
+  .crm-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--obsidian);
+  }
+
+  .crm-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--graphite);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .crm-pipeline {
+    padding: 16px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .crm-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .stage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .stage-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--smoke);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .stage-count {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--smoke);
+    background: var(--mist);
+    padding: 2px 8px;
+    border-radius: 12px;
+  }
+
+  .crm-deal {
+    padding: 12px;
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .crm-deal.cold {
+    opacity: 0.6;
+  }
+
+  .deal-company {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--obsidian);
+  }
+
+  .deal-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--graphite);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .deal-status {
+    font-size: 12px;
+    color: var(--smoke);
+    font-style: italic;
   }
 
   /* Problem Layout */
