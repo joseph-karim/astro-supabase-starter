@@ -429,6 +429,188 @@ export interface Database {
           created_at?: string
         }
       }
+      // Buyer Trigger Agent tables
+      onboarding_sessions: {
+        Row: {
+          id: string
+          email: string
+          company_name: string | null
+          website_url: string | null
+          industry: string | null
+          target_buyer: string | null
+          buyer_journey_stage: string | null
+          current_step: number
+          completed: boolean
+          session_data: Json
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          email: string
+          company_name?: string | null
+          website_url?: string | null
+          industry?: string | null
+          target_buyer?: string | null
+          buyer_journey_stage?: string | null
+          current_step?: number
+          completed?: boolean
+          session_data?: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          company_name?: string | null
+          website_url?: string | null
+          industry?: string | null
+          target_buyer?: string | null
+          buyer_journey_stage?: string | null
+          current_step?: number
+          completed?: boolean
+          session_data?: Json
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      signal_configurations: {
+        Row: {
+          id: string
+          session_id: string
+          signal_type: string
+          signal_description: string | null
+          priority: string
+          enabled: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          session_id: string
+          signal_type: string
+          signal_description?: string | null
+          priority?: string
+          enabled?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          session_id?: string
+          signal_type?: string
+          signal_description?: string | null
+          priority?: string
+          enabled?: boolean
+          created_at?: string
+        }
+      }
+      buyer_trigger_leads: {
+        Row: {
+          id: string
+          session_id: string
+          company_name: string
+          domain: string | null
+          signal_matched: string[]
+          confidence_score: number | null
+          discovered_at: string
+          contact_info: Json
+          enrichment_data: Json
+          status: string
+        }
+        Insert: {
+          id?: string
+          session_id: string
+          company_name: string
+          domain?: string | null
+          signal_matched?: string[]
+          confidence_score?: number | null
+          discovered_at?: string
+          contact_info?: Json
+          enrichment_data?: Json
+          status?: string
+        }
+        Update: {
+          id?: string
+          session_id?: string
+          company_name?: string
+          domain?: string | null
+          signal_matched?: string[]
+          confidence_score?: number | null
+          discovered_at?: string
+          contact_info?: Json
+          enrichment_data?: Json
+          status?: string
+        }
+      }
+      signal_matches: {
+        Row: {
+          id: string
+          lead_id: string
+          signal_config_id: string
+          signal_type: string
+          evidence_url: string | null
+          evidence_snippet: string | null
+          detected_at: string | null
+          confidence_score: number | null
+          metadata: Json
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          lead_id: string
+          signal_config_id: string
+          signal_type: string
+          evidence_url?: string | null
+          evidence_snippet?: string | null
+          detected_at?: string | null
+          confidence_score?: number | null
+          metadata?: Json
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          lead_id?: string
+          signal_config_id?: string
+          signal_type?: string
+          evidence_url?: string | null
+          evidence_snippet?: string | null
+          detected_at?: string | null
+          confidence_score?: number | null
+          metadata?: Json
+          created_at?: string
+        }
+      }
+      buyer_trigger_subscriptions: {
+        Row: {
+          id: string
+          session_id: string
+          email: string
+          frequency: string
+          active: boolean
+          last_sent_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          session_id: string
+          email: string
+          frequency?: string
+          active?: boolean
+          last_sent_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          session_id?: string
+          email?: string
+          frequency?: string
+          active?: boolean
+          last_sent_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
       // Existing tables
       claims: {
         Row: {
@@ -554,3 +736,8 @@ export type FeedValidation = Database['public']['Tables']['feed_validations']['R
 export type OffsiteMention = Database['public']['Tables']['offsite_mentions']['Row']
 export type AgenticCommerceStatus = Database['public']['Tables']['agentic_commerce_status']['Row']
 export type Competitor = Database['public']['Tables']['competitors']['Row']
+export type OnboardingSession = Database['public']['Tables']['onboarding_sessions']['Row']
+export type SignalConfiguration = Database['public']['Tables']['signal_configurations']['Row']
+export type BuyerTriggerLead = Database['public']['Tables']['buyer_trigger_leads']['Row']
+export type SignalMatch = Database['public']['Tables']['signal_matches']['Row']
+export type BuyerTriggerSubscription = Database['public']['Tables']['buyer_trigger_subscriptions']['Row']
