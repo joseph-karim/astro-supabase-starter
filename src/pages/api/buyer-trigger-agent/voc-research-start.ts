@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { runVoCResearchPipeline } from '../../../lib/voc-triggers/voc-research-pipeline';
 import { jsonResponse, parseJsonBody, requestId, OPTIONS_OK } from './_http';
+import { getSecrets } from '../../../utils/database';
 
 export const prerender = false;
 
@@ -63,16 +64,39 @@ export const POST: APIRoute = async ({ request }) => {
         jobs.set(jobId, { ...current, ...patch, updatedAt: new Date().toISOString() });
       };
 
-      update({ status: 'running', statusMessage: 'Starting research...' });
+      update({ status: 'running', statusMessage: 'Loading API keys...' });
 
       try {
+        // Fetch API keys from Supabase secrets table
+        const secrets = await getSecrets(['ANTHROPIC_API_KEY', 'EXA_API_KEY', 'PERPLEXITY_API_KEY']);
+        
+        // Validate we have the required key
+        if (!secrets.ANTHROPIC_API_KEY) {
+          throw new Error('ANTHROPIC_API_KEY not configured in Supabase secrets table. Please add it via the Supabase dashboard.');
+        }
+
+        update({ statusMessage: 'Starting research...' });
+
         const result = await runVoCResearchPipeline(
-          { website, companyName, industry, competitors, targetCompanySize },
+          { 
+            website, 
+            companyName, 
+            industry, 
+            competitors, 
+            targetCompanySize,
+            // Pass API keys from Supabase
+            apiKeys: {
+              anthropic: secrets.ANTHROPIC_API_KEY || undefined,
+              exa: secrets.EXA_API_KEY || undefined,
+              perplexity: secrets.PERPLEXITY_API_KEY || undefined
+            }
+          },
           jobId,
           (msg) => update({ statusMessage: msg })
         );
         update({ status: 'completed', statusMessage: 'Complete', result });
       } catch (error) {
+        console.error(`[VoC Research Job ${jobId}] Error:`, error);
         update({
           status: 'failed',
           statusMessage: 'Failed',

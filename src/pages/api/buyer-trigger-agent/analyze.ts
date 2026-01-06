@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import Anthropic from '@anthropic-ai/sdk';
+import { getSecret } from '../../../utils/database';
 
 export const prerender = false;
 
@@ -148,10 +149,11 @@ async function scrapeWithCrawl4AI(endpoint: string, url: string): Promise<string
 }
 
 async function analyzeBusinessWithAI(websiteContent: string, companyName: string) {
-  const apiKey = import.meta.env.ANTHROPIC_API_KEY;
+  // Fetch API key from Supabase secrets
+  const apiKey = await getSecret('ANTHROPIC_API_KEY');
 
   if (!apiKey) {
-    console.warn('ANTHROPIC_API_KEY not set, using fallback analysis');
+    console.warn('ANTHROPIC_API_KEY not found in Supabase secrets, using fallback analysis');
     return generateFallbackAnalysis(companyName);
   }
 

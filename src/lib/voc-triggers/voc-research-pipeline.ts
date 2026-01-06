@@ -19,10 +19,35 @@ export interface VoCResearchInput {
   industry?: string;
   competitors?: string[];
   targetCompanySize?: string;
+  // API keys passed from the route (which has proper access to import.meta.env)
+  apiKeys?: {
+    anthropic?: string;
+    exa?: string;
+    perplexity?: string;
+  };
 }
 
 function getEnv(key: string): string | undefined {
-  return (import.meta as any)?.env?.[key] ?? (globalThis as any).process?.env?.[key];
+  // Try multiple access patterns for maximum compatibility across environments
+  // 1. Direct process.env (most reliable in Node.js)
+  if (typeof process !== 'undefined' && process.env && process.env[key]) {
+    return process.env[key];
+  }
+  // 2. import.meta.env (Astro/Vite - note: dynamic access may not work)
+  try {
+    const meta = import.meta as any;
+    if (meta?.env?.[key]) return meta.env[key];
+  } catch {
+    // ignore
+  }
+  // 3. globalThis fallback
+  try {
+    const g = globalThis as any;
+    if (g?.process?.env?.[key]) return g.process.env[key];
+  } catch {
+    // ignore
+  }
+  return undefined;
 }
 
 function normalizeWebsiteAnalysis(
@@ -327,12 +352,21 @@ export async function runVoCResearchPipeline(
   rid: string,
   onProgress?: (status: string) => void
 ): Promise<Partial<VoCResearchSession> & { requestId: string }> {
-  const { website, companyName, industry, competitors = [], targetCompanySize = '50-500 employees' } = input;
+  const { website, companyName, industry, competitors = [], targetCompanySize = '50-500 employees', apiKeys } = input;
 
-  const anthropicApiKey = getEnv('ANTHROPIC_API_KEY');
-  const exaApiKey = getEnv('EXA_API_KEY');
+  // Prefer passed API keys (from route which has proper import.meta.env access)
+  // Fall back to getEnv() for backward compatibility
+  const anthropicApiKey = apiKeys?.anthropic || getEnv('ANTHROPIC_API_KEY');
+  const exaApiKey = apiKeys?.exa || getEnv('EXA_API_KEY');
 
   if (!anthropicApiKey) {
+    // Log diagnostic info to help debug
+    console.error(`[VoC Research][${rid}] ANTHROPIC_API_KEY not found. Diagnostics:`, {
+      passedKey: apiKeys?.anthropic ? 'present' : 'missing',
+      getEnvResult: getEnv('ANTHROPIC_API_KEY') ? 'present' : 'missing',
+      processEnvExists: typeof process !== 'undefined' && !!process.env,
+      nodeEnv: typeof process !== 'undefined' ? process.env.NODE_ENV : 'N/A'
+    });
     throw new Error('ANTHROPIC_API_KEY is not configured');
   }
 
