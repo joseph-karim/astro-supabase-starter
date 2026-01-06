@@ -49,8 +49,9 @@ export async function getSecret(key: string): Promise<string | null> {
   }
 
   try {
-    // Query Supabase Vault (decrypted_secrets view)
+    // Query Supabase Vault (vault.decrypted_secrets view)
     const { data, error } = await supabaseAdmin
+      .schema('vault')
       .from('decrypted_secrets')
       .select('decrypted_secret')
       .eq('name', key)
@@ -61,7 +62,7 @@ export async function getSecret(key: string): Promise<string | null> {
       if (error.code === 'PGRST116') {
         console.warn(`[getSecret] Secret '${key}' not found in Vault`)
       } else {
-        console.error(`[getSecret] Error fetching secret ${key}:`, error.message)
+        console.error(`[getSecret] Error fetching secret ${key}:`, error.message, error.code)
       }
       return null
     }
@@ -112,14 +113,15 @@ export async function getSecrets(keys: string[]): Promise<Record<string, string 
   }
 
   try {
-    // Query Supabase Vault for multiple secrets
+    // Query Supabase Vault for multiple secrets (vault schema)
     const { data, error } = await supabaseAdmin
+      .schema('vault')
       .from('decrypted_secrets')
       .select('name, decrypted_secret')
       .in('name', keysToFetch)
 
     if (error) {
-      console.error('[getSecrets] Error fetching secrets from Vault:', error.message)
+      console.error('[getSecrets] Error fetching secrets from Vault:', error.message, error.code)
       for (const key of keysToFetch) {
         result[key] = null
       }
