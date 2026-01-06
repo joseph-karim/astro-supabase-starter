@@ -659,3 +659,87 @@
     width: 100%;
   }
 }
+
+/* VoC Research Enhancements */
+.bta-checkbox-option {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: all 0.2s ease;
+}
+
+.bta-checkbox-option:hover {
+  background: #f1f3f4;
+}
+
+.bta-checkbox-option input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: var(--accent-color, #E67E22);
+}
+
+.bta-checkbox-option strong {
+  display: block;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+/* Convergence badge for multi-signal leads */
+.bta-convergence-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 10px;
+  margin-left: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bta-lead-convergence {
+  border-left: 3px solid #667eea;
+}
+
+/* Signal details in lead cards */
+.bta-lead-signals-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.bta-signal-detail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 4px 10px;
+  background: #f0f4f8;
+  border-radius: 6px;
+}
+
+.bta-signal-type {
+  color: #4a5568;
+  text-transform: capitalize;
+}
+
+.bta-signal-confidence {
+  color: #718096;
+  font-size: 11px;
+}
+
+.bta-lead-match {
+  font-size: 12px;
+  color: #718096;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e2e8f0;
+}

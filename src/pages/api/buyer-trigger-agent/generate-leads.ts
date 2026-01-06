@@ -1,5 +1,11 @@
 import type { APIRoute } from 'astro';
 import Exa from 'exa-js';
+import type { TriggerSignalConfiguration, CompanySignal } from '../../../lib/voc-triggers/types';
+import { 
+  detectSignalsForCompany, 
+  calculateCompositeScore,
+  rankCompaniesBySignals 
+} from '../../../lib/voc-triggers/signal-translation';
 
 export const prerender = false;
 
@@ -8,6 +14,8 @@ interface LeadCriteria {
   targetBuyer: string;
   signals: string[];
   buyerJourneyStage: string;
+  // New: VoC-based signal configurations
+  signalConfigurations?: TriggerSignalConfiguration[];
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -17,11 +25,29 @@ export const POST: APIRoute = async ({ request }) => {
       industry,
       targetBuyer,
       signals,
-      buyerJourneyStage
+      buyerJourneyStage,
+      signalConfigurations
     } = body as LeadCriteria;
 
-    console.log('[Generate Leads] Criteria:', { industry, signals, buyerJourneyStage });
+    console.log('[Generate Leads] Criteria:', { industry, signals: signals?.length || 0, buyerJourneyStage });
 
+    // If VoC signal configurations provided, use the enhanced flow
+    if (signalConfigurations && signalConfigurations.length > 0) {
+      console.log('[Generate Leads] Using VoC-based signal configurations');
+      const leads = await discoverCompaniesWithVoCSignals({
+        industry,
+        targetBuyer,
+        buyerJourneyStage,
+        signalConfigurations
+      });
+      
+      return new Response(JSON.stringify({ leads, method: 'voc-signals' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Legacy flow: use simple signal matching
     const leads = await discoverCompaniesWithSignals({
       industry,
       targetBuyer,
@@ -31,7 +57,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     console.log(`[Generate Leads] Found ${leads.length} matching companies`);
 
-    return new Response(JSON.stringify({ leads }), {
+    return new Response(JSON.stringify({ leads, method: 'simple-signals' }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
@@ -48,6 +74,118 @@ export const POST: APIRoute = async ({ request }) => {
   }
 };
 
+/**
+ * Enhanced lead discovery using VoC-based signal configurations
+ * Uses multi-signal scoring and convergence bonuses
+ */
+async function discoverCompaniesWithVoCSignals(criteria: {
+  industry: string;
+  targetBuyer: string;
+  buyerJourneyStage: string;
+  signalConfigurations: TriggerSignalConfiguration[];
+}) {
+  const exaApiKey = import.meta.env.EXA_API_KEY;
+  const perplexityApiKey = import.meta.env.PERPLEXITY_API_KEY;
+  const anthropicApiKey = import.meta.env.ANTHROPIC_API_KEY;
+
+  if (!exaApiKey) {
+    console.warn('[VoC Leads] Missing EXA_API_KEY');
+    return [];
+  }
+
+  const exa = new Exa(exaApiKey);
+
+  // Build search queries from signal configurations
+  const searchQueries = criteria.signalConfigurations.flatMap(config => 
+    config.signals.map(s => s.queryParameters.keywords || []).flat()
+  );
+
+  const uniqueKeywords = [...new Set(searchQueries)].slice(0, 10);
+  const searchQuery = `${criteria.industry} companies (${uniqueKeywords.join(' OR ')})`;
+
+  console.log(`[VoC Leads] Searching: "${searchQuery.slice(0, 100)}..."`);
+
+  try {
+    // Discover companies with Exa
+    const exaResults = await exa.searchAndContents(searchQuery, {
+      type: 'auto',
+      numResults: 15,
+      text: { maxCharacters: 1000 },
+      category: 'company'
+    });
+
+    console.log(`[VoC Leads] Found ${exaResults.results.length} potential companies`);
+
+    // Detect signals for each company using VoC configurations
+    const companiesWithSignals = await Promise.all(
+      exaResults.results.slice(0, 8).map(async (result) => {
+        const companyName = extractCompanyName(result.url, result.title || '');
+        
+        console.log(`[VoC Leads] Analyzing ${companyName}...`);
+
+        const detectedSignals = await detectSignalsForCompany(
+          companyName,
+          result.url,
+          criteria.signalConfigurations,
+          {
+            exa: exaApiKey,
+            perplexity: perplexityApiKey,
+            anthropic: anthropicApiKey || ''
+          }
+        );
+
+        return {
+          company: companyName,
+          url: result.url,
+          signals: detectedSignals
+        };
+      })
+    );
+
+    // Rank companies by composite signal score
+    const rankedCompanies = rankCompaniesBySignals(companiesWithSignals);
+
+    // Transform to lead format
+    const leads = rankedCompanies
+      .filter(c => c.compositeScore > 0)
+      .slice(0, 5)
+      .map(c => {
+        const primarySignal = c.signals[0];
+        const signalTypes = [...new Set(c.signals.map(s => s.signalType))];
+        const evidenceData = primarySignal?.evidence?.data || {};
+        
+        return {
+          company: c.company,
+          location: evidenceData.location || 'Unknown',
+          employees: evidenceData.employees || 0,
+          revenue: evidenceData.revenue || 'Not disclosed',
+          score: c.compositeScore,
+          primarySignal: evidenceData.analysis || primarySignal?.signalType || 'Multiple signals detected',
+          evidenceUrl: primarySignal?.evidence?.url || c.company,
+          tags: signalTypes.map(s => s.replace(/_/g, ' ')),
+          matchReason: `${c.signals.length} signal${c.signals.length > 1 ? 's' : ''} detected • ${criteria.buyerJourneyStage} stage`,
+          signals: c.signals.map(s => ({
+            type: s.signalType,
+            trigger: s.triggerPattern,
+            confidence: s.confidence,
+            messagingContext: s.messagingContext
+          })),
+          convergenceBonus: signalTypes.length >= 2
+        };
+      });
+
+    console.log(`[VoC Leads] Returning ${leads.length} qualified leads`);
+    return leads;
+
+  } catch (error) {
+    console.error('[VoC Leads] Error:', error);
+    return [];
+  }
+}
+
+/**
+ * Legacy lead discovery using simple signal matching
+ */
 async function discoverCompaniesWithSignals(criteria: LeadCriteria) {
   const exaApiKey = import.meta.env.EXA_API_KEY;
   const perplexityApiKey = import.meta.env.PERPLEXITY_API_KEY;
@@ -93,7 +231,7 @@ async function discoverCompaniesWithSignals(criteria: LeadCriteria) {
     // Process top companies and detect signals with Perplexity
     const leads = await Promise.all(
       exaResults.results.slice(0, 5).map(async (result) => {
-        const companyName = extractCompanyName(result.url, result.title);
+        const companyName = extractCompanyName(result.url, result.title || '');
 
         console.log(`[Lead] Analyzing ${companyName}...`);
 

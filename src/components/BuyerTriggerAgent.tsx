@@ -11,6 +11,8 @@ interface SessionData {
   painPoints: string[];
   signals: string[];
   frequency: string;
+  competitors: string[];
+  useVoCResearch: boolean;
 }
 
 interface Analysis {
@@ -18,6 +20,12 @@ interface Analysis {
   idealCustomerProfile: any;
   recommendedSignals: any[];
   confidence: number;
+}
+
+interface VoCResearch {
+  websiteAnalysis: any;
+  synthesizedTriggers: any[];
+  signalConfigurations: any[];
 }
 
 interface Lead {
@@ -29,6 +37,8 @@ interface Lead {
   primarySignal: string;
   tags: string[];
   matchReason: string;
+  convergenceBonus?: boolean;
+  signals?: { type: string; trigger: string; confidence: number; messagingContext: string }[];
 }
 
 export default function BuyerTriggerAgent() {
@@ -37,7 +47,9 @@ export default function BuyerTriggerAgent() {
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
+  const [vocResearch, setVocResearch] = useState<VoCResearch | null>(null);
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [researchStatus, setResearchStatus] = useState<string>('');
 
   const [data, setData] = useState<SessionData>({
     email: '',
@@ -48,7 +60,9 @@ export default function BuyerTriggerAgent() {
     buyerJourneyStage: '',
     painPoints: [],
     signals: [],
-    frequency: 'daily'
+    frequency: 'daily',
+    competitors: [],
+    useVoCResearch: false
   });
 
   const totalSteps = 3;
@@ -95,35 +109,85 @@ export default function BuyerTriggerAgent() {
     setError(null);
 
     try {
-      const response = await fetch('/api/buyer-trigger-agent/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          website: data.website,
-          companyName: data.companyName
-        })
-      });
+      if (data.useVoCResearch) {
+        // Use the full VoC research pipeline
+        setResearchStatus('Analyzing your website...');
+        
+        const response = await fetch('/api/buyer-trigger-agent/voc-research', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            website: data.website,
+            companyName: data.companyName,
+            competitors: data.competitors
+          })
+        });
 
-      if (!response.ok) throw new Error('Failed to analyze website');
+        if (!response.ok) throw new Error('Failed to run VoC research');
 
-      const result = await response.json();
-      setAnalysis(result);
+        const result = await response.json();
+        setVocResearch(result);
 
-      // Pre-fill ICP and signals from analysis
-      setData({
-        ...data,
-        industry: result.companyProfile.industry,
-        targetBuyer: result.idealCustomerProfile.title,
-        signals: result.recommendedSignals
-          .filter((s: any) => s.enabled)
-          .map((s: any) => s.id)
-      });
+        // Convert VoC triggers to analysis format for display
+        const triggerSignals = result.signalConfigurations?.map((config: any) => ({
+          id: config.triggerName,
+          label: config.triggerName.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()),
+          reason: config.messagingAngle,
+          priority: config.signals?.some((s: any) => s.confidence === 'HIGH') ? 'high' : 'medium',
+          enabled: true
+        })) || [];
 
-      setStep(2);
+        setAnalysis({
+          companyProfile: result.websiteAnalysis?.companyProfile || { industry: 'Technology' },
+          idealCustomerProfile: {
+            title: data.targetBuyer || 'Decision Maker',
+            companySize: '50-500 employees'
+          },
+          recommendedSignals: triggerSignals,
+          confidence: 0.85
+        });
+
+        setData({
+          ...data,
+          industry: result.websiteAnalysis?.companyProfile?.industry || 'Technology',
+          signals: triggerSignals.slice(0, 3).map((s: any) => s.id)
+        });
+
+        setResearchStatus('');
+        setStep(2);
+      } else {
+        // Standard analysis
+        const response = await fetch('/api/buyer-trigger-agent/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            website: data.website,
+            companyName: data.companyName
+          })
+        });
+
+        if (!response.ok) throw new Error('Failed to analyze website');
+
+        const result = await response.json();
+        setAnalysis(result);
+
+        // Pre-fill ICP and signals from analysis
+        setData({
+          ...data,
+          industry: result.companyProfile.industry,
+          targetBuyer: result.idealCustomerProfile.title,
+          signals: result.recommendedSignals
+            .filter((s: any) => s.enabled)
+            .map((s: any) => s.id)
+        });
+
+        setStep(2);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
       setAnalyzing(false);
+      setResearchStatus('');
     }
   };
 
@@ -132,10 +196,23 @@ export default function BuyerTriggerAgent() {
     setError(null);
 
     try {
+      // Build request payload
+      const payload: any = {
+        industry: data.industry,
+        targetBuyer: data.targetBuyer,
+        signals: data.signals,
+        buyerJourneyStage: data.buyerJourneyStage
+      };
+
+      // If VoC research was used, include signal configurations for enhanced lead gen
+      if (data.useVoCResearch && vocResearch?.signalConfigurations) {
+        payload.signalConfigurations = vocResearch.signalConfigurations;
+      }
+
       const response = await fetch('/api/buyer-trigger-agent/generate-leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify(payload)
       });
 
       if (!response.ok) throw new Error('Failed to generate leads');
@@ -182,10 +259,13 @@ export default function BuyerTriggerAgent() {
 
           <div className="bta-leads">
             {leads.map((lead, idx) => (
-              <div key={idx} className="bta-lead-card">
+              <div key={idx} className={`bta-lead-card ${lead.convergenceBonus ? 'bta-lead-convergence' : ''}`}>
                 <div className="bta-lead-header">
                   <div>
-                    <div className="bta-lead-company">{lead.company}</div>
+                    <div className="bta-lead-company">
+                      {lead.company}
+                      {lead.convergenceBonus && <span className="bta-convergence-badge">Multi-Signal</span>}
+                    </div>
                     <div className="bta-lead-meta">{lead.location} • {lead.employees} employees • {lead.revenue} revenue</div>
                   </div>
                   <div className="bta-lead-score">{lead.score}</div>
@@ -193,15 +273,28 @@ export default function BuyerTriggerAgent() {
                 <div className="bta-lead-signal">
                   <span className="bta-signal-label">Primary Signal:</span> {lead.primarySignal}
                 </div>
+                {lead.signals && lead.signals.length > 0 && (
+                  <div className="bta-lead-signals-detail">
+                    {lead.signals.map((sig, i) => (
+                      <div key={i} className="bta-signal-detail">
+                        <span className="bta-signal-type">{sig.type.replace(/_/g, ' ')}</span>
+                        <span className="bta-signal-confidence">{sig.confidence}% conf</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <div className="bta-lead-tags">
                   {lead.tags.map((tag, i) => (
                     <span key={i} className="bta-tag">{tag}</span>
                   ))}
                 </div>
+                <div className="bta-lead-match">{lead.matchReason}</div>
               </div>
             ))}
 
-            <div className="bta-more-leads">+ 22 more qualified leads in your full report</div>
+            {leads.length > 0 && (
+              <div className="bta-more-leads">+ more qualified leads available with full subscription</div>
+            )}
           </div>
 
           <div className="bta-cta-section">
@@ -268,7 +361,34 @@ export default function BuyerTriggerAgent() {
                 />
               </div>
 
-              {analyzing && <div className="bta-analyzing">🔍 Analyzing your website to understand your business...</div>}
+              <div className="bta-field">
+                <label>Competitors (optional)</label>
+                <input
+                  type="text"
+                  value={data.competitors.join(', ')}
+                  onChange={(e) => updateData('competitors', e.target.value.split(',').map(c => c.trim()).filter(c => c))}
+                  placeholder="Competitor 1, Competitor 2"
+                />
+                <p className="bta-helper">We'll mine competitor reviews to discover real buyer triggers</p>
+              </div>
+
+              <label className="bta-checkbox-option">
+                <input
+                  type="checkbox"
+                  checked={data.useVoCResearch}
+                  onChange={(e) => updateData('useVoCResearch', e.target.checked)}
+                />
+                <div>
+                  <strong>Deep Research Mode</strong>
+                  <p className="bta-helper">Mine reviews, Reddit, and case studies to discover actual buyer triggers (takes 30-60 seconds)</p>
+                </div>
+              </label>
+
+              {analyzing && (
+                <div className="bta-analyzing">
+                  🔍 {researchStatus || 'Analyzing your website to understand your business...'}
+                </div>
+              )}
               {error && <div className="bta-error">{error}</div>}
             </div>
           )}
