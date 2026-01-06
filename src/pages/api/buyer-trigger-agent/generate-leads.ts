@@ -15,8 +15,16 @@ interface LeadCriteria {
   targetBuyer: string;
   signals: string[];
   buyerJourneyStage: string;
-  // New: VoC-based signal configurations
+  // VoC-based signal configurations
   signalConfigurations?: TriggerSignalConfiguration[];
+  // ICP details for targeted search
+  icp?: {
+    targetIndustries?: string[];
+    companySize?: string;
+    targetTitles?: string[];
+    geography?: string;
+    painPoints?: string[];
+  };
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -102,22 +110,35 @@ async function discoverCompaniesWithVoCSignals(criteria: {
 
   const exa = new Exa(exaApiKey);
 
-  // Build PROSPECT search queries - NOT searching for competitors!
-  // Extract signal-based search terms (hiring, funding, expansion signals)
+  // Build PROSPECT search queries using ICP data
+  const icp = criteria.icp || {};
+  const targetIndustries = icp.targetIndustries?.slice(0, 3) || [];
+  const targetTitles = icp.targetTitles?.slice(0, 2) || [criteria.targetBuyer || 'sales'];
+  const geography = icp.geography || '';
+  
+  // Extract signal-based search terms
   const signalKeywords = criteria.signalConfigurations.flatMap(config => 
     config.signals
       .filter(s => s.queryParameters?.keywords?.length)
       .flatMap(s => s.queryParameters.keywords || [])
-  ).slice(0, 8);
+  ).slice(0, 6);
 
-  // Build multiple search queries to find prospects showing buying signals
+  // Build multiple search queries targeting PROSPECTS, not competitors
+  const industryFilter = targetIndustries.length > 0 
+    ? targetIndustries.join(' OR ') 
+    : 'technology OR saas OR software';
+  
+  const geoFilter = geography ? ` ${geography}` : '';
+  
   const searchQueries = [
-    // Search for companies showing hiring signals (prospects expanding)
-    `companies hiring ${criteria.targetBuyer || 'sales'} team -"${criteria.industry}" -competitor`,
-    // Search for companies with expansion signals
-    `company expanding operations ${signalKeywords.slice(0, 3).join(' ')} -vendor -solution -platform`,
-    // Search for companies discussing the problem space  
-    `"looking for" OR "evaluating" ${criteria.industry.split(' ')[0]} solutions`,
+    // Search for companies in target industries hiring target roles
+    `(${industryFilter}) companies hiring (${targetTitles.join(' OR ')})${geoFilter}`,
+    // Search for companies showing expansion/growth signals
+    `(${industryFilter}) company (expanding OR growing OR scaling)${geoFilter} ${signalKeywords.slice(0, 2).join(' ')}`,
+    // Search for companies discussing relevant pain points
+    icp.painPoints?.length 
+      ? `(${industryFilter}) "${icp.painPoints[0]}"${geoFilter}`
+      : `(${industryFilter}) "looking for solutions"${geoFilter}`,
   ];
 
   console.log(`[VoC Leads] Searching for PROSPECTS (not competitors)`);

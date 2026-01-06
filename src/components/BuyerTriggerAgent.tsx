@@ -13,6 +13,14 @@ interface SessionData {
   frequency: string;
   competitors: string[];
   useVoCResearch: boolean;
+  // ICP fields
+  icp: {
+    targetIndustries: string[];
+    companySize: string;
+    targetTitles: string[];
+    geography: string;
+    painPoints: string[];
+  };
 }
 
 interface Analysis {
@@ -67,10 +75,17 @@ export default function BuyerTriggerAgent() {
     signals: [],
     frequency: 'daily',
     competitors: [],
-    useVoCResearch: false
+    useVoCResearch: false,
+    icp: {
+      targetIndustries: [],
+      companySize: '50-500 employees',
+      targetTitles: [],
+      geography: '',
+      painPoints: []
+    }
   });
 
-  const totalSteps = 3;
+  const totalSteps = 4; // Added ICP step
 
   // Signal types available for selection
   const signalTypes = [
@@ -97,8 +112,8 @@ export default function BuyerTriggerAgent() {
     if (step === 1) {
       // Analyze website after step 1
       await analyzeWebsite();
-    } else if (step === 3) {
-      // Generate leads after final step
+    } else if (step === 4) {
+      // Generate leads after final step (now step 4)
       await generateLeads();
     } else {
       setStep(step + 1);
@@ -200,10 +215,20 @@ export default function BuyerTriggerAgent() {
           confidence: 0.85
         });
 
+        // Pre-populate ICP from analysis
+        const industry = result.websiteAnalysis?.companyProfile?.industry || 'Technology';
+        const targetMarkets = result.websiteAnalysis?.companyProfile?.targetMarkets || [];
+        
         setData({
           ...data,
-          industry: result.websiteAnalysis?.companyProfile?.industry || 'Technology',
-          signals: triggerSignals.slice(0, 3).map((s: any) => s.id)
+          industry,
+          signals: triggerSignals.slice(0, 3).map((s: any) => s.id),
+          icp: {
+            ...data.icp,
+            targetIndustries: targetMarkets.length > 0 ? targetMarkets : [industry],
+            targetTitles: [data.targetBuyer || 'Decision Maker'],
+            painPoints: result.websiteAnalysis?.companyProfile?.services || []
+          }
         });
 
         setResearchStatus('');
@@ -241,7 +266,14 @@ export default function BuyerTriggerAgent() {
           targetBuyer: result.idealCustomerProfile.title,
           signals: result.recommendedSignals
             .filter((s: any) => s.enabled)
-            .map((s: any) => s.id)
+            .map((s: any) => s.id),
+          icp: {
+            targetIndustries: [result.idealCustomerProfile.industry || result.companyProfile.industry],
+            companySize: result.idealCustomerProfile.companySize || '50-500 employees',
+            targetTitles: [result.idealCustomerProfile.title],
+            geography: '',
+            painPoints: result.idealCustomerProfile.painPoints || []
+          }
         });
 
         setStep(2);
@@ -259,12 +291,20 @@ export default function BuyerTriggerAgent() {
     setError(null);
 
     try {
-      // Build request payload
+      // Build request payload with ICP data
       const payload: any = {
         industry: data.industry,
         targetBuyer: data.targetBuyer,
         signals: data.signals,
-        buyerJourneyStage: data.buyerJourneyStage
+        buyerJourneyStage: data.buyerJourneyStage,
+        // Include ICP for more targeted search
+        icp: {
+          targetIndustries: data.icp.targetIndustries,
+          companySize: data.icp.companySize,
+          targetTitles: data.icp.targetTitles,
+          geography: data.icp.geography,
+          painPoints: data.icp.painPoints
+        }
       };
 
       // If VoC research was used, include signal configurations for enhanced lead gen
@@ -315,8 +355,9 @@ export default function BuyerTriggerAgent() {
   const canProceed = () => {
     switch (step) {
       case 1: return data.companyName.length > 0 && data.website.length > 0;
-      case 2: return analysis !== null && data.signals.length > 0;
-      case 3: return data.buyerJourneyStage.length > 0;
+      case 2: return data.icp.targetIndustries.length > 0 && data.icp.companySize.length > 0;
+      case 3: return analysis !== null && data.signals.length > 0;
+      case 4: return data.buyerJourneyStage.length > 0;
       default: return true;
     }
   };
@@ -535,51 +576,110 @@ export default function BuyerTriggerAgent() {
             </div>
           )}
 
-          {step === 2 && analysis && (
+          {step === 2 && (
             <div className="bta-step">
-              <h2>We found your ideal customers</h2>
-              <p className="bta-subtitle">Based on analyzing {data.website}, here's who we think you should target:</p>
+              <h2>Define your ideal customer</h2>
+              <p className="bta-subtitle">We've pre-filled this based on your website. Edit to refine who you're looking for:</p>
 
-              <div className="bta-analysis-box">
-                <div className="bta-analysis-item">
-                  <div className="bta-analysis-label">Your Industry</div>
-                  <div className="bta-analysis-value">{analysis.companyProfile.industry}</div>
-                </div>
-                <div className="bta-analysis-item">
-                  <div className="bta-analysis-label">Your Ideal Buyer</div>
-                  <div className="bta-analysis-value">{analysis.idealCustomerProfile.title}</div>
-                </div>
-                <div className="bta-analysis-item">
-                  <div className="bta-analysis-label">Target Company Size</div>
-                  <div className="bta-analysis-value">{analysis.idealCustomerProfile.companySize}</div>
-                </div>
+              <div className="bta-field">
+                <label>Target Industries</label>
+                <input
+                  type="text"
+                  value={data.icp.targetIndustries.join(', ')}
+                  onChange={(e) => setData({
+                    ...data,
+                    icp: { ...data.icp, targetIndustries: e.target.value.split(',').map(s => s.trim()).filter(s => s) }
+                  })}
+                  placeholder="SaaS, Technology, E-commerce"
+                />
+                <p className="bta-helper">Industries your ideal customers operate in (comma-separated)</p>
               </div>
 
               <div className="bta-field">
-                <label>Select the signals that indicate readiness to buy</label>
-                <p className="bta-helper">We've pre-selected the most relevant signals for your business:</p>
+                <label>Company Size</label>
+                <select
+                  value={data.icp.companySize}
+                  onChange={(e) => setData({
+                    ...data,
+                    icp: { ...data.icp, companySize: e.target.value }
+                  })}
+                >
+                  <option value="1-10 employees">1-10 employees (Startup)</option>
+                  <option value="11-50 employees">11-50 employees (Small)</option>
+                  <option value="50-200 employees">50-200 employees (Mid-Market)</option>
+                  <option value="200-1000 employees">200-1000 employees (Mid-Enterprise)</option>
+                  <option value="1000+ employees">1000+ employees (Enterprise)</option>
+                </select>
+              </div>
 
-                <div className="bta-signal-grid">
-                  {analysis.recommendedSignals.map((signal: any) => (
-                    <label key={signal.id} className="bta-signal-card">
-                      <input
-                        type="checkbox"
-                        checked={data.signals.includes(signal.id)}
-                        onChange={() => toggleArrayItem('signals', signal.id)}
-                      />
-                      <div className="bta-signal-content">
-                        <strong>{signal.label}</strong>
-                        <p>{signal.reason}</p>
-                        {signal.priority === 'high' && <span className="bta-priority-badge">High Priority</span>}
-                      </div>
-                    </label>
-                  ))}
-                </div>
+              <div className="bta-field">
+                <label>Target Job Titles</label>
+                <input
+                  type="text"
+                  value={data.icp.targetTitles.join(', ')}
+                  onChange={(e) => setData({
+                    ...data,
+                    icp: { ...data.icp, targetTitles: e.target.value.split(',').map(s => s.trim()).filter(s => s) }
+                  })}
+                  placeholder="VP Sales, Head of Growth, CEO"
+                />
+                <p className="bta-helper">Decision makers you want to reach (comma-separated)</p>
+              </div>
+
+              <div className="bta-field">
+                <label>Geographic Focus (optional)</label>
+                <input
+                  type="text"
+                  value={data.icp.geography}
+                  onChange={(e) => setData({
+                    ...data,
+                    icp: { ...data.icp, geography: e.target.value }
+                  })}
+                  placeholder="US, North America, Global"
+                />
+              </div>
+
+              <div className="bta-field">
+                <label>Pain Points / Use Cases</label>
+                <textarea
+                  value={data.icp.painPoints.join('\n')}
+                  onChange={(e) => setData({
+                    ...data,
+                    icp: { ...data.icp, painPoints: e.target.value.split('\n').map(s => s.trim()).filter(s => s) }
+                  })}
+                  placeholder="Struggling to scale outbound&#10;Missing early buying signals&#10;Can't personalize at scale"
+                  rows={4}
+                />
+                <p className="bta-helper">Problems your prospects face (one per line)</p>
               </div>
             </div>
           )}
 
-          {step === 3 && (
+          {step === 3 && analysis && (
+            <div className="bta-step">
+              <h2>Choose buying signals to track</h2>
+              <p className="bta-subtitle">Select events that indicate a company is ready to buy:</p>
+
+              <div className="bta-signal-grid">
+                {analysis.recommendedSignals.map((signal: any) => (
+                  <label key={signal.id} className="bta-signal-card">
+                    <input
+                      type="checkbox"
+                      checked={data.signals.includes(signal.id)}
+                      onChange={() => toggleArrayItem('signals', signal.id)}
+                    />
+                    <div className="bta-signal-content">
+                      <strong>{signal.label}</strong>
+                      <p>{signal.reason}</p>
+                      {signal.priority === 'high' && <span className="bta-priority-badge">High Priority</span>}
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {step === 4 && (
             <div className="bta-step">
               <h2>When should we reach out?</h2>
               <p className="bta-subtitle">Choose the buyer journey stage where you want to engage.</p>
@@ -653,7 +753,13 @@ export default function BuyerTriggerAgent() {
             className="bta-btn bta-btn-primary"
             disabled={!canProceed() || loading || analyzing}
           >
-            {analyzing ? 'Analyzing Website...' : loading ? 'Generating Leads...' : step === 1 ? 'Analyze My Business' : step === totalSteps ? 'Show Me the Leads' : 'Continue'}
+            {analyzing ? 'Analyzing Website...' : 
+             loading ? 'Finding Prospects...' : 
+             step === 1 ? 'Analyze My Business' : 
+             step === 2 ? 'Confirm ICP' :
+             step === 3 ? 'Select Signals' :
+             step === totalSteps ? 'Find Prospects' : 
+             'Continue'}
           </button>
         </div>
       </div>
