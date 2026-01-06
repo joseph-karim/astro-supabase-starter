@@ -116,7 +116,7 @@ SIGNAL PRIORITY ORDER:
 3. Contextual signals (industry news, competitor moves)`;
 
   const message = await anthropic.messages.create({
-    model: 'claude-sonnet-4-5-20250514',
+    model: 'claude-sonnet-4-5-20250929',
     max_tokens: 6000,
     messages: [{ role: 'user', content: prompt }]
   });

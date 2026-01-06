@@ -88,7 +88,7 @@ Output as a JSON array of trigger evidence objects:
 Only include reviews that have clear trigger indicators. Skip reviews that are just feature feedback or general praise without a clear "why now" moment.`;
 
   const message = await anthropic.messages.create({
-    model: 'claude-sonnet-4-5-20250514',
+    model: 'claude-sonnet-4-5-20250929',
     max_tokens: 4000,
     messages: [{ role: 'user', content: prompt }]
   });
@@ -190,7 +190,7 @@ Output as JSON array:
 Focus on extracting PATTERNS that repeat across multiple posts—these indicate reliable triggers.`;
 
   const message = await anthropic.messages.create({
-    model: 'claude-sonnet-4-5-20250514',
+    model: 'claude-sonnet-4-5-20250929',
     max_tokens: 4000,
     messages: [{ role: 'user', content: prompt }]
   });
@@ -275,7 +275,7 @@ Look for patterns in:
 - What finally made them act`;
 
   const message = await anthropic.messages.create({
-    model: 'claude-sonnet-4-5-20250514',
+    model: 'claude-sonnet-4-5-20250929',
     max_tokens: 3000,
     messages: [{ role: 'user', content: prompt }]
   });
@@ -345,7 +345,7 @@ Rules:
 5. Prioritize patterns that appear across multiple sources (reviews + Reddit)`;
 
   const message = await anthropic.messages.create({
-    model: 'claude-sonnet-4-5-20250514',
+    model: 'claude-sonnet-4-5-20250929',
     max_tokens: 4000,
     messages: [{ role: 'user', content: prompt }]
   });
