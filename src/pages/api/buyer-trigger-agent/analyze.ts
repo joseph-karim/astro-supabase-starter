@@ -1,4 +1,7 @@
 import type { APIRoute } from 'astro';
+import Anthropic from '@anthropic-ai/sdk';
+
+export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -12,60 +15,26 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // TODO: Implement actual website scraping with Anthropic/OpenAI
-    // For now, return intelligent mock analysis
+    console.log(`[Analyze] Starting analysis for ${website}`);
 
-    const analysis = {
-      companyProfile: {
-        name: companyName || extractCompanyName(website),
-        industry: 'Professional Services', // Extract from website
-        size: '10-50 employees',
-        revenue: '$1M-$5M',
-        description: 'B2B professional services firm'
-      },
-      idealCustomerProfile: {
-        title: 'VP of Operations',
-        companySize: '100-500 employees',
-        industry: 'Manufacturing',
-        revenue: '$10M-$50M',
-        painPoints: [
-          'Manual processes slowing growth',
-          'Data scattered across systems',
-          'Team struggling to scale operations'
-        ]
-      },
-      recommendedSignals: [
-        {
-          id: 'leadership_change',
-          label: 'New VP Operations hired',
-          reason: 'New leaders often bring budget and mandate for change',
-          priority: 'high',
-          enabled: true
-        },
-        {
-          id: 'funding',
-          label: 'Series A/B funding announced',
-          reason: 'Fresh capital = budget for operational improvements',
-          priority: 'high',
-          enabled: true
-        },
-        {
-          id: 'expansion',
-          label: 'New facility or office opening',
-          reason: 'Expansion creates immediate operational challenges',
-          priority: 'medium',
-          enabled: true
-        },
-        {
-          id: 'hiring',
-          label: 'Hiring spree in operations roles',
-          reason: 'Growing teams need better processes',
-          priority: 'medium',
-          enabled: false
-        }
-      ],
-      confidence: 0.85
-    };
+    // Step 1: Scrape website content
+    const websiteContent = await scrapeWebsite(website);
+
+    if (!websiteContent) {
+      return new Response(JSON.stringify({
+        error: 'Failed to scrape website. Please check the URL and try again.'
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    console.log(`[Analyze] Scraped ${websiteContent.length} characters from website`);
+
+    // Step 2: Use AI to analyze business and generate ICP
+    const analysis = await analyzeBusinessWithAI(websiteContent, companyName || extractCompanyName(website));
+
+    console.log(`[Analyze] Generated analysis for ${analysis.companyProfile.name}`);
 
     return new Response(JSON.stringify(analysis), {
       status: 200,
@@ -74,12 +43,168 @@ export const POST: APIRoute = async ({ request }) => {
 
   } catch (err) {
     console.error('Error in /api/buyer-trigger-agent/analyze:', err);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+    return new Response(JSON.stringify({
+      error: 'Internal server error',
+      details: err instanceof Error ? err.message : 'Unknown error'
+    }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
   }
 };
+
+async function scrapeWebsite(url: string): Promise<string | null> {
+  try {
+    // Use Jina Reader API - free, no API key needed for basic usage
+    const jinaUrl = `https://r.jina.ai/${encodeURIComponent(url)}`;
+
+    const response = await fetch(jinaUrl, {
+      headers: {
+        'Accept': 'text/plain',
+        'X-Return-Format': 'markdown'
+      }
+    });
+
+    if (!response.ok) {
+      console.error(`Jina Reader failed: ${response.status}`);
+      return null;
+    }
+
+    const markdown = await response.text();
+
+    // Limit to first 10000 characters to avoid token limits
+    return markdown.slice(0, 10000);
+
+  } catch (error) {
+    console.error('Website scraping error:', error);
+    return null;
+  }
+}
+
+async function analyzeBusinessWithAI(websiteContent: string, companyName: string) {
+  const apiKey = import.meta.env.ANTHROPIC_API_KEY;
+
+  if (!apiKey) {
+    console.warn('ANTHROPIC_API_KEY not set, using fallback analysis');
+    return generateFallbackAnalysis(companyName);
+  }
+
+  try {
+    const anthropic = new Anthropic({ apiKey });
+
+    const message = await anthropic.messages.create({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 2000,
+      messages: [{
+        role: 'user',
+        content: `Analyze this company's website content and generate an ideal customer profile (ICP) and signal recommendations.
+
+Website content:
+${websiteContent}
+
+Return a JSON object with this exact structure:
+{
+  "companyProfile": {
+    "name": "Company name",
+    "industry": "Primary industry category",
+    "size": "Estimated company size",
+    "revenue": "Estimated revenue range",
+    "description": "One-sentence description of what they do"
+  },
+  "idealCustomerProfile": {
+    "title": "Target buyer job title (e.g., VP of Operations)",
+    "companySize": "Target company size range",
+    "industry": "Target industry",
+    "revenue": "Target revenue range",
+    "painPoints": ["Pain point 1", "Pain point 2", "Pain point 3"]
+  },
+  "recommendedSignals": [
+    {
+      "id": "signal_type" (one of: hiring, funding, expansion, leadership_change, tech_adoption, product_launch, awards, regulatory),
+      "label": "User-friendly label",
+      "reason": "Why this signal matters for this specific business",
+      "priority": "high|medium|low",
+      "enabled": true|false
+    }
+  ],
+  "confidence": 0.85
+}
+
+Focus on:
+1. Understanding what services/products they offer
+2. Who they serve (their target market)
+3. What signals would indicate their ideal customers are ready to buy
+4. Why each signal is relevant to THEIR specific business model`
+      }]
+    });
+
+    const content = message.content[0];
+    if (content.type !== 'text') {
+      throw new Error('Unexpected response type from Claude');
+    }
+
+    // Extract JSON from response (Claude sometimes wraps it in markdown)
+    const jsonMatch = content.text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error('No JSON found in Claude response');
+    }
+
+    const analysis = JSON.parse(jsonMatch[0]);
+    return analysis;
+
+  } catch (error) {
+    console.error('AI analysis error:', error);
+    return generateFallbackAnalysis(companyName);
+  }
+}
+
+function generateFallbackAnalysis(companyName: string) {
+  // Intelligent fallback if AI isn't available
+  return {
+    companyProfile: {
+      name: companyName,
+      industry: 'Professional Services',
+      size: '10-50 employees',
+      revenue: '$1M-$5M',
+      description: 'B2B professional services firm'
+    },
+    idealCustomerProfile: {
+      title: 'VP of Operations',
+      companySize: '100-500 employees',
+      industry: 'Technology',
+      revenue: '$10M-$50M',
+      painPoints: [
+        'Scaling operations efficiently',
+        'Managing growing complexity',
+        'Improving process efficiency'
+      ]
+    },
+    recommendedSignals: [
+      {
+        id: 'leadership_change',
+        label: 'New executive hired',
+        reason: 'New leaders often bring budget and mandate for change',
+        priority: 'high',
+        enabled: true
+      },
+      {
+        id: 'funding',
+        label: 'Funding announced',
+        reason: 'Fresh capital means budget for investments',
+        priority: 'high',
+        enabled: true
+      },
+      {
+        id: 'expansion',
+        label: 'Company expansion',
+        reason: 'Growth creates immediate operational needs',
+        priority: 'medium',
+        enabled: true
+      }
+    ],
+    confidence: 0.6
+  };
+}
 
 function extractCompanyName(url: string): string {
   try {

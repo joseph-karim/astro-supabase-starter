@@ -1,0 +1,583 @@
+{
+  "companies": [
+    {
+      "id": "c1",
+      "name": "TechFlow Systems",
+      "industry": "SaaS",
+      "companySize": "100-500",
+      "employeeCount": 280,
+      "revenue": "$38M",
+      "location": "Austin, TX",
+      "description": "Cloud-based workflow automation platform for enterprises",
+      "signals": [
+        {
+          "type": "leadership_change",
+          "description": "New VP Operations hired 47 days ago",
+          "daysAgo": 47,
+          "evidenceUrl": "https://linkedin.com/posts/techflow-vp-ops",
+          "relevance": 0.92
+        },
+        {
+          "type": "hiring",
+          "description": "Hiring 12 operations roles",
+          "daysAgo": 14,
+          "evidenceUrl": "https://techflow.com/careers",
+          "relevance": 0.85
+        },
+        {
+          "type": "expansion",
+          "description": "New facility opening in Q2 2025",
+          "daysAgo": 30,
+          "evidenceUrl": "https://techcrunch.com/techflow-expansion",
+          "relevance": 0.78
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "name": "CloudNine Analytics",
+      "industry": "SaaS",
+      "companySize": "50-100",
+      "employeeCount": 75,
+      "revenue": "$15M",
+      "location": "San Francisco, CA",
+      "description": "Business intelligence and data analytics SaaS",
+      "signals": [
+        {
+          "type": "funding",
+          "description": "Series B funding ($28M) announced",
+          "daysAgo": 22,
+          "evidenceUrl": "https://crunchbase.com/cloudnine-series-b",
+          "relevance": 0.95
+        },
+        {
+          "type": "tech_adoption",
+          "description": "Migrating to new ERP system",
+          "daysAgo": 8,
+          "evidenceUrl": "https://cloudnine.com/blog/tech-migration",
+          "relevance": 0.72
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "name": "DataStream Inc",
+      "industry": "SaaS",
+      "companySize": "200-500",
+      "employeeCount": 340,
+      "revenue": "$62M",
+      "location": "Seattle, WA",
+      "description": "Real-time data pipeline and ETL solutions",
+      "signals": [
+        {
+          "type": "product_launch",
+          "description": "Launching new product line",
+          "daysAgo": 5,
+          "evidenceUrl": "https://datastream.com/press/new-product",
+          "relevance": 0.88
+        },
+        {
+          "type": "awards",
+          "description": "Won Industry Excellence Award",
+          "daysAgo": 60,
+          "evidenceUrl": "https://awards.com/datastream",
+          "relevance": 0.81
+        }
+      ]
+    },
+    {
+      "id": "c4",
+      "name": "Velocity Platform",
+      "industry": "SaaS",
+      "companySize": "100-500",
+      "employeeCount": 195,
+      "revenue": "$32M",
+      "location": "Denver, CO",
+      "description": "Project management and collaboration software",
+      "signals": [
+        {
+          "type": "hiring",
+          "description": "Hiring 8 enterprise sales representatives",
+          "daysAgo": 12,
+          "evidenceUrl": "https://velocity.com/careers",
+          "relevance": 0.79
+        },
+        {
+          "type": "leadership_change",
+          "description": "New Chief Revenue Officer from Asana",
+          "daysAgo": 35,
+          "evidenceUrl": "https://linkedin.com/velocity-new-cro",
+          "relevance": 0.87
+        }
+      ]
+    },
+    {
+      "id": "c5",
+      "name": "Quantum Labs",
+      "industry": "SaaS",
+      "companySize": "50-100",
+      "employeeCount": 85,
+      "revenue": "$18M",
+      "location": "Boston, MA",
+      "description": "AI-powered customer service automation",
+      "signals": [
+        {
+          "type": "funding",
+          "description": "Series A funding ($15M) from Andreessen Horowitz",
+          "daysAgo": 18,
+          "evidenceUrl": "https://crunchbase.com/quantum-labs-series-a",
+          "relevance": 0.93
+        },
+        {
+          "type": "expansion",
+          "description": "Expanding to European market with London office",
+          "daysAgo": 40,
+          "evidenceUrl": "https://quantumlabs.ai/press/europe",
+          "relevance": 0.76
+        }
+      ]
+    },
+    {
+      "id": "c6",
+      "name": "BrandCraft Agency",
+      "industry": "Marketing",
+      "companySize": "50-100",
+      "employeeCount": 68,
+      "revenue": "$10M",
+      "location": "Los Angeles, CA",
+      "description": "Full-service digital marketing and branding agency",
+      "signals": [
+        {
+          "type": "hiring",
+          "description": "Hiring creative director and 5 account managers",
+          "daysAgo": 20,
+          "evidenceUrl": "https://brandcraft.com/careers",
+          "relevance": 0.82
+        },
+        {
+          "type": "awards",
+          "description": "Won 3 Webby Awards for digital campaigns",
+          "daysAgo": 45,
+          "evidenceUrl": "https://webbyawards.com/winners",
+          "relevance": 0.79
+        }
+      ]
+    },
+    {
+      "id": "c7",
+      "name": "GrowthLab Marketing",
+      "industry": "Marketing",
+      "companySize": "20-50",
+      "employeeCount": 35,
+      "revenue": "$5M",
+      "location": "Nashville, TN",
+      "description": "Performance marketing and growth hacking specialists",
+      "signals": [
+        {
+          "type": "expansion",
+          "description": "Opening new office in Austin, TX",
+          "daysAgo": 15,
+          "evidenceUrl": "https://growthlab.com/expansion",
+          "relevance": 0.84
+        },
+        {
+          "type": "leadership_change",
+          "description": "New VP of Client Services from Ogilvy",
+          "daysAgo": 28,
+          "evidenceUrl": "https://linkedin.com/growthlab-vp",
+          "relevance": 0.88
+        }
+      ]
+    },
+    {
+      "id": "c8",
+      "name": "Velocity Digital",
+      "industry": "Marketing",
+      "companySize": "100-500",
+      "employeeCount": 145,
+      "revenue": "$22M",
+      "location": "Dallas, TX",
+      "description": "Multi-channel digital advertising agency",
+      "signals": [
+        {
+          "type": "tech_adoption",
+          "description": "Implementing AI-powered ad optimization platform",
+          "daysAgo": 32,
+          "evidenceUrl": "https://velocitydigital.com/ai-platform",
+          "relevance": 0.71
+        },
+        {
+          "type": "hiring",
+          "description": "Hiring 15 data analysts and media buyers",
+          "daysAgo": 7,
+          "evidenceUrl": "https://velocitydigital.com/jobs",
+          "relevance": 0.86
+        }
+      ]
+    },
+    {
+      "id": "c9",
+      "name": "Apex Advisors",
+      "industry": "Consulting",
+      "companySize": "100-500",
+      "employeeCount": 225,
+      "revenue": "$42M",
+      "location": "Washington, DC",
+      "description": "Management consulting for Fortune 500 companies",
+      "signals": [
+        {
+          "type": "leadership_change",
+          "description": "New Managing Partner from McKinsey",
+          "daysAgo": 52,
+          "evidenceUrl": "https://linkedin.com/apex-new-mp",
+          "relevance": 0.91
+        },
+        {
+          "type": "expansion",
+          "description": "Expanding into healthcare consulting practice",
+          "daysAgo": 19,
+          "evidenceUrl": "https://apexadvisors.com/healthcare",
+          "relevance": 0.77
+        }
+      ]
+    },
+    {
+      "id": "c10",
+      "name": "Strategic Partners Group",
+      "industry": "Consulting",
+      "companySize": "50-100",
+      "employeeCount": 82,
+      "revenue": "$16M",
+      "location": "Houston, TX",
+      "description": "Business strategy and operations consulting",
+      "signals": [
+        {
+          "type": "hiring",
+          "description": "Hiring 8 senior consultants",
+          "daysAgo": 11,
+          "evidenceUrl": "https://strategic-partners.com/careers",
+          "relevance": 0.83
+        },
+        {
+          "type": "awards",
+          "description": "Named Best Places to Work in Texas",
+          "daysAgo": 55,
+          "evidenceUrl": "https://bestplaces.com/texas",
+          "relevance": 0.68
+        }
+      ]
+    },
+    {
+      "id": "c11",
+      "name": "Transform Consulting",
+      "industry": "Consulting",
+      "companySize": "200-500",
+      "employeeCount": 310,
+      "revenue": "$72M",
+      "location": "San Diego, CA",
+      "description": "Digital transformation and change management",
+      "signals": [
+        {
+          "type": "hiring",
+          "description": "Hiring 20 consultants for digital transformation practice",
+          "daysAgo": 11,
+          "evidenceUrl": "https://transformconsulting.com/careers",
+          "relevance": 0.89
+        },
+        {
+          "type": "tech_adoption",
+          "description": "Partnering with ServiceNow for enterprise implementations",
+          "daysAgo": 24,
+          "evidenceUrl": "https://transform.com/servicenow",
+          "relevance": 0.73
+        }
+      ]
+    },
+    {
+      "id": "c12",
+      "name": "Meridian Manufacturing",
+      "industry": "Manufacturing",
+      "companySize": "500-1000",
+      "employeeCount": 780,
+      "revenue": "$195M",
+      "location": "Cleveland, OH",
+      "description": "Industrial equipment and machinery manufacturer",
+      "signals": [
+        {
+          "type": "expansion",
+          "description": "Building new 200,000 sq ft facility in Tennessee",
+          "daysAgo": 38,
+          "evidenceUrl": "https://meridianmfg.com/expansion",
+          "relevance": 0.92
+        },
+        {
+          "type": "tech_adoption",
+          "description": "Implementing IoT sensors and predictive maintenance",
+          "daysAgo": 16,
+          "evidenceUrl": "https://meridian.com/iot",
+          "relevance": 0.75
+        }
+      ]
+    },
+    {
+      "id": "c13",
+      "name": "Precision Tools Corp",
+      "industry": "Manufacturing",
+      "companySize": "200-500",
+      "employeeCount": 340,
+      "revenue": "$95M",
+      "location": "Pittsburgh, PA",
+      "description": "Precision machining and tooling solutions",
+      "signals": [
+        {
+          "type": "leadership_change",
+          "description": "New VP of Manufacturing from Boeing",
+          "daysAgo": 41,
+          "evidenceUrl": "https://linkedin.com/precision-vp",
+          "relevance": 0.87
+        },
+        {
+          "type": "hiring",
+          "description": "Hiring 25 skilled machinists and engineers",
+          "daysAgo": 9,
+          "evidenceUrl": "https://precisiontools.com/jobs",
+          "relevance": 0.84
+        }
+      ]
+    },
+    {
+      "id": "c14",
+      "name": "Industrial Solutions",
+      "industry": "Manufacturing",
+      "companySize": "500-1000",
+      "employeeCount": 920,
+      "revenue": "$270M",
+      "location": "Cincinnati, OH",
+      "description": "Automotive parts and components manufacturer",
+      "signals": [
+        {
+          "type": "regulatory",
+          "description": "Preparing for new compliance requirements",
+          "daysAgo": 27,
+          "evidenceUrl": "https://industrialsolutions.com/iso",
+          "relevance": 0.66
+        },
+        {
+          "type": "product_launch",
+          "description": "Launching new automotive electric vehicle components line",
+          "daysAgo": 13,
+          "evidenceUrl": "https://industrial.com/ev-launch",
+          "relevance": 0.88
+        }
+      ]
+    },
+    {
+      "id": "c15",
+      "name": "ShopNexus",
+      "industry": "E-commerce",
+      "companySize": "100-500",
+      "employeeCount": 210,
+      "revenue": "$52M",
+      "location": "Las Vegas, NV",
+      "description": "Multi-brand e-commerce marketplace",
+      "signals": [
+        {
+          "type": "funding",
+          "description": "Series C funding ($45M) from Tiger Global",
+          "daysAgo": 21,
+          "evidenceUrl": "https://crunchbase.com/shopnexus-series-c",
+          "relevance": 0.94
+        },
+        {
+          "type": "hiring",
+          "description": "Hiring 10 senior engineers for platform rebuild",
+          "daysAgo": 6,
+          "evidenceUrl": "https://shopnexus.com/careers",
+          "relevance": 0.81
+        }
+      ]
+    },
+    {
+      "id": "c16",
+      "name": "MarketPlace Solutions",
+      "industry": "E-commerce",
+      "companySize": "200-500",
+      "employeeCount": 335,
+      "revenue": "$88M",
+      "location": "Orlando, FL",
+      "description": "E-commerce infrastructure and logistics",
+      "signals": [
+        {
+          "type": "expansion",
+          "description": "Expanding warehouse network with 3 new fulfillment centers",
+          "daysAgo": 29,
+          "evidenceUrl": "https://marketplace.com/expansion",
+          "relevance": 0.85
+        },
+        {
+          "type": "tech_adoption",
+          "description": "Implementing robotics and warehouse automation",
+          "daysAgo": 17,
+          "evidenceUrl": "https://marketplace.com/robotics",
+          "relevance": 0.78
+        }
+      ]
+    },
+    {
+      "id": "c17",
+      "name": "FinTech Innovations",
+      "industry": "Fintech",
+      "companySize": "100-500",
+      "employeeCount": 245,
+      "revenue": "$58M",
+      "location": "Charlotte, NC",
+      "description": "Digital banking and payment solutions",
+      "signals": [
+        {
+          "type": "regulatory",
+          "description": "Completing SOC 2 Type 2 and PCI DSS Level 1 certification",
+          "daysAgo": 33,
+          "evidenceUrl": "https://fintech.com/compliance",
+          "relevance": 0.72
+        },
+        {
+          "type": "funding",
+          "description": "Series B funding ($32M) from Ribbit Capital",
+          "daysAgo": 26,
+          "evidenceUrl": "https://crunchbase.com/fintech-series-b",
+          "relevance": 0.91
+        }
+      ]
+    },
+    {
+      "id": "c18",
+      "name": "PayStream Solutions",
+      "industry": "Fintech",
+      "companySize": "200-500",
+      "employeeCount": 310,
+      "revenue": "$85M",
+      "location": "Salt Lake City, UT",
+      "description": "B2B payment processing and automation",
+      "signals": [
+        {
+          "type": "product_launch",
+          "description": "Launching embedded payments API for SaaS companies",
+          "daysAgo": 8,
+          "evidenceUrl": "https://paystream.com/embedded-payments",
+          "relevance": 0.86
+        },
+        {
+          "type": "leadership_change",
+          "description": "New Chief Product Officer from Stripe",
+          "daysAgo": 44,
+          "evidenceUrl": "https://linkedin.com/paystream-cpo",
+          "relevance": 0.89
+        }
+      ]
+    },
+    {
+      "id": "c19",
+      "name": "HealthBridge Systems",
+      "industry": "Healthcare",
+      "companySize": "200-500",
+      "employeeCount": 380,
+      "revenue": "$110M",
+      "location": "Nashville, TN",
+      "description": "Hospital management and EMR software",
+      "signals": [
+        {
+          "type": "expansion",
+          "description": "Acquiring smaller EMR competitor for $75M",
+          "daysAgo": 23,
+          "evidenceUrl": "https://healthbridge.com/acquisition",
+          "relevance": 0.93
+        },
+        {
+          "type": "hiring",
+          "description": "Hiring 18 healthcare IT consultants",
+          "daysAgo": 14,
+          "evidenceUrl": "https://healthbridge.com/careers",
+          "relevance": 0.82
+        }
+      ]
+    },
+    {
+      "id": "c20",
+      "name": "MedTech Innovations",
+      "industry": "Healthcare",
+      "companySize": "100-500",
+      "employeeCount": 225,
+      "revenue": "$65M",
+      "location": "Birmingham, AL",
+      "description": "Medical device and diagnostic equipment",
+      "signals": [
+        {
+          "type": "regulatory",
+          "description": "Received FDA 510(k) clearance for new diagnostic device",
+          "daysAgo": 36,
+          "evidenceUrl": "https://fda.gov/510k-clearances",
+          "relevance": 0.95
+        },
+        {
+          "type": "awards",
+          "description": "Won Medical Design Excellence Award",
+          "daysAgo": 48,
+          "evidenceUrl": "https://mdea.com/winners",
+          "relevance": 0.77
+        }
+      ]
+    },
+    {
+      "id": "c21",
+      "name": "PropTech Innovations",
+      "industry": "Real Estate",
+      "companySize": "100-500",
+      "employeeCount": 195,
+      "revenue": "$45M",
+      "location": "Denver, CO",
+      "description": "Commercial real estate management platform",
+      "signals": [
+        {
+          "type": "tech_adoption",
+          "description": "Implementing AI-powered property valuation models",
+          "daysAgo": 31,
+          "evidenceUrl": "https://proptech.com/ai-valuation",
+          "relevance": 0.74
+        },
+        {
+          "type": "leadership_change",
+          "description": "New CTO from WeWork",
+          "daysAgo": 39,
+          "evidenceUrl": "https://linkedin.com/proptech-cto",
+          "relevance": 0.86
+        }
+      ]
+    },
+    {
+      "id": "c22",
+      "name": "RealEstate Engine",
+      "industry": "Real Estate",
+      "companySize": "200-500",
+      "employeeCount": 295,
+      "revenue": "$78M",
+      "location": "Phoenix, AZ",
+      "description": "Property management and leasing software",
+      "signals": [
+        {
+          "type": "funding",
+          "description": "Series B funding ($38M) from Fifth Wall Ventures",
+          "daysAgo": 16,
+          "evidenceUrl": "https://crunchbase.com/realestate-series-b",
+          "relevance": 0.92
+        },
+        {
+          "type": "expansion",
+          "description": "Expanding to 15 new markets across Southeast US",
+          "daysAgo": 20,
+          "evidenceUrl": "https://realestate.com/expansion",
+          "relevance": 0.83
+        }
+      ]
+    }
+  ]
+}
