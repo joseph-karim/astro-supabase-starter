@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { runVoCResearchPipeline } from '../../../lib/voc-triggers/voc-research-pipeline';
 import { jsonResponse, parseJsonBody, requestId, OPTIONS_OK } from './_http';
-import { getSecrets } from '../../../utils/database';
+import { getEnvVars } from '../../../utils/database';
 
 export const prerender = false;
 
@@ -67,12 +67,12 @@ export const POST: APIRoute = async ({ request }) => {
       update({ status: 'running', statusMessage: 'Loading API keys...' });
 
       try {
-        // Fetch API keys from Supabase secrets table
-        const secrets = await getSecrets(['ANTHROPIC_API_KEY', 'EXA_API_KEY', 'PERPLEXITY_API_KEY']);
+        // Get API keys from environment variables (set in Netlify dashboard)
+        const envVars = getEnvVars(['ANTHROPIC_API_KEY', 'EXA_API_KEY', 'PERPLEXITY_API_KEY']);
         
         // Validate we have the required key
-        if (!secrets.ANTHROPIC_API_KEY) {
-          throw new Error('ANTHROPIC_API_KEY not configured in Supabase secrets table. Please add it via the Supabase dashboard.');
+        if (!envVars.ANTHROPIC_API_KEY) {
+          throw new Error('ANTHROPIC_API_KEY not configured. Add it to Netlify Environment Variables.');
         }
 
         update({ statusMessage: 'Starting research...' });
@@ -84,11 +84,10 @@ export const POST: APIRoute = async ({ request }) => {
             industry, 
             competitors, 
             targetCompanySize,
-            // Pass API keys from Supabase
             apiKeys: {
-              anthropic: secrets.ANTHROPIC_API_KEY || undefined,
-              exa: secrets.EXA_API_KEY || undefined,
-              perplexity: secrets.PERPLEXITY_API_KEY || undefined
+              anthropic: envVars.ANTHROPIC_API_KEY || undefined,
+              exa: envVars.EXA_API_KEY || undefined,
+              perplexity: envVars.PERPLEXITY_API_KEY || undefined
             }
           },
           jobId,

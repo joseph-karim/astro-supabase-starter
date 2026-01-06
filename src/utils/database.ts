@@ -5,164 +5,39 @@ import type { Database } from '../../supabase/types'
 const serverUrl = import.meta.env.SUPABASE_DATABASE_URL || import.meta.env.PUBLIC_SUPABASE_URL
 const serverKey = import.meta.env.SUPABASE_ANON_KEY || import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 
-// Service role client for accessing secrets (bypasses RLS)
-const serviceRoleKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY
-
 export const supabase = serverUrl && serverKey 
   ? createClient<Database>(serverUrl, serverKey) 
   : null
 
-// Service role client - only for server-side secret access
-export const supabaseAdmin = serverUrl && serviceRoleKey
-  ? createClient<Database>(serverUrl, serviceRoleKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false
-      }
-    })
-  : null
-
-// Debug: Log configuration status on module load
-console.log('[database.ts] Supabase config:', {
-  hasServerUrl: !!serverUrl,
-  hasServerKey: !!serverKey,
-  hasServiceRoleKey: !!serviceRoleKey,
-  supabaseAdminReady: !!supabaseAdmin
-})
-
 // Check if Supabase is configured
 export const isConfigured = supabase !== null
 
-// In-memory cache for secrets (avoid repeated DB calls)
-const secretsCache: Map<string, { value: string; fetchedAt: number }> = new Map()
-const CACHE_TTL_MS = 5 * 60 * 1000 // 5 minutes
-
 /**
- * Fetch a secret from Supabase Vault
- * Uses service role key to access vault.decrypted_secrets
- * Caches results for 5 minutes
- * 
- * To add secrets: Supabase Dashboard → Settings → Vault → New Secret
+ * Get an environment variable (works in both Astro and Node.js contexts)
+ * Server-side env vars are NOT exposed to the client - they're secure.
  */
-export async function getSecret(key: string): Promise<string | null> {
-  // Check cache first
-  const cached = secretsCache.get(key)
-  if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS) {
-    return cached.value
-  }
-
-  if (!supabaseAdmin) {
-    console.warn(`[getSecret] Supabase admin client not configured, cannot fetch secret: ${key}`)
-    return null
-  }
-
-  try {
-    // Query Supabase Vault via RPC function (vault schema not exposed to PostgREST)
-    const { data, error } = await supabaseAdmin
-      .rpc('get_secret', { secret_name: key })
-
-    if (error) {
-      // Function might not exist or secret doesn't exist
-      console.error(`[getSecret] Error fetching secret ${key}:`, error.message, error.code)
-      return null
-    }
-
-    const value = data as string | null
-    if (!value) {
-      console.warn(`[getSecret] Secret '${key}' has no value`)
-      return null
-    }
-
-    // Cache the result
-    secretsCache.set(key, { value, fetchedAt: Date.now() })
-    
-    return value
-  } catch (err) {
-    console.error(`[getSecret] Exception fetching secret ${key}:`, err)
-    return null
-  }
-}
-
-/**
- * Fetch multiple secrets at once from Supabase Vault
- */
-export async function getSecrets(keys: string[]): Promise<Record<string, string | null>> {
-  const result: Record<string, string | null> = {}
+export function getEnvVar(key: string): string | null {
+  // Try Astro's import.meta.env first
+  const astroValue = (import.meta.env as Record<string, string | undefined>)[key]
+  if (astroValue) return astroValue
   
-  // Check cache for each key
-  const keysToFetch: string[] = []
-  for (const key of keys) {
-    const cached = secretsCache.get(key)
-    if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS) {
-      result[key] = cached.value
-    } else {
-      keysToFetch.push(key)
-    }
+  // Fallback to process.env for Node.js contexts
+  if (typeof process !== 'undefined' && process.env) {
+    return process.env[key] || null
   }
-
-  if (keysToFetch.length === 0) {
-    return result
-  }
-
-  if (!supabaseAdmin) {
-    console.warn('[getSecrets] Supabase admin client not configured - missing SUPABASE_SERVICE_ROLE_KEY?')
-    for (const key of keysToFetch) {
-      result[key] = null
-    }
-    return result
-  }
-
-  try {
-    console.log('[getSecrets] Querying Vault via RPC for keys:', keysToFetch)
-    
-    // Query Supabase Vault via RPC function (vault schema not exposed to PostgREST)
-    const { data, error } = await supabaseAdmin
-      .rpc('get_secrets', { secret_names: keysToFetch })
-
-    console.log('[getSecrets] Vault RPC response:', { data: data?.length || 0, error: error?.message })
-
-    if (error) {
-      console.error('[getSecrets] Error fetching secrets from Vault:', error.message, error.code, error.details)
-      for (const key of keysToFetch) {
-        result[key] = null
-      }
-      return result
-    }
-
-    // Process results from RPC (returns {name, secret}[])
-    const fetchedKeys = new Set<string>()
-    for (const row of (data as { name: string; secret: string }[]) || []) {
-      if (row.secret) {
-        result[row.name] = row.secret
-        secretsCache.set(row.name, { value: row.secret, fetchedAt: Date.now() })
-        fetchedKeys.add(row.name)
-      } else {
-        result[row.name] = null
-      }
-    }
-
-    // Mark missing keys as null
-    for (const key of keysToFetch) {
-      if (!fetchedKeys.has(key)) {
-        result[key] = null
-      }
-    }
-
-    return result
-  } catch (err) {
-    console.error('[getSecrets] Exception:', err)
-    for (const key of keysToFetch) {
-      result[key] = null
-    }
-    return result
-  }
+  
+  return null
 }
 
 /**
- * Clear the secrets cache (useful for testing or after updating secrets)
+ * Get multiple environment variables at once
  */
-export function clearSecretsCache(): void {
-  secretsCache.clear()
+export function getEnvVars(keys: string[]): Record<string, string | null> {
+  const result: Record<string, string | null> = {}
+  for (const key of keys) {
+    result[key] = getEnvVar(key)
+  }
+  return result
 }
 
 // Helper to get client

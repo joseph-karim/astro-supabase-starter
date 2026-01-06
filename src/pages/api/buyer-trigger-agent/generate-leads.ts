@@ -6,7 +6,7 @@ import {
   calculateCompositeScore,
   rankCompaniesBySignals 
 } from '../../../lib/voc-triggers/signal-translation';
-import { getSecrets } from '../../../utils/database';
+import { getEnvVars } from '../../../utils/database';
 
 export const prerender = false;
 
@@ -85,11 +85,11 @@ async function discoverCompaniesWithVoCSignals(criteria: {
   buyerJourneyStage: string;
   signalConfigurations: TriggerSignalConfiguration[];
 }) {
-  // Fetch API keys from Supabase secrets
-  const secrets = await getSecrets(['EXA_API_KEY', 'PERPLEXITY_API_KEY', 'ANTHROPIC_API_KEY']);
-  const exaApiKey = secrets.EXA_API_KEY;
-  const perplexityApiKey = secrets.PERPLEXITY_API_KEY;
-  const anthropicApiKey = secrets.ANTHROPIC_API_KEY;
+  // Get API keys from environment variables
+  const envVars = getEnvVars(['EXA_API_KEY', 'PERPLEXITY_API_KEY', 'ANTHROPIC_API_KEY']);
+  const exaApiKey = envVars.EXA_API_KEY;
+  const perplexityApiKey = envVars.PERPLEXITY_API_KEY;
+  const anthropicApiKey = envVars.ANTHROPIC_API_KEY;
 
   if (!exaApiKey) {
     console.warn('[VoC Leads] Missing EXA_API_KEY in Supabase secrets');
@@ -190,10 +190,10 @@ async function discoverCompaniesWithVoCSignals(criteria: {
  * Legacy lead discovery using simple signal matching
  */
 async function discoverCompaniesWithSignals(criteria: LeadCriteria) {
-  // Fetch API keys from Supabase secrets
-  const secrets = await getSecrets(['EXA_API_KEY', 'PERPLEXITY_API_KEY']);
-  const exaApiKey = secrets.EXA_API_KEY;
-  const perplexityApiKey = secrets.PERPLEXITY_API_KEY;
+  // Get API keys from environment variables
+  const envVars = getEnvVars(['EXA_API_KEY', 'PERPLEXITY_API_KEY']);
+  const exaApiKey = envVars.EXA_API_KEY;
+  const perplexityApiKey = envVars.PERPLEXITY_API_KEY;
 
   if (!exaApiKey || !perplexityApiKey) {
     console.warn('Missing API keys in Supabase secrets, returning empty results');
