@@ -110,29 +110,30 @@ export default function BuyerTriggerAgent() {
 
     try {
       if (data.useVoCResearch) {
-        // Use the full VoC research pipeline
-        setResearchStatus('Analyzing your website...');
-        
-        const response = await fetch('/api/buyer-trigger-agent/voc-research', {
+        // Use the full VoC research pipeline (async job + polling to avoid request timeouts)
+        setResearchStatus('Starting deep research...');
+
+        const startResponse = await fetch('/api/buyer-trigger-agent/voc-research-start', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             website: data.website,
             companyName: data.companyName,
-            competitors: data.competitors
+            competitors: data.competitors,
+            industry: data.industry || undefined
           })
         });
 
-        if (!response.ok) {
+        if (!startResponse.ok) {
           let message = 'Failed to run VoC research';
           try {
-            const err = await response.json();
+            const err = await startResponse.json();
             if (err?.error) message = err.error;
             if (err?.details) message += `: ${err.details}`;
             if (err?.requestId) message += ` (requestId: ${err.requestId})`;
           } catch {
             try {
-              const text = await response.text();
+              const text = await startResponse.text();
               if (text) message += `: ${text}`;
             } catch {
               // ignore
@@ -141,7 +142,38 @@ export default function BuyerTriggerAgent() {
           throw new Error(message);
         }
 
-        const result = await response.json();
+        const { jobId } = await startResponse.json();
+        if (!jobId) throw new Error('VoC research job failed to start');
+
+        const startedAt = Date.now();
+        const maxWaitMs = 12 * 60 * 1000; // 12 minutes
+
+        let result: any = null;
+        while (Date.now() - startedAt < maxWaitMs) {
+          const jobResponse = await fetch(`/api/buyer-trigger-agent/voc-research-job?jobId=${encodeURIComponent(jobId)}`);
+          if (!jobResponse.ok) {
+            throw new Error(`VoC research job error (jobId: ${jobId})`);
+          }
+          const job = await jobResponse.json();
+
+          if (job?.statusMessage) setResearchStatus(job.statusMessage);
+
+          if (job?.status === 'completed') {
+            result = job.result;
+            break;
+          }
+          if (job?.status === 'failed') {
+            const msg = job?.error?.message || 'VoC research failed';
+            throw new Error(msg);
+          }
+
+          await new Promise((r) => setTimeout(r, 2000));
+        }
+
+        if (!result) {
+          throw new Error(`VoC research timed out (jobId: ${jobId})`);
+        }
+
         setVocResearch(result);
 
         // Convert VoC triggers to analysis format for display
