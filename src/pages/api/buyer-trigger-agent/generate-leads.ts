@@ -131,8 +131,8 @@ async function discoverCompaniesWithVoCSignals(criteria: {
           result.url,
           criteria.signalConfigurations,
           {
-            exa: exaApiKey,
-            perplexity: perplexityApiKey,
+            exa: exaApiKey || undefined,
+            perplexity: perplexityApiKey || undefined,
             anthropic: anthropicApiKey || ''
           }
         );

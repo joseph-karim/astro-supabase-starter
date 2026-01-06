@@ -22,6 +22,14 @@ export const supabaseAdmin = serverUrl && serviceRoleKey
     })
   : null
 
+// Debug: Log configuration status on module load
+console.log('[database.ts] Supabase config:', {
+  hasServerUrl: !!serverUrl,
+  hasServerKey: !!serverKey,
+  hasServiceRoleKey: !!serviceRoleKey,
+  supabaseAdminReady: !!supabaseAdmin
+})
+
 // Check if Supabase is configured
 export const isConfigured = supabase !== null
 
@@ -49,25 +57,17 @@ export async function getSecret(key: string): Promise<string | null> {
   }
 
   try {
-    // Query Supabase Vault (vault.decrypted_secrets view)
+    // Query Supabase Vault via RPC function (vault schema not exposed to PostgREST)
     const { data, error } = await supabaseAdmin
-      .schema('vault')
-      .from('decrypted_secrets')
-      .select('decrypted_secret')
-      .eq('name', key)
-      .single()
+      .rpc('get_secret', { secret_name: key })
 
     if (error) {
-      // Vault might not be enabled or secret doesn't exist
-      if (error.code === 'PGRST116') {
-        console.warn(`[getSecret] Secret '${key}' not found in Vault`)
-      } else {
-        console.error(`[getSecret] Error fetching secret ${key}:`, error.message, error.code)
-      }
+      // Function might not exist or secret doesn't exist
+      console.error(`[getSecret] Error fetching secret ${key}:`, error.message, error.code)
       return null
     }
 
-    const value = data?.decrypted_secret
+    const value = data as string | null
     if (!value) {
       console.warn(`[getSecret] Secret '${key}' has no value`)
       return null
@@ -105,7 +105,7 @@ export async function getSecrets(keys: string[]): Promise<Record<string, string 
   }
 
   if (!supabaseAdmin) {
-    console.warn('[getSecrets] Supabase admin client not configured')
+    console.warn('[getSecrets] Supabase admin client not configured - missing SUPABASE_SERVICE_ROLE_KEY?')
     for (const key of keysToFetch) {
       result[key] = null
     }
@@ -113,27 +113,28 @@ export async function getSecrets(keys: string[]): Promise<Record<string, string 
   }
 
   try {
-    // Query Supabase Vault for multiple secrets (vault schema)
+    console.log('[getSecrets] Querying Vault via RPC for keys:', keysToFetch)
+    
+    // Query Supabase Vault via RPC function (vault schema not exposed to PostgREST)
     const { data, error } = await supabaseAdmin
-      .schema('vault')
-      .from('decrypted_secrets')
-      .select('name, decrypted_secret')
-      .in('name', keysToFetch)
+      .rpc('get_secrets', { secret_names: keysToFetch })
+
+    console.log('[getSecrets] Vault RPC response:', { data: data?.length || 0, error: error?.message })
 
     if (error) {
-      console.error('[getSecrets] Error fetching secrets from Vault:', error.message, error.code)
+      console.error('[getSecrets] Error fetching secrets from Vault:', error.message, error.code, error.details)
       for (const key of keysToFetch) {
         result[key] = null
       }
       return result
     }
 
-    // Process results
+    // Process results from RPC (returns {name, secret}[])
     const fetchedKeys = new Set<string>()
-    for (const row of data || []) {
-      if (row.decrypted_secret) {
-        result[row.name] = row.decrypted_secret
-        secretsCache.set(row.name, { value: row.decrypted_secret, fetchedAt: Date.now() })
+    for (const row of (data as { name: string; secret: string }[]) || []) {
+      if (row.secret) {
+        result[row.name] = row.secret
+        secretsCache.set(row.name, { value: row.secret, fetchedAt: Date.now() })
         fetchedKeys.add(row.name)
       } else {
         result[row.name] = null
