@@ -30,15 +30,20 @@ interface VoCResearch {
 
 interface Lead {
   company: string;
+  domain?: string;
+  website?: string;
   location: string;
   employees: number;
   revenue: string;
+  description?: string;
   score: number;
-  primarySignal: string;
-  tags: string[];
+  primarySignal?: string;
+  tags?: string[];
   matchReason: string;
   convergenceBonus?: boolean;
-  signals?: { type: string; trigger: string; confidence: number; messagingContext: string }[];
+  signals?: { type: string; evidence?: string; confidence: number }[];
+  sourceSnippet?: string;
+  evidenceUrl?: string;
 }
 
 export default function BuyerTriggerAgent() {
@@ -316,58 +321,127 @@ export default function BuyerTriggerAgent() {
     }
   };
 
+  const [expandedLead, setExpandedLead] = useState<number | null>(null);
+
   if (step === totalSteps + 1) {
     return (
       <div className="bta-container">
         <div className="bta-report">
           <div className="bta-report-header">
-            <h2>Here are {leads.length} companies ready to buy</h2>
-            <p className="bta-report-subtitle">Based on your criteria: {data.industry} companies showing {data.signals.length} signal types</p>
+            <h2>Found {leads.length} potential prospects</h2>
+            <p className="bta-report-subtitle">
+              Companies matching your criteria with buying signals detected
+            </p>
           </div>
 
           <div className="bta-leads">
             {leads.map((lead, idx) => (
-              <div key={idx} className={`bta-lead-card ${lead.convergenceBonus ? 'bta-lead-convergence' : ''}`}>
-                <div className="bta-lead-header">
-                  <div>
-                    <div className="bta-lead-company">
-                      {lead.company}
-                      {lead.convergenceBonus && <span className="bta-convergence-badge">Multi-Signal</span>}
+              <div 
+                key={idx} 
+                className={`bta-lead-card ${expandedLead === idx ? 'bta-lead-expanded' : ''}`}
+              >
+                <div 
+                  className="bta-lead-header"
+                  onClick={() => setExpandedLead(expandedLead === idx ? null : idx)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div className="bta-lead-info">
+                    <div className="bta-lead-company-row">
+                      <span className="bta-lead-company">{lead.company}</span>
+                      {lead.signals && lead.signals.length > 1 && (
+                        <span className="bta-convergence-badge">{lead.signals.length} signals</span>
+                      )}
                     </div>
-                    <div className="bta-lead-meta">{lead.location} • {lead.employees} employees • {lead.revenue} revenue</div>
+                    {lead.domain && (
+                      <a 
+                        href={lead.website || `https://${lead.domain}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bta-lead-domain"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {lead.domain} ↗
+                      </a>
+                    )}
+                    <div className="bta-lead-meta">
+                      {lead.location !== 'Unknown' && <span>{lead.location}</span>}
+                      {lead.employees > 0 && <span>{lead.employees.toLocaleString()} employees</span>}
+                      {lead.revenue !== 'Unknown' && <span>{lead.revenue}</span>}
+                    </div>
                   </div>
-                  <div className="bta-lead-score">{lead.score}</div>
+                  <div className="bta-lead-score-box">
+                    <div className="bta-lead-score">{lead.score}</div>
+                    <div className="bta-lead-score-label">score</div>
+                  </div>
                 </div>
-                <div className="bta-lead-signal">
-                  <span className="bta-signal-label">Primary Signal:</span> {lead.primarySignal}
-                </div>
+
+                {lead.description && (
+                  <p className="bta-lead-description">{lead.description}</p>
+                )}
+
                 {lead.signals && lead.signals.length > 0 && (
-                  <div className="bta-lead-signals-detail">
-                    {lead.signals.map((sig, i) => (
-                      <div key={i} className="bta-signal-detail">
-                        <span className="bta-signal-type">{sig.type.replace(/_/g, ' ')}</span>
-                        <span className="bta-signal-confidence">{sig.confidence}% conf</span>
-                      </div>
-                    ))}
+                  <div className="bta-lead-signals">
+                    <div className="bta-signals-label">Detected Signals:</div>
+                    <div className="bta-signals-list">
+                      {lead.signals.map((sig, i) => (
+                        <div key={i} className="bta-signal-item">
+                          <span className="bta-signal-name">{sig.type.replace(/_/g, ' ')}</span>
+                          <span className="bta-signal-conf">{sig.confidence}%</span>
+                          {sig.evidence && expandedLead === idx && (
+                            <div className="bta-signal-evidence">{sig.evidence}</div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
-                <div className="bta-lead-tags">
-                  {lead.tags.map((tag, i) => (
-                    <span key={i} className="bta-tag">{tag}</span>
-                  ))}
+
+                {expandedLead === idx && (
+                  <div className="bta-lead-details">
+                    {lead.sourceSnippet && (
+                      <div className="bta-lead-snippet">
+                        <div className="bta-snippet-label">Source Context:</div>
+                        <p>{lead.sourceSnippet}</p>
+                      </div>
+                    )}
+                    {lead.evidenceUrl && (
+                      <a 
+                        href={lead.evidenceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bta-evidence-link"
+                      >
+                        View Source →
+                      </a>
+                    )}
+                  </div>
+                )}
+
+                <div className="bta-lead-footer">
+                  <span className="bta-match-reason">{lead.matchReason}</span>
+                  <button 
+                    className="bta-expand-btn"
+                    onClick={() => setExpandedLead(expandedLead === idx ? null : idx)}
+                  >
+                    {expandedLead === idx ? 'Less' : 'More'}
+                  </button>
                 </div>
-                <div className="bta-lead-match">{lead.matchReason}</div>
               </div>
             ))}
 
-            {leads.length > 0 && (
-              <div className="bta-more-leads">+ more qualified leads available with full subscription</div>
+            {leads.length === 0 && (
+              <div className="bta-no-leads">
+                <p>No prospects found matching your criteria. Try adjusting your signals or industry.</p>
+                <button className="bta-btn bta-btn-secondary" onClick={() => setStep(2)}>
+                  Adjust Criteria
+                </button>
+              </div>
             )}
           </div>
 
           <div className="bta-cta-section">
-            <h3>Get daily updates with fresh leads</h3>
-            <p>Enter your email to receive new matches automatically, customize signals, and track your pipeline.</p>
+            <h3>Get daily updates with fresh prospects</h3>
+            <p>Enter your email to receive new matches automatically.</p>
 
             <div className="bta-field">
               <input
@@ -383,7 +457,7 @@ export default function BuyerTriggerAgent() {
                 Get Daily Notifications
               </button>
               <button className="bta-btn bta-btn-secondary" onClick={() => setStep(1)}>
-                Do Another Search
+                New Search
               </button>
             </div>
           </div>

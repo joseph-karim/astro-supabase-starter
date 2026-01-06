@@ -77,113 +77,235 @@ export const POST: APIRoute = async ({ request }) => {
 
 /**
  * Enhanced lead discovery using VoC-based signal configurations
- * Uses multi-signal scoring and convergence bonuses
+ * IMPORTANT: Searches for PROSPECTS (companies that would BUY), not competitors
  */
 async function discoverCompaniesWithVoCSignals(criteria: {
   industry: string;
   targetBuyer: string;
   buyerJourneyStage: string;
   signalConfigurations: TriggerSignalConfiguration[];
+  // ICP details for proper prospect search
+  icp?: {
+    targetIndustries?: string[];
+    companySize?: string;
+    painPoints?: string[];
+  };
 }) {
-  // Get API keys from environment variables
   const envVars = getEnvVars(['EXA_API_KEY', 'PERPLEXITY_API_KEY', 'ANTHROPIC_API_KEY']);
   const exaApiKey = envVars.EXA_API_KEY;
   const perplexityApiKey = envVars.PERPLEXITY_API_KEY;
-  const anthropicApiKey = envVars.ANTHROPIC_API_KEY;
 
   if (!exaApiKey) {
-    console.warn('[VoC Leads] Missing EXA_API_KEY in Supabase secrets');
+    console.warn('[VoC Leads] Missing EXA_API_KEY');
     return [];
   }
 
   const exa = new Exa(exaApiKey);
 
-  // Build search queries from signal configurations
-  const searchQueries = criteria.signalConfigurations.flatMap(config => 
-    config.signals.map(s => s.queryParameters.keywords || []).flat()
-  );
+  // Build PROSPECT search queries - NOT searching for competitors!
+  // Extract signal-based search terms (hiring, funding, expansion signals)
+  const signalKeywords = criteria.signalConfigurations.flatMap(config => 
+    config.signals
+      .filter(s => s.queryParameters?.keywords?.length)
+      .flatMap(s => s.queryParameters.keywords || [])
+  ).slice(0, 8);
 
-  const uniqueKeywords = [...new Set(searchQueries)].slice(0, 10);
-  const searchQuery = `${criteria.industry} companies (${uniqueKeywords.join(' OR ')})`;
+  // Build multiple search queries to find prospects showing buying signals
+  const searchQueries = [
+    // Search for companies showing hiring signals (prospects expanding)
+    `companies hiring ${criteria.targetBuyer || 'sales'} team -"${criteria.industry}" -competitor`,
+    // Search for companies with expansion signals
+    `company expanding operations ${signalKeywords.slice(0, 3).join(' ')} -vendor -solution -platform`,
+    // Search for companies discussing the problem space  
+    `"looking for" OR "evaluating" ${criteria.industry.split(' ')[0]} solutions`,
+  ];
 
-  console.log(`[VoC Leads] Searching: "${searchQuery.slice(0, 100)}..."`);
+  console.log(`[VoC Leads] Searching for PROSPECTS (not competitors)`);
+  console.log(`[VoC Leads] Queries:`, searchQueries);
 
   try {
-    // Discover companies with Exa
-    const exaResults = await exa.searchAndContents(searchQuery, {
-      type: 'auto',
-      numResults: 15,
-      text: { maxCharacters: 1000 },
-      category: 'company'
+    // Run multiple searches in parallel to find diverse prospects
+    const allResults: any[] = [];
+    
+    for (const query of searchQueries.slice(0, 2)) {
+      try {
+        const results = await exa.searchAndContents(query, {
+          type: 'auto',
+          numResults: 15,
+          text: { maxCharacters: 500 },
+        });
+        allResults.push(...results.results);
+      } catch (e) {
+        console.warn(`[VoC Leads] Query failed: ${query}`, e);
+      }
+    }
+
+    // Dedupe by domain
+    const seenDomains = new Set<string>();
+    const uniqueResults = allResults.filter(r => {
+      try {
+        const domain = new URL(r.url).hostname.replace('www.', '');
+        if (seenDomains.has(domain)) return false;
+        seenDomains.add(domain);
+        return true;
+      } catch {
+        return false;
+      }
     });
 
-    console.log(`[VoC Leads] Found ${exaResults.results.length} potential companies`);
+    console.log(`[VoC Leads] Found ${uniqueResults.length} unique potential prospects`);
 
-    // Detect signals for each company using VoC configurations
-    const companiesWithSignals = await Promise.all(
-      exaResults.results.slice(0, 8).map(async (result) => {
+    // Enrich and score each prospect
+    const leads = await Promise.all(
+      uniqueResults.slice(0, 25).map(async (result) => {
         const companyName = extractCompanyName(result.url, result.title || '');
+        const domain = extractDomain(result.url);
         
-        console.log(`[VoC Leads] Analyzing ${companyName}...`);
-
-        const detectedSignals = await detectSignalsForCompany(
-          companyName,
-          result.url,
-          criteria.signalConfigurations,
-          {
-            exa: exaApiKey || undefined,
-            perplexity: perplexityApiKey || undefined,
-            anthropic: anthropicApiKey || ''
+        // Quick enrichment from Perplexity if available
+        let enrichment = {
+          employees: 0,
+          revenue: 'Unknown',
+          location: 'Unknown',
+          description: result.text?.slice(0, 200) || ''
+        };
+        
+        if (perplexityApiKey) {
+          try {
+            enrichment = await enrichCompanyWithPerplexity(companyName, domain, perplexityApiKey);
+          } catch (e) {
+            console.warn(`[VoC Leads] Enrichment failed for ${companyName}`);
           }
-        );
+        }
+
+        // Score based on signal matches
+        const matchedSignals = findMatchingSignals(result.text || '', criteria.signalConfigurations);
+        const score = Math.min(100, 50 + (matchedSignals.length * 10));
 
         return {
           company: companyName,
-          url: result.url,
-          signals: detectedSignals
+          domain: domain,
+          website: `https://${domain}`,
+          location: enrichment.location,
+          employees: enrichment.employees,
+          revenue: enrichment.revenue,
+          description: enrichment.description,
+          score: score,
+          signals: matchedSignals.map(s => ({
+            type: s.type,
+            evidence: s.evidence,
+            confidence: s.confidence
+          })),
+          matchReason: matchedSignals.length > 0 
+            ? `${matchedSignals.length} buying signal${matchedSignals.length > 1 ? 's' : ''} detected`
+            : 'Matches target profile',
+          evidenceUrl: result.url,
+          sourceSnippet: result.text?.slice(0, 300)
         };
       })
     );
 
-    // Rank companies by composite signal score
-    const rankedCompanies = rankCompaniesBySignals(companiesWithSignals);
+    // Sort by score and return top results
+    const sortedLeads = leads
+      .filter(l => l.score > 40)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 25);
 
-    // Transform to lead format
-    const leads = rankedCompanies
-      .filter(c => c.compositeScore > 0)
-      .slice(0, 5)
-      .map(c => {
-        const primarySignal = c.signals[0];
-        const signalTypes = [...new Set(c.signals.map(s => s.signalType))];
-        const evidenceData = primarySignal?.evidence?.data || {};
-        
-        return {
-          company: c.company,
-          location: evidenceData.location || 'Unknown',
-          employees: evidenceData.employees || 0,
-          revenue: evidenceData.revenue || 'Not disclosed',
-          score: c.compositeScore,
-          primarySignal: evidenceData.analysis || primarySignal?.signalType || 'Multiple signals detected',
-          evidenceUrl: primarySignal?.evidence?.url || c.company,
-          tags: signalTypes.map(s => s.replace(/_/g, ' ')),
-          matchReason: `${c.signals.length} signal${c.signals.length > 1 ? 's' : ''} detected • ${criteria.buyerJourneyStage} stage`,
-          signals: c.signals.map(s => ({
-            type: s.signalType,
-            trigger: s.triggerPattern,
-            confidence: s.confidence,
-            messagingContext: s.messagingContext
-          })),
-          convergenceBonus: signalTypes.length >= 2
-        };
-      });
-
-    console.log(`[VoC Leads] Returning ${leads.length} qualified leads`);
-    return leads;
+    console.log(`[VoC Leads] Returning ${sortedLeads.length} qualified prospects`);
+    return sortedLeads;
 
   } catch (error) {
     console.error('[VoC Leads] Error:', error);
     return [];
   }
+}
+
+/**
+ * Extract domain from URL
+ */
+function extractDomain(url: string): string {
+  try {
+    return new URL(url).hostname.replace('www.', '');
+  } catch {
+    return url;
+  }
+}
+
+/**
+ * Quick company enrichment using Perplexity
+ */
+async function enrichCompanyWithPerplexity(
+  companyName: string,
+  domain: string,
+  apiKey: string
+): Promise<{ employees: number; revenue: string; location: string; description: string }> {
+  try {
+    const response = await fetch('https://api.perplexity.ai/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'sonar',
+        messages: [{
+          role: 'user',
+          content: `Quick facts about ${companyName} (${domain}): employee count, headquarters location, estimated revenue, and one-sentence description. Format: EMPLOYEES: [number], LOCATION: [city], REVENUE: [amount], DESCRIPTION: [one sentence]`
+        }],
+        max_tokens: 200,
+        temperature: 0.1
+      })
+    });
+
+    if (!response.ok) throw new Error('Perplexity API error');
+    
+    const data = await response.json();
+    const text = data.choices?.[0]?.message?.content || '';
+    
+    const employeesMatch = text.match(/EMPLOYEES:\s*(\d[\d,]*)/i);
+    const locationMatch = text.match(/LOCATION:\s*([^,\n]+)/i);
+    const revenueMatch = text.match(/REVENUE:\s*([^\n]+)/i);
+    const descMatch = text.match(/DESCRIPTION:\s*([^\n]+)/i);
+    
+    return {
+      employees: employeesMatch ? parseInt(employeesMatch[1].replace(/,/g, '')) : 0,
+      location: locationMatch?.[1]?.trim() || 'Unknown',
+      revenue: revenueMatch?.[1]?.trim() || 'Unknown',
+      description: descMatch?.[1]?.trim() || ''
+    };
+  } catch {
+    return { employees: 0, revenue: 'Unknown', location: 'Unknown', description: '' };
+  }
+}
+
+/**
+ * Find signals that match in the company content
+ */
+function findMatchingSignals(
+  content: string,
+  signalConfigs: TriggerSignalConfiguration[]
+): Array<{ type: string; evidence: string; confidence: number }> {
+  const contentLower = content.toLowerCase();
+  const matches: Array<{ type: string; evidence: string; confidence: number }> = [];
+  
+  for (const config of signalConfigs) {
+    for (const signal of config.signals) {
+      const keywords = signal.queryParameters?.keywords || [];
+      const matchedKeywords = keywords.filter(kw => 
+        contentLower.includes(kw.toLowerCase())
+      );
+      
+      if (matchedKeywords.length > 0) {
+        matches.push({
+          type: config.triggerName,
+          evidence: `Mentions: ${matchedKeywords.join(', ')}`,
+          confidence: Math.min(95, 50 + (matchedKeywords.length * 15))
+        });
+        break; // One match per config is enough
+      }
+    }
+  }
+  
+  return matches;
 }
 
 /**
