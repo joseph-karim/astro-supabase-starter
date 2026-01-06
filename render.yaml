@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: astro-supabase-starter
+    env: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: node dist/server/entry.mjs
+    autoDeploy: true
+    envVars:
+      - key: DEPLOY_TARGET
+        value: render
+      # App secrets (set these in Render as "Secret" values)
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: EXA_API_KEY
+        sync: false
+      - key: PERPLEXITY_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      # Optional: point to your Crawl4AI HTTP endpoint
+      - key: CRAWL4AI_ENDPOINT
+        sync: false

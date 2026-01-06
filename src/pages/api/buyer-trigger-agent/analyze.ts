@@ -55,6 +55,13 @@ export const POST: APIRoute = async ({ request }) => {
 
 async function scrapeWebsite(url: string): Promise<string | null> {
   try {
+    const crawl4aiEndpoint =
+      import.meta.env.CRAWL4AI_ENDPOINT ?? (globalThis as any).process?.env?.CRAWL4AI_ENDPOINT;
+    if (crawl4aiEndpoint) {
+      const crawl4aiContent = await scrapeWithCrawl4AI(crawl4aiEndpoint, url);
+      if (crawl4aiContent) return crawl4aiContent.slice(0, 10000);
+    }
+
     // Use Jina Reader API - free, no API key needed for basic usage
     const jinaUrl = `https://r.jina.ai/${encodeURIComponent(url)}`;
 
@@ -77,6 +84,65 @@ async function scrapeWebsite(url: string): Promise<string | null> {
 
   } catch (error) {
     console.error('Website scraping error:', error);
+    return null;
+  }
+}
+
+async function scrapeWithCrawl4AI(endpoint: string, url: string): Promise<string | null> {
+  try {
+    const timeoutMs = 30_000;
+
+    const fetchWithTimeout = async (input: RequestInfo | URL, init: RequestInit) => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const response = await fetch(input, { ...init, signal: controller.signal });
+        return response;
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    };
+
+    let response: Response;
+    if (endpoint.includes('{url}')) {
+      const expanded = endpoint.replaceAll('{url}', encodeURIComponent(url));
+      response = await fetchWithTimeout(expanded, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json, text/plain;q=0.9' }
+      });
+    } else {
+      response = await fetchWithTimeout(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ url, format: 'markdown' })
+      });
+    }
+
+    if (!response.ok) return null;
+
+    const contentType = response.headers.get('content-type') || '';
+    if (!contentType.toLowerCase().includes('application/json')) {
+      const text = await response.text();
+      return text || null;
+    }
+
+    const json = await response.json();
+    const candidates = [
+      json?.markdown,
+      json?.content,
+      json?.text,
+      json?.data?.markdown,
+      json?.data?.content,
+      json?.result?.markdown,
+      json?.result?.content
+    ];
+
+    const best = candidates.find((c) => typeof c === 'string' && c.trim().length > 0);
+    return best ? best : null;
+  } catch {
     return null;
   }
 }

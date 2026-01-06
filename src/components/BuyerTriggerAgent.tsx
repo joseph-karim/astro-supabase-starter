@@ -123,7 +123,23 @@ export default function BuyerTriggerAgent() {
           })
         });
 
-        if (!response.ok) throw new Error('Failed to run VoC research');
+        if (!response.ok) {
+          let message = 'Failed to run VoC research';
+          try {
+            const err = await response.json();
+            if (err?.error) message = err.error;
+            if (err?.details) message += `: ${err.details}`;
+            if (err?.requestId) message += ` (requestId: ${err.requestId})`;
+          } catch {
+            try {
+              const text = await response.text();
+              if (text) message += `: ${text}`;
+            } catch {
+              // ignore
+            }
+          }
+          throw new Error(message);
+        }
 
         const result = await response.json();
         setVocResearch(result);
@@ -166,7 +182,17 @@ export default function BuyerTriggerAgent() {
           })
         });
 
-        if (!response.ok) throw new Error('Failed to analyze website');
+        if (!response.ok) {
+          let message = 'Failed to analyze website';
+          try {
+            const err = await response.json();
+            if (err?.error) message = err.error;
+            if (err?.details) message += `: ${err.details}`;
+          } catch {
+            // ignore
+          }
+          throw new Error(message);
+        }
 
         const result = await response.json();
         setAnalysis(result);
@@ -215,7 +241,17 @@ export default function BuyerTriggerAgent() {
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) throw new Error('Failed to generate leads');
+      if (!response.ok) {
+        let message = 'Failed to generate leads';
+        try {
+          const err = await response.json();
+          if (err?.error) message = err.error;
+          if (err?.details) message += `: ${err.details}`;
+        } catch {
+          // ignore
+        }
+        throw new Error(message);
+      }
 
       const result = await response.json();
       setLeads(result.leads);
