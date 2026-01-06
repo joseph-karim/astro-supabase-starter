@@ -96,6 +96,8 @@ async function discoverCompaniesWithVoCSignals(criteria: {
   icp?: {
     targetIndustries?: string[];
     companySize?: string;
+    targetTitles?: string[];
+    geography?: string;
     painPoints?: string[];
   };
 }) {
