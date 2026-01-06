@@ -13,20 +13,23 @@ export const supabase = serverUrl && serverKey
 export const isConfigured = supabase !== null
 
 /**
- * Get an environment variable (works in both Astro and Node.js contexts)
- * Server-side env vars are NOT exposed to the client - they're secure.
+ * Known API keys - must be listed explicitly because Vite statically replaces import.meta.env
+ * Dynamic access like import.meta.env[key] doesn't work
+ */
+const ENV_VARS: Record<string, string | undefined> = {
+  ANTHROPIC_API_KEY: import.meta.env.ANTHROPIC_API_KEY,
+  EXA_API_KEY: import.meta.env.EXA_API_KEY,
+  PERPLEXITY_API_KEY: import.meta.env.PERPLEXITY_API_KEY,
+  OPENAI_API_KEY: import.meta.env.OPENAI_API_KEY,
+  FOLK_API_KEY: import.meta.env.FOLK_API_KEY,
+  CONTEXTUAL_AI_API_KEY: import.meta.env.CONTEXTUAL_AI_API_KEY,
+}
+
+/**
+ * Get an environment variable
  */
 export function getEnvVar(key: string): string | null {
-  // Try Astro's import.meta.env first
-  const astroValue = (import.meta.env as Record<string, string | undefined>)[key]
-  if (astroValue) return astroValue
-  
-  // Fallback to process.env for Node.js contexts
-  if (typeof process !== 'undefined' && process.env) {
-    return process.env[key] || null
-  }
-  
-  return null
+  return ENV_VARS[key] || null
 }
 
 /**
