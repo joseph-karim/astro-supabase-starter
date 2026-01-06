@@ -27,11 +27,9 @@ FREE SOURCES (Always available):
 - Building permit databases (local gov): Facility expansion, new offices
 - Regulatory databases: FDA warnings, OSHA violations, EPA, SEC actions
 
-LOW-COST SOURCES ($20-100/mo):
+LOW-COST SOURCES:
 - Exa Search API: Real-time web search, company discovery
 - Perplexity API: Research and signal verification
-- BuiltWith: Technology stack changes
-- GummySearch: Reddit monitoring
 
 MONITORING METHODS:
 - RSS feed polling (real-time to daily)
