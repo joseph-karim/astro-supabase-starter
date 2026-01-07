@@ -590,42 +590,54 @@ async function discoverCompaniesWithSignals(criteria: LeadCriteria) {
     console.log(`[Exa] Found ${exaResults.results.length} results`);
 
     // Process top companies and detect signals with Perplexity
-    const leads = await Promise.all(
-      exaResults.results.slice(0, 5).map(async (result) => {
-        const companyName = extractCompanyName(result.url, result.title || '');
+    const leads: Lead[] = [];
+    
+    for (const result of exaResults.results.slice(0, 5)) {
+      const companyName = extractCompanyName(result.url, result.title || '');
+      const domain = extractDomain(result.url);
 
-        console.log(`[Lead] Analyzing ${companyName}...`);
+      console.log(`[Lead] Analyzing ${companyName}...`);
 
-        // Use Perplexity to detect specific signals for this company
-        const signalAnalysis = await detectSignalsWithPerplexity(
-          companyName,
-          criteria.signals,
-          perplexityApiKey
-        );
+      // Use Perplexity to detect specific signals for this company
+      const signalAnalysis = await detectSignalsWithPerplexity(
+        companyName,
+        criteria.signals,
+        perplexityApiKey
+      );
 
-        if (!signalAnalysis.hasSignals) {
-          return null;
-        }
+      if (!signalAnalysis.hasSignals) {
+        continue;
+      }
 
-        return {
-          company: companyName,
-          location: signalAnalysis.location || 'Unknown',
-          employees: signalAnalysis.employees || 0,
-          revenue: signalAnalysis.revenue || 'Not disclosed',
-          score: signalAnalysis.score,
-          primarySignal: signalAnalysis.primarySignal,
-          evidenceUrl: result.url,
-          tags: signalAnalysis.matchingSignals,
-          matchReason: `${signalAnalysis.matchingSignals.length} matching signal${signalAnalysis.matchingSignals.length > 1 ? 's' : ''} • ${criteria.buyerJourneyStage || 'consideration'} stage`
-        };
-      })
-    );
+      // Create lead using the new schema
+      const lead = createEmptyLead(companyName, domain);
+      
+      // Update company info
+      lead.company.headquarters = signalAnalysis.location || undefined;
+      lead.company.employeeCount = signalAnalysis.employees || undefined;
+      lead.company.revenue = signalAnalysis.revenue || undefined;
+      
+      // Map signals to new format
+      lead.signals = signalAnalysis.matchingSignals.map((signal: string, idx: number) => ({
+        id: `signal_${idx}`,
+        type: signal.replace(/ /g, '_'),
+        label: signal,
+        evidence: signalAnalysis.primarySignal || '',
+        confidence: signalAnalysis.score,
+        sourceUrl: result.url
+      }));
+      
+      lead.score = signalAnalysis.score;
+      lead.matchReason = `${signalAnalysis.matchingSignals.length} matching signal${signalAnalysis.matchingSignals.length > 1 ? 's' : ''} detected`;
+      lead.sourceUrl = result.url;
+      lead.dataQuality = calculateDataQuality(lead);
+      
+      leads.push(lead);
+    }
 
-    // Filter out nulls and return top 3
-    const validLeads = leads.filter(lead => lead !== null);
-    validLeads.sort((a, b) => (b?.score || 0) - (a?.score || 0));
-
-    return validLeads.slice(0, 3);
+    // Sort by score and return top 3
+    leads.sort((a, b) => b.score - a.score);
+    return leads.slice(0, 3);
 
   } catch (error) {
     console.error('[Exa] Search error:', error);
