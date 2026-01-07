@@ -115,46 +115,71 @@ async function discoverCompaniesWithVoCSignals(criteria: {
   // Build PROSPECT search queries using ICP data
   const icp = criteria.icp || {};
   const targetIndustries = icp.targetIndustries?.slice(0, 3) || [];
-  const targetTitles = icp.targetTitles?.slice(0, 2) || [criteria.targetBuyer || 'sales'];
+  const targetTitles = icp.targetTitles?.slice(0, 2) || [criteria.targetBuyer || 'decision maker'];
   const geography = icp.geography || '';
+  const companySize = icp.companySize || '50-500 employees';
+  
+  // Parse company size range for filtering
+  const sizeRange = parseCompanySize(companySize);
+  
+  // Domains to exclude (job boards, career sites, news aggregators, etc.)
+  const excludedDomains = new Set([
+    'linkedin.com', 'indeed.com', 'glassdoor.com', 'ziprecruiter.com',
+    'monster.com', 'careerbuilder.com', 'lever.co', 'greenhouse.io',
+    'workday.com', 'jobs.lever.co', 'boards.greenhouse.io',
+    'news.ycombinator.com', 'reddit.com', 'twitter.com', 'x.com',
+    'youtube.com', 'facebook.com', 'instagram.com', 'tiktok.com',
+    'prnewswire.com', 'businesswire.com', 'globenewswire.com',
+    'wikipedia.org', 'crunchbase.com', 'pitchbook.com',
+    'g2.com', 'capterra.com', 'trustpilot.com',
+    'careers.', '.jobs.', '/careers', '/jobs'
+  ]);
   
   // Extract signal-based search terms
-  const signalKeywords = criteria.signalConfigurations.flatMap(config => 
+  const signalKeywords = criteria.signalConfigurations?.flatMap(config => 
     config.signals
-      .filter(s => s.queryParameters?.keywords?.length)
-      .flatMap(s => s.queryParameters.keywords || [])
-  ).slice(0, 6);
+      ?.filter(s => s.queryParameters?.keywords?.length)
+      ?.flatMap(s => s.queryParameters.keywords || []) || []
+  ).slice(0, 6) || [];
 
-  // Build multiple search queries targeting PROSPECTS, not competitors
+  // Build search queries focused on finding actual companies (not job boards)
   const industryFilter = targetIndustries.length > 0 
     ? targetIndustries.join(' OR ') 
-    : 'technology OR saas OR software';
+    : 'B2B services OR professional services OR consulting';
   
   const geoFilter = geography ? ` ${geography}` : '';
   
+  // Size-appropriate search terms
+  const sizeTerms = sizeRange.max <= 50 
+    ? 'startup OR "small business" OR boutique OR agency'
+    : sizeRange.max <= 200 
+    ? 'mid-size OR growing OR "series A" OR "series B"'
+    : 'enterprise OR established';
+  
   const searchQueries = [
-    // Search for companies in target industries hiring target roles
-    `(${industryFilter}) companies hiring (${targetTitles.join(' OR ')})${geoFilter}`,
-    // Search for companies showing expansion/growth signals
-    `(${industryFilter}) company (expanding OR growing OR scaling)${geoFilter} ${signalKeywords.slice(0, 2).join(' ')}`,
-    // Search for companies discussing relevant pain points
-    icp.painPoints?.length 
-      ? `(${industryFilter}) "${icp.painPoints[0]}"${geoFilter}`
-      : `(${industryFilter}) "looking for solutions"${geoFilter}`,
+    // Search for companies matching size and industry
+    `site:.com (${industryFilter}) company (${sizeTerms})${geoFilter} -careers -jobs -hiring`,
+    // Search for companies with growth indicators
+    `(${industryFilter}) (${sizeTerms}) "about us" OR "our team"${geoFilter} -careers -jobs`,
+    // Search based on pain points if available
+    ...(icp.painPoints?.length 
+      ? [`(${industryFilter}) company "${icp.painPoints[0]}"${geoFilter}`]
+      : []),
   ];
 
-  console.log(`[VoC Leads] Searching for PROSPECTS (not competitors)`);
-  console.log(`[VoC Leads] Queries:`, searchQueries);
+  console.log(`[VoC Leads] ICP: ${companySize}, Industries: ${targetIndustries.join(', ')}`);
+  console.log(`[VoC Leads] Size range: ${sizeRange.min}-${sizeRange.max} employees`);
+  console.log(`[VoC Leads] Queries:`, searchQueries.slice(0, 2));
 
   try {
-    // Run multiple searches in parallel to find diverse prospects
+    // Run searches
     const allResults: any[] = [];
     
     for (const query of searchQueries.slice(0, 2)) {
       try {
         const results = await exa.searchAndContents(query, {
           type: 'auto',
-          numResults: 15,
+          numResults: 20,
           text: { maxCharacters: 500 },
         });
         allResults.push(...results.results);
@@ -163,12 +188,28 @@ async function discoverCompaniesWithVoCSignals(criteria: {
       }
     }
 
-    // Dedupe by domain
+    // Filter and dedupe results
     const seenDomains = new Set<string>();
-    const uniqueResults = allResults.filter(r => {
+    const filteredResults = allResults.filter(r => {
       try {
-        const domain = new URL(r.url).hostname.replace('www.', '');
+        const url = new URL(r.url);
+        const domain = url.hostname.replace('www.', '');
+        const fullUrl = r.url.toLowerCase();
+        
+        // Skip if already seen
         if (seenDomains.has(domain)) return false;
+        
+        // Skip excluded domains
+        if ([...excludedDomains].some(ex => domain.includes(ex) || fullUrl.includes(ex))) {
+          console.log(`[VoC Leads] Excluded: ${domain}`);
+          return false;
+        }
+        
+        // Skip career/jobs pages
+        if (fullUrl.includes('/career') || fullUrl.includes('/job') || fullUrl.includes('/hiring')) {
+          return false;
+        }
+        
         seenDomains.add(domain);
         return true;
       } catch {
@@ -176,70 +217,105 @@ async function discoverCompaniesWithVoCSignals(criteria: {
       }
     });
 
-    console.log(`[VoC Leads] Found ${uniqueResults.length} unique potential prospects`);
+    console.log(`[VoC Leads] After filtering: ${filteredResults.length} results (from ${allResults.length})`);
 
-    // Enrich and score each prospect
-    const leads = await Promise.all(
-      uniqueResults.slice(0, 25).map(async (result) => {
-        const companyName = extractCompanyName(result.url, result.title || '');
-        const domain = extractDomain(result.url);
-        
-        // Quick enrichment from Perplexity if available
-        let enrichment = {
-          employees: 0,
-          revenue: 'Unknown',
-          location: 'Unknown',
-          description: result.text?.slice(0, 200) || ''
-        };
-        
-        if (perplexityApiKey) {
-          try {
-            enrichment = await enrichCompanyWithPerplexity(companyName, domain, perplexityApiKey);
-          } catch (e) {
-            console.warn(`[VoC Leads] Enrichment failed for ${companyName}`);
-          }
+    // Enrich and filter by company size
+    const leads: any[] = [];
+    
+    for (const result of filteredResults.slice(0, 30)) {
+      const companyName = extractCompanyName(result.url, result.title || '');
+      const domain = extractDomain(result.url);
+      
+      // Quick enrichment from Perplexity if available
+      let enrichment = {
+        employees: 0,
+        revenue: 'Unknown',
+        location: 'Unknown',
+        description: result.text?.slice(0, 200) || ''
+      };
+      
+      if (perplexityApiKey) {
+        try {
+          enrichment = await enrichCompanyWithPerplexity(companyName, domain, perplexityApiKey);
+        } catch (e) {
+          console.warn(`[VoC Leads] Enrichment failed for ${companyName}`);
         }
+      }
 
-        // Score based on signal matches
-        const matchedSignals = findMatchingSignals(result.text || '', criteria.signalConfigurations);
-        const score = Math.min(100, 50 + (matchedSignals.length * 10));
+      // FILTER BY COMPANY SIZE
+      if (enrichment.employees > 0) {
+        if (enrichment.employees < sizeRange.min || enrichment.employees > sizeRange.max * 1.5) {
+          console.log(`[VoC Leads] Size mismatch: ${companyName} has ${enrichment.employees} employees (want ${sizeRange.min}-${sizeRange.max})`);
+          continue; // Skip this company
+        }
+      }
 
-        return {
-          company: companyName,
-          domain: domain,
-          website: `https://${domain}`,
-          location: enrichment.location,
-          employees: enrichment.employees,
-          revenue: enrichment.revenue,
-          description: enrichment.description,
-          score: score,
-          signals: matchedSignals.map(s => ({
-            type: s.type,
-            evidence: s.evidence,
-            confidence: s.confidence
-          })),
-          matchReason: matchedSignals.length > 0 
-            ? `${matchedSignals.length} buying signal${matchedSignals.length > 1 ? 's' : ''} detected`
-            : 'Matches target profile',
-          evidenceUrl: result.url,
-          sourceSnippet: result.text?.slice(0, 300)
-        };
-      })
-    );
+      // Score based on signal matches
+      const matchedSignals = findMatchingSignals(result.text || '', criteria.signalConfigurations || []);
+      const score = Math.min(100, 50 + (matchedSignals.length * 10));
 
-    // Sort by score and return top results
+      leads.push({
+        company: companyName,
+        domain: domain,
+        website: `https://${domain}`,
+        location: enrichment.location,
+        employees: enrichment.employees,
+        revenue: enrichment.revenue,
+        description: enrichment.description,
+        score: score,
+        signals: matchedSignals.map(s => ({
+          type: s.type,
+          evidence: s.evidence,
+          confidence: s.confidence
+        })),
+        matchReason: matchedSignals.length > 0 
+          ? `${matchedSignals.length} buying signal${matchedSignals.length > 1 ? 's' : ''} detected`
+          : 'Matches target profile',
+        evidenceUrl: result.url,
+        sourceSnippet: result.text?.slice(0, 300)
+      });
+      
+      // Stop if we have enough leads
+      if (leads.length >= 25) break;
+    }
+
+    // Sort by score and return
     const sortedLeads = leads
-      .filter(l => l.score > 40)
       .sort((a, b) => b.score - a.score)
       .slice(0, 25);
 
-    console.log(`[VoC Leads] Returning ${sortedLeads.length} qualified prospects`);
+    console.log(`[VoC Leads] Returning ${sortedLeads.length} qualified prospects (filtered by size: ${companySize})`);
     return sortedLeads;
 
   } catch (error) {
     console.error('[VoC Leads] Error:', error);
     return [];
   }
+}
+
+/**
+ * Parse company size string into min/max employee range
+ */
+function parseCompanySize(sizeStr: string): { min: number; max: number } {
+  const ranges: Record<string, { min: number; max: number }> = {
+    '1-10 employees': { min: 1, max: 10 },
+    '11-50 employees': { min: 11, max: 50 },
+    '50-200 employees': { min: 50, max: 200 },
+    '200-1000 employees': { min: 200, max: 1000 },
+    '1000+ employees': { min: 1000, max: 50000 },
+  };
+  
+  // Try exact match first
+  if (ranges[sizeStr]) return ranges[sizeStr];
+  
+  // Try to parse from string like "50-500 employees"
+  const match = sizeStr.match(/(\d+)[-–](\d+)/);
+  if (match) {
+    return { min: parseInt(match[1]), max: parseInt(match[2]) };
+  }
+  
+  // Default to mid-market
+  return { min: 50, max: 500 };
 }
 
 /**

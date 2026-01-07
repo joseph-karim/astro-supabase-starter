@@ -307,9 +307,12 @@ export default function BuyerTriggerAgent() {
         }
       };
 
-      // If VoC research was used, include signal configurations for enhanced lead gen
+      // If VoC research was used, include ONLY the signal configurations the user selected
       if (data.useVoCResearch && vocResearch?.signalConfigurations) {
-        payload.signalConfigurations = vocResearch.signalConfigurations;
+        // Filter to only include signals the user actually selected
+        payload.signalConfigurations = vocResearch.signalConfigurations.filter(
+          (config: any) => data.signals.includes(config.triggerName)
+        );
       }
 
       const response = await fetch('/api/buyer-trigger-agent/generate-leads', {
