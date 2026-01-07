@@ -36,31 +36,72 @@ interface VoCResearch {
   signalConfigurations: any[];
 }
 
-interface Contact {
+// Contact schema
+interface LeadContact {
   name: string;
   title: string;
-  linkedIn?: string;
+  linkedInUrl?: string;
+  email?: string;
 }
 
-interface Lead {
-  company: string;
-  domain?: string;
-  website?: string;
-  location: string;
-  employees: number;
-  revenue: string;
+// Detected signal schema
+interface DetectedSignal {
+  id: string;
+  type: string;
+  label: string;
+  evidence: string;
+  confidence: number;
+  sourceUrl?: string;
+  detectedAt?: string;
+}
+
+// Company profile schema
+interface CompanyProfile {
+  name: string;
+  domain: string;
+  website: string;
+  description?: string;
   industry?: string;
   founded?: string;
-  description?: string;
-  contacts?: Contact[];
+  employeeCount?: number;
+  employeeRange?: string;
+  revenue?: string;
+  funding?: string;
+  headquarters?: string;
+  country?: string;
+  linkedInUrl?: string;
+  twitterUrl?: string;
+}
+
+// Full lead schema (matches backend)
+interface Lead {
+  id: string;
+  company: CompanyProfile;
+  contacts: LeadContact[];
   score: number;
-  primarySignal?: string;
-  tags?: string[];
   matchReason: string;
-  convergenceBonus?: boolean;
-  signals?: { type: string; evidence?: string; confidence: number }[];
+  signals: DetectedSignal[];
+  sourceUrl?: string;
   sourceSnippet?: string;
-  evidenceUrl?: string;
+  enrichedAt: string;
+  dataQuality: 'high' | 'medium' | 'low';
+}
+
+// API response schema
+interface LeadGenerationResponse {
+  success: boolean;
+  leads: Lead[];
+  meta: {
+    totalFound: number;
+    returned: number;
+    searchCriteria: {
+      industries: string[];
+      companySize: string;
+      signals: string[];
+    };
+    processingTimeMs: number;
+  };
+  errors?: string[];
 }
 
 export default function BuyerTriggerAgent() {
@@ -72,6 +113,7 @@ export default function BuyerTriggerAgent() {
   const [vocResearch, setVocResearch] = useState<VoCResearch | null>(null);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [researchStatus, setResearchStatus] = useState<string>('');
+  const [responseMeta, setResponseMeta] = useState<LeadGenerationResponse['meta'] | null>(null);
 
   const [data, setData] = useState<SessionData>({
     email: '',
@@ -342,8 +384,9 @@ export default function BuyerTriggerAgent() {
         throw new Error(message);
       }
 
-      const result = await response.json();
+      const result: LeadGenerationResponse = await response.json();
       setLeads(result.leads);
+      setResponseMeta(result.meta);
       setStep(totalSteps + 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
@@ -387,11 +430,29 @@ export default function BuyerTriggerAgent() {
             </p>
           </div>
 
+          {/* Response Metadata */}
+          {responseMeta && (
+            <div className="bta-response-meta">
+              <div className="bta-meta-item">
+                <span className="bta-meta-label">Industries:</span>
+                <span className="bta-meta-value">{responseMeta.searchCriteria.industries.join(', ')}</span>
+              </div>
+              <div className="bta-meta-item">
+                <span className="bta-meta-label">Company Size:</span>
+                <span className="bta-meta-value">{responseMeta.searchCriteria.companySize}</span>
+              </div>
+              <div className="bta-meta-item">
+                <span className="bta-meta-label">Processing Time:</span>
+                <span className="bta-meta-value">{(responseMeta.processingTimeMs / 1000).toFixed(1)}s</span>
+              </div>
+            </div>
+          )}
+
           <div className="bta-leads">
             {leads.map((lead, idx) => (
               <div 
-                key={idx} 
-                className={`bta-lead-card ${expandedLead === idx ? 'bta-lead-expanded' : ''}`}
+                key={lead.id || idx} 
+                className={`bta-lead-card ${expandedLead === idx ? 'bta-lead-expanded' : ''} bta-lead-quality-${lead.dataQuality}`}
               >
                 <div 
                   className="bta-lead-header"
@@ -400,26 +461,34 @@ export default function BuyerTriggerAgent() {
                 >
                   <div className="bta-lead-info">
                     <div className="bta-lead-company-row">
-                      <span className="bta-lead-company">{lead.company}</span>
+                      <span className="bta-lead-company">{lead.company.name}</span>
                       {lead.signals && lead.signals.length > 1 && (
                         <span className="bta-convergence-badge">{lead.signals.length} signals</span>
                       )}
+                      <span className={`bta-quality-badge bta-quality-${lead.dataQuality}`}>
+                        {lead.dataQuality}
+                      </span>
                     </div>
-                    {lead.domain && (
+                    {lead.company.domain && (
                       <a 
-                        href={lead.website || `https://${lead.domain}`}
+                        href={lead.company.website || `https://${lead.company.domain}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="bta-lead-domain"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        {lead.domain} ↗
+                        {lead.company.domain} ↗
                       </a>
                     )}
                     <div className="bta-lead-meta">
-                      {lead.location !== 'Unknown' && <span>{lead.location}</span>}
-                      {lead.employees > 0 && <span>{lead.employees.toLocaleString()} employees</span>}
-                      {lead.revenue !== 'Unknown' && <span>{lead.revenue}</span>}
+                      {lead.company.headquarters && <span>📍 {lead.company.headquarters}</span>}
+                      {lead.company.employeeCount && lead.company.employeeCount > 0 && (
+                        <span>👥 {lead.company.employeeCount.toLocaleString()} employees</span>
+                      )}
+                      {lead.company.revenue && lead.company.revenue !== 'Unknown' && (
+                        <span>💰 {lead.company.revenue}</span>
+                      )}
+                      {lead.company.industry && <span>🏢 {lead.company.industry}</span>}
                     </div>
                   </div>
                   <div className="bta-lead-score-box">
@@ -428,17 +497,17 @@ export default function BuyerTriggerAgent() {
                   </div>
                 </div>
 
-                {lead.description && (
-                  <p className="bta-lead-description">{lead.description}</p>
+                {lead.company.description && (
+                  <p className="bta-lead-description">{lead.company.description}</p>
                 )}
 
                 {lead.signals && lead.signals.length > 0 && (
                   <div className="bta-lead-signals">
                     <div className="bta-signals-label">Detected Signals:</div>
                     <div className="bta-signals-list">
-                      {lead.signals.map((sig, i) => (
-                        <div key={i} className="bta-signal-item">
-                          <span className="bta-signal-name">{sig.type.replace(/_/g, ' ')}</span>
+                      {lead.signals.map((sig) => (
+                        <div key={sig.id} className="bta-signal-item">
+                          <span className="bta-signal-name">{sig.label || sig.type.replace(/_/g, ' ')}</span>
                           <span className="bta-signal-conf">{sig.confidence}%</span>
                           {sig.evidence && expandedLead === idx && (
                             <div className="bta-signal-evidence">{sig.evidence}</div>
@@ -458,9 +527,9 @@ export default function BuyerTriggerAgent() {
                         <div key={i} className="bta-contact-item">
                           <span className="bta-contact-name">{contact.name}</span>
                           <span className="bta-contact-title">{contact.title}</span>
-                          {contact.linkedIn && (
+                          {contact.linkedInUrl && (
                             <a 
-                              href={contact.linkedIn}
+                              href={contact.linkedInUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="bta-contact-linkedin"
@@ -481,42 +550,67 @@ export default function BuyerTriggerAgent() {
                     <div className="bta-company-profile">
                       <div className="bta-profile-label">Company Profile:</div>
                       <div className="bta-profile-grid">
-                        {lead.industry && (
+                        {lead.company.industry && (
                           <div className="bta-profile-item">
                             <span className="bta-profile-key">Industry:</span>
-                            <span className="bta-profile-value">{lead.industry}</span>
+                            <span className="bta-profile-value">{lead.company.industry}</span>
                           </div>
                         )}
-                        {lead.founded && (
+                        {lead.company.founded && (
                           <div className="bta-profile-item">
                             <span className="bta-profile-key">Founded:</span>
-                            <span className="bta-profile-value">{lead.founded}</span>
+                            <span className="bta-profile-value">{lead.company.founded}</span>
                           </div>
                         )}
-                        {lead.employees > 0 && (
+                        {lead.company.employeeCount && lead.company.employeeCount > 0 && (
                           <div className="bta-profile-item">
                             <span className="bta-profile-key">Employees:</span>
-                            <span className="bta-profile-value">{lead.employees.toLocaleString()}</span>
+                            <span className="bta-profile-value">{lead.company.employeeCount.toLocaleString()}</span>
                           </div>
                         )}
-                        {lead.revenue !== 'Unknown' && (
+                        {lead.company.revenue && lead.company.revenue !== 'Unknown' && (
                           <div className="bta-profile-item">
                             <span className="bta-profile-key">Revenue:</span>
-                            <span className="bta-profile-value">{lead.revenue}</span>
+                            <span className="bta-profile-value">{lead.company.revenue}</span>
+                          </div>
+                        )}
+                        {lead.company.headquarters && (
+                          <div className="bta-profile-item">
+                            <span className="bta-profile-key">Headquarters:</span>
+                            <span className="bta-profile-value">{lead.company.headquarters}</span>
+                          </div>
+                        )}
+                        {lead.company.funding && (
+                          <div className="bta-profile-item">
+                            <span className="bta-profile-key">Funding:</span>
+                            <span className="bta-profile-value">{lead.company.funding}</span>
                           </div>
                         )}
                       </div>
-                      {lead.website && (
-                        <a 
-                          href={lead.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bta-profile-website"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          Visit Website →
-                        </a>
-                      )}
+                      <div className="bta-profile-links">
+                        {lead.company.website && (
+                          <a 
+                            href={lead.company.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bta-profile-website"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Visit Website →
+                          </a>
+                        )}
+                        {lead.company.linkedInUrl && (
+                          <a 
+                            href={lead.company.linkedInUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bta-profile-linkedin"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            LinkedIn →
+                          </a>
+                        )}
+                      </div>
                     </div>
 
                     {lead.sourceSnippet && (
@@ -525,9 +619,9 @@ export default function BuyerTriggerAgent() {
                         <p>{lead.sourceSnippet}</p>
                       </div>
                     )}
-                    {lead.evidenceUrl && (
+                    {lead.sourceUrl && (
                       <a 
-                        href={lead.evidenceUrl}
+                        href={lead.sourceUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="bta-evidence-link"

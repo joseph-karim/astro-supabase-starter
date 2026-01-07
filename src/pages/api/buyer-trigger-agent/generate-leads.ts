@@ -1,12 +1,21 @@
 import type { APIRoute } from 'astro';
 import Exa from 'exa-js';
-import type { TriggerSignalConfiguration, CompanySignal } from '../../../lib/voc-triggers/types';
-import { 
-  detectSignalsForCompany, 
-  calculateCompositeScore,
-  rankCompaniesBySignals 
-} from '../../../lib/voc-triggers/signal-translation';
+import type { TriggerSignalConfiguration } from '../../../lib/voc-triggers/types';
 import { getEnvVars } from '../../../utils/database';
+import type { 
+  Lead, 
+  LeadContact, 
+  CompanyProfile, 
+  DetectedSignal,
+  LeadGenerationResponse 
+} from '../../../lib/lead-schema';
+import { 
+  createEmptyLead, 
+  calculateDataQuality, 
+  safeParseJSON,
+  COMPANY_ENRICHMENT_PROMPT,
+  CONTACTS_ENRICHMENT_PROMPT
+} from '../../../lib/lead-schema';
 
 export const prerender = false;
 
@@ -28,6 +37,8 @@ interface LeadCriteria {
 }
 
 export const POST: APIRoute = async ({ request }) => {
+  const startTime = Date.now();
+  
   try {
     const body = await request.json();
     const {
@@ -35,10 +46,16 @@ export const POST: APIRoute = async ({ request }) => {
       targetBuyer,
       signals,
       buyerJourneyStage,
-      signalConfigurations
+      signalConfigurations,
+      icp
     } = body as LeadCriteria;
 
-    console.log('[Generate Leads] Criteria:', { industry, signals: signals?.length || 0, buyerJourneyStage });
+    console.log('[Generate Leads] Criteria:', { 
+      industry, 
+      signals: signals?.length || 0, 
+      buyerJourneyStage,
+      icp: icp ? 'provided' : 'not provided'
+    });
 
     // If VoC signal configurations provided, use the enhanced flow
     if (signalConfigurations && signalConfigurations.length > 0) {
@@ -47,10 +64,26 @@ export const POST: APIRoute = async ({ request }) => {
         industry,
         targetBuyer,
         buyerJourneyStage,
-        signalConfigurations
+        signalConfigurations,
+        icp  // Pass ICP to the function
       });
       
-      return new Response(JSON.stringify({ leads, method: 'voc-signals' }), {
+      const response: LeadGenerationResponse = {
+        success: true,
+        leads,
+        meta: {
+          totalFound: leads.length,
+          returned: leads.length,
+          searchCriteria: {
+            industries: icp?.targetIndustries || [industry],
+            companySize: icp?.companySize || '50-500 employees',
+            signals: signals || signalConfigurations.map(s => s.triggerName)
+          },
+          processingTimeMs: Date.now() - startTime
+        }
+      };
+      
+      return new Response(JSON.stringify(response), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -66,17 +99,42 @@ export const POST: APIRoute = async ({ request }) => {
 
     console.log(`[Generate Leads] Found ${leads.length} matching companies`);
 
-    return new Response(JSON.stringify({ leads, method: 'simple-signals' }), {
+    const response: LeadGenerationResponse = {
+      success: true,
+      leads,
+      meta: {
+        totalFound: leads.length,
+        returned: leads.length,
+        searchCriteria: {
+          industries: [industry],
+          companySize: '50-500 employees',
+          signals: signals || []
+        },
+        processingTimeMs: Date.now() - startTime
+      }
+    };
+
+    return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
 
   } catch (err) {
     console.error('Error in /api/buyer-trigger-agent/generate-leads:', err);
-    return new Response(JSON.stringify({
-      error: 'Internal server error',
-      details: err instanceof Error ? err.message : 'Unknown error'
-    }), {
+    
+    const errorResponse: LeadGenerationResponse = {
+      success: false,
+      leads: [],
+      meta: {
+        totalFound: 0,
+        returned: 0,
+        searchCriteria: { industries: [], companySize: '', signals: [] },
+        processingTimeMs: Date.now() - startTime
+      },
+      errors: [err instanceof Error ? err.message : 'Unknown error']
+    };
+    
+    return new Response(JSON.stringify(errorResponse), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
@@ -220,70 +278,77 @@ async function discoverCompaniesWithVoCSignals(criteria: {
     console.log(`[VoC Leads] After filtering: ${filteredResults.length} results (from ${allResults.length})`);
 
     // Enrich and filter by company size
-    const leads: any[] = [];
+    const leads: Lead[] = [];
     const targetTitles = icp.targetTitles || [];
     
     for (const result of filteredResults.slice(0, 30)) {
       const companyName = extractCompanyName(result.url, result.title || '');
       const domain = extractDomain(result.url);
       
-      // Full enrichment from Perplexity (includes contacts)
-      let enrichment: CompanyEnrichment = {
-        employees: 0,
-        revenue: 'Unknown',
-        location: 'Unknown',
-        description: result.text?.slice(0, 200) || '',
-        contacts: []
-      };
+      // Create base lead structure
+      const lead = createEmptyLead(companyName, domain);
       
+      // Full enrichment from Perplexity (includes contacts)
       if (perplexityApiKey) {
         try {
-          enrichment = await enrichCompanyWithPerplexity(companyName, domain, perplexityApiKey, targetTitles);
+          const enrichment = await enrichCompanyWithPerplexity(companyName, domain, perplexityApiKey, targetTitles);
+          
+          // Merge enriched company data
+          lead.company = {
+            ...lead.company,
+            ...enrichment.company
+          };
+          lead.contacts = enrichment.contacts;
         } catch (e) {
           console.warn(`[VoC Leads] Enrichment failed for ${companyName}`);
         }
       }
+      
+      // Fallback description from search result
+      if (!lead.company.description && result.text) {
+        lead.company.description = result.text.slice(0, 200);
+      }
 
       // FILTER BY COMPANY SIZE
-      if (enrichment.employees > 0) {
-        if (enrichment.employees < sizeRange.min || enrichment.employees > sizeRange.max * 1.5) {
-          console.log(`[VoC Leads] Size mismatch: ${companyName} has ${enrichment.employees} employees (want ${sizeRange.min}-${sizeRange.max})`);
+      if (lead.company.employeeCount && lead.company.employeeCount > 0) {
+        if (lead.company.employeeCount < sizeRange.min || lead.company.employeeCount > sizeRange.max * 1.5) {
+          console.log(`[VoC Leads] Size mismatch: ${companyName} has ${lead.company.employeeCount} employees (want ${sizeRange.min}-${sizeRange.max})`);
           continue; // Skip this company
         }
       }
 
-      // Score based on signal matches + contact availability
+      // Score based on signal matches + data quality
       const matchedSignals = findMatchingSignals(result.text || '', criteria.signalConfigurations || []);
       let score = Math.min(100, 50 + (matchedSignals.length * 10));
       
       // Bonus for having contacts
-      if (enrichment.contacts.length > 0) {
+      if (lead.contacts.length > 0) {
         score = Math.min(100, score + 5);
       }
+      
+      // Bonus for having company info
+      if (lead.company.employeeCount) score = Math.min(100, score + 3);
+      if (lead.company.industry) score = Math.min(100, score + 2);
 
-      leads.push({
-        company: companyName,
-        domain: domain,
-        website: `https://${domain}`,
-        location: enrichment.location,
-        employees: enrichment.employees,
-        revenue: enrichment.revenue,
-        industry: enrichment.industry,
-        founded: enrichment.founded,
-        description: enrichment.description,
-        contacts: enrichment.contacts,
-        score: score,
-        signals: matchedSignals.map(s => ({
-          type: s.type,
-          evidence: s.evidence,
-          confidence: s.confidence
-        })),
-        matchReason: matchedSignals.length > 0 
-          ? `${matchedSignals.length} buying signal${matchedSignals.length > 1 ? 's' : ''} detected`
-          : 'Matches target profile',
-        evidenceUrl: result.url,
-        sourceSnippet: result.text?.slice(0, 300)
-      });
+      // Map detected signals to schema
+      lead.signals = matchedSignals.map((s, idx) => ({
+        id: `signal_${idx}`,
+        type: s.type,
+        label: s.type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        evidence: s.evidence,
+        confidence: s.confidence,
+        sourceUrl: result.url
+      }));
+      
+      lead.score = score;
+      lead.matchReason = matchedSignals.length > 0 
+        ? `${matchedSignals.length} buying signal${matchedSignals.length > 1 ? 's' : ''} detected`
+        : 'Matches target profile';
+      lead.sourceUrl = result.url;
+      lead.sourceSnippet = result.text?.slice(0, 300);
+      lead.dataQuality = calculateDataQuality(lead);
+      
+      leads.push(lead);
       
       // Stop if we have enough leads
       if (leads.length >= 25) break;
@@ -339,41 +404,31 @@ function extractDomain(url: string): string {
   }
 }
 
-interface Contact {
-  name: string;
-  title: string;
-  linkedIn?: string;
-}
-
-interface CompanyEnrichment {
-  employees: number;
-  revenue: string;
-  location: string;
-  description: string;
-  industry?: string;
-  founded?: string;
-  contacts: Contact[];
+interface EnrichmentResult {
+  company: Partial<CompanyProfile>;
+  contacts: LeadContact[];
 }
 
 /**
- * Full company enrichment using Perplexity - includes contacts
+ * Full company enrichment using Perplexity with structured JSON output
  */
 async function enrichCompanyWithPerplexity(
   companyName: string,
   domain: string,
   apiKey: string,
   targetTitles?: string[]
-): Promise<CompanyEnrichment> {
-  const defaultResult: CompanyEnrichment = {
-    employees: 0,
-    revenue: 'Unknown',
-    location: 'Unknown',
-    description: '',
+): Promise<EnrichmentResult> {
+  const defaultResult: EnrichmentResult = {
+    company: {
+      name: companyName,
+      domain: domain,
+      website: `https://${domain}`
+    },
     contacts: []
   };
 
   try {
-    // First call: Get company info
+    // First call: Get company info with structured JSON prompt
     const companyResponse = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
@@ -384,46 +439,37 @@ async function enrichCompanyWithPerplexity(
         model: 'sonar',
         messages: [{
           role: 'user',
-          content: `Company profile for ${companyName} (${domain}):
-Format exactly as:
-EMPLOYEES: [number]
-LOCATION: [city, state/country]
-REVENUE: [amount or estimate]
-INDUSTRY: [primary industry]
-FOUNDED: [year]
-DESCRIPTION: [one sentence about what they do]`
+          content: COMPANY_ENRICHMENT_PROMPT(companyName, domain)
         }],
-        max_tokens: 250,
+        max_tokens: 400,
         temperature: 0.1
       })
     });
 
-    if (!companyResponse.ok) throw new Error('Perplexity API error');
-    
-    const companyData = await companyResponse.json();
-    const companyText = companyData.choices?.[0]?.message?.content || '';
-    
-    const employeesMatch = companyText.match(/EMPLOYEES:\s*(\d[\d,]*)/i);
-    const locationMatch = companyText.match(/LOCATION:\s*([^\n]+)/i);
-    const revenueMatch = companyText.match(/REVENUE:\s*([^\n]+)/i);
-    const industryMatch = companyText.match(/INDUSTRY:\s*([^\n]+)/i);
-    const foundedMatch = companyText.match(/FOUNDED:\s*(\d{4})/i);
-    const descMatch = companyText.match(/DESCRIPTION:\s*([^\n]+)/i);
-    
-    const result: CompanyEnrichment = {
-      employees: employeesMatch ? parseInt(employeesMatch[1].replace(/,/g, '')) : 0,
-      location: locationMatch?.[1]?.trim() || 'Unknown',
-      revenue: revenueMatch?.[1]?.trim() || 'Unknown',
-      industry: industryMatch?.[1]?.trim(),
-      founded: foundedMatch?.[1],
-      description: descMatch?.[1]?.trim() || '',
-      contacts: []
-    };
+    if (companyResponse.ok) {
+      const companyData = await companyResponse.json();
+      const companyText = companyData.choices?.[0]?.message?.content || '';
+      
+      // Parse structured JSON response
+      const parsed = safeParseJSON<any>(companyText, {});
+      
+      defaultResult.company = {
+        name: parsed.name || companyName,
+        domain: domain,
+        website: `https://${domain}`,
+        description: parsed.description || undefined,
+        industry: parsed.industry || undefined,
+        founded: parsed.founded?.toString() || undefined,
+        employeeCount: typeof parsed.employeeCount === 'number' ? parsed.employeeCount : undefined,
+        employeeRange: parsed.employeeRange || undefined,
+        revenue: parsed.revenue || undefined,
+        headquarters: parsed.headquarters || undefined,
+        linkedInUrl: parsed.linkedInUrl || undefined
+      };
+    }
 
-    // Second call: Find key contacts (decision makers)
-    const titlesToFind = targetTitles?.length 
-      ? targetTitles.slice(0, 3).join(', ')
-      : 'CEO, Founder, VP Sales, Head of Growth';
+    // Second call: Find key contacts with structured JSON prompt
+    const titles = targetTitles?.length ? targetTitles : ['CEO', 'Founder', 'VP Sales', 'Head of Growth'];
     
     const contactsResponse = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
@@ -435,11 +481,9 @@ DESCRIPTION: [one sentence about what they do]`
         model: 'sonar',
         messages: [{
           role: 'user',
-          content: `Who are the key executives at ${companyName} (${domain})? Looking for: ${titlesToFind}.
-List up to 3 people. Format each as:
-NAME: [full name] | TITLE: [job title] | LINKEDIN: [linkedin url if known, or "unknown"]`
+          content: CONTACTS_ENRICHMENT_PROMPT(companyName, domain, titles)
         }],
-        max_tokens: 300,
+        max_tokens: 400,
         temperature: 0.1
       })
     });
@@ -448,27 +492,19 @@ NAME: [full name] | TITLE: [job title] | LINKEDIN: [linkedin url if known, or "u
       const contactsData = await contactsResponse.json();
       const contactsText = contactsData.choices?.[0]?.message?.content || '';
       
-      // Parse contacts
-      const contactLines = contactsText.split('\n').filter((line: string) => line.includes('NAME:'));
-      for (const line of contactLines.slice(0, 3)) {
-        const nameMatch = line.match(/NAME:\s*([^|]+)/i);
-        const titleMatch = line.match(/TITLE:\s*([^|]+)/i);
-        const linkedInMatch = line.match(/LINKEDIN:\s*([^\s]+)/i);
-        
-        if (nameMatch && titleMatch) {
-          const linkedIn = linkedInMatch?.[1]?.trim();
-          result.contacts.push({
-            name: nameMatch[1].trim(),
-            title: titleMatch[1].trim(),
-            linkedIn: linkedIn && linkedIn !== 'unknown' && linkedIn.includes('linkedin') 
-              ? linkedIn 
-              : undefined
-          });
-        }
+      // Parse structured JSON array
+      const parsed = safeParseJSON<any[]>(contactsText, []);
+      
+      if (Array.isArray(parsed)) {
+        defaultResult.contacts = parsed.slice(0, 3).map(c => ({
+          name: c.name || 'Unknown',
+          title: c.title || 'Executive',
+          linkedInUrl: c.linkedInUrl && c.linkedInUrl !== 'null' ? c.linkedInUrl : undefined
+        }));
       }
     }
 
-    return result;
+    return defaultResult;
   } catch (err) {
     console.warn(`[Enrichment] Failed for ${companyName}:`, err);
     return defaultResult;

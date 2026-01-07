@@ -23,7 +23,6 @@ const ENV_VARS: Record<string, string | undefined> = {
   OPENAI_API_KEY: import.meta.env.OPENAI_API_KEY,
   FOLK_API_KEY: import.meta.env.FOLK_API_KEY,
   CONTEXTUAL_AI_API_KEY: import.meta.env.CONTEXTUAL_AI_API_KEY,
-  APOLLO_API_KEY: import.meta.env.APOLLO_API_KEY,
 }
 
 /**
