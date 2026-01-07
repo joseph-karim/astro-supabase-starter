@@ -48,7 +48,7 @@ export async function processLeadGeneration(jobId: string, input: LeadCriteria) 
     // Get API keys
     const envVars = getEnvVars(['EXA_API_KEY', 'PERPLEXITY_API_KEY']);
     const exaApiKey = envVars.EXA_API_KEY;
-    const perplexityApiKey = envVars.PERPLEXITY_API_KEY;
+    const perplexityApiKey = envVars.PERPLEXITY_API_KEY || undefined;
 
     if (!exaApiKey) {
       throw new Error('EXA_API_KEY not configured');
@@ -366,7 +366,19 @@ async function enrichWithTimeout(
 
     const companyData = await companyResponse.json();
     const companyText = companyData.choices?.[0]?.message?.content || '';
-    const company = safeParseJSON(companyText, {});
+    
+    // Type for parsed company data
+    interface ParsedCompany {
+      name?: string;
+      description?: string;
+      industry?: string;
+      employeeCount?: number;
+      revenue?: string;
+      headquarters?: string;
+      linkedInUrl?: string;
+    }
+    
+    const company = safeParseJSON<ParsedCompany>(companyText, {});
 
     // Contacts (skip if running low on time)
     let contacts: any[] = [];
