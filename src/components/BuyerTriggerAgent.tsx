@@ -340,6 +340,7 @@ export default function BuyerTriggerAgent() {
   const generateLeads = async () => {
     setLoading(true);
     setError(null);
+    setResearchStatus('Starting lead generation...');
 
     try {
       // Build request payload with ICP data
@@ -366,16 +367,17 @@ export default function BuyerTriggerAgent() {
         );
       }
 
-      const response = await fetch('/api/buyer-trigger-agent/generate-leads', {
+      // Start async job
+      const startResponse = await fetch('/api/buyer-trigger-agent/generate-leads-start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) {
-        let message = 'Failed to generate leads';
+      if (!startResponse.ok) {
+        let message = 'Failed to start lead generation';
         try {
-          const err = await response.json();
+          const err = await startResponse.json();
           if (err?.error) message = err.error;
           if (err?.details) message += `: ${err.details}`;
         } catch {
@@ -384,14 +386,54 @@ export default function BuyerTriggerAgent() {
         throw new Error(message);
       }
 
-      const result: LeadGenerationResponse = await response.json();
-      setLeads(result.leads);
+      const { jobId } = await startResponse.json();
+      if (!jobId) throw new Error('Failed to start lead generation job');
+
+      // Poll for results
+      const startedAt = Date.now();
+      const maxWaitMs = 3 * 60 * 1000; // 3 minutes max
+
+      let result: any = null;
+      while (Date.now() - startedAt < maxWaitMs) {
+        const jobResponse = await fetch(`/api/buyer-trigger-agent/generate-leads-job?jobId=${encodeURIComponent(jobId)}`);
+        
+        if (!jobResponse.ok) {
+          throw new Error('Failed to check job status');
+        }
+        
+        const job = await jobResponse.json();
+
+        if (job?.status_message) {
+          setResearchStatus(job.status_message);
+        }
+
+        if (job?.status === 'completed') {
+          result = job.result;
+          break;
+        }
+        
+        if (job?.status === 'failed') {
+          const msg = job?.error?.message || 'Lead generation failed';
+          throw new Error(msg);
+        }
+
+        // Wait before polling again
+        await new Promise(r => setTimeout(r, 2000));
+      }
+
+      if (!result) {
+        throw new Error('Lead generation timed out');
+      }
+
+      setLeads(result.leads || []);
       setResponseMeta(result.meta);
       setStep(totalSteps + 1);
+      
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
       setLoading(false);
+      setResearchStatus('');
     }
   };
 
@@ -954,6 +996,12 @@ export default function BuyerTriggerAgent() {
                 </label>
               </div>
 
+              {loading && researchStatus && (
+                <div className="bta-analyzing">
+                  🔍 {researchStatus}
+                </div>
+              )}
+              
               {error && <div className="bta-error">{error}</div>}
             </div>
           )}
