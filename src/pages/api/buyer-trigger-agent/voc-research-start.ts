@@ -1,32 +1,15 @@
 import type { APIRoute } from 'astro';
 import { runVoCResearchPipeline } from '../../../lib/voc-triggers/voc-research-pipeline';
 import { jsonResponse, parseJsonBody, requestId, OPTIONS_OK } from './_http';
-import { getEnvVars } from '../../../utils/database';
+import { getEnvVars, supabase } from '../../../utils/database';
 
 export const prerender = false;
-
-type JobStatus = 'queued' | 'running' | 'completed' | 'failed';
-
-type Job = {
-  id: string;
-  status: JobStatus;
-  statusMessage: string;
-  createdAt: string;
-  updatedAt: string;
-  result?: any;
-  error?: { message: string };
-};
-
-function jobsStore(): Map<string, Job> {
-  const g = globalThis as any;
-  if (!g.__vocResearchJobs) g.__vocResearchJobs = new Map();
-  return g.__vocResearchJobs as Map<string, Job>;
-}
 
 export const OPTIONS: APIRoute = OPTIONS_OK;
 
 export const POST: APIRoute = async ({ request }) => {
   const jobId = requestId();
+  
   try {
     let body: any;
     try {
@@ -44,65 +27,28 @@ export const POST: APIRoute = async ({ request }) => {
       return jsonResponse({ error: 'Website and company name are required' }, { status: 400 });
     }
 
-    const jobs = jobsStore();
-    const now = new Date().toISOString();
-    const job: Job = {
-      id: jobId,
-      status: 'queued',
-      statusMessage: 'Queued',
-      createdAt: now,
-      updatedAt: now
-    };
-    jobs.set(jobId, job);
+    // Check if Supabase is configured
+    if (!supabase) {
+      return jsonResponse({ error: 'Database not configured' }, { status: 500 });
+    }
 
-    setTimeout(() => jobs.delete(jobId), 60 * 60 * 1000);
+    // Create job in Supabase
+    const { error: insertError } = await supabase
+      .from('voc_research_jobs')
+      .insert({
+        id: jobId,
+        status: 'queued',
+        status_message: 'Queued',
+        input: { website, companyName, industry, competitors, targetCompanySize }
+      });
 
-    void (async () => {
-      const update = (patch: Partial<Job>) => {
-        const current = jobs.get(jobId);
-        if (!current) return;
-        jobs.set(jobId, { ...current, ...patch, updatedAt: new Date().toISOString() });
-      };
+    if (insertError) {
+      console.error('[VoC Job] Failed to create job:', insertError);
+      return jsonResponse({ error: 'Failed to create job', details: insertError.message }, { status: 500 });
+    }
 
-      update({ status: 'running', statusMessage: 'Loading API keys...' });
-
-      try {
-        // Get API keys from environment variables (set in Netlify dashboard)
-        const envVars = getEnvVars(['ANTHROPIC_API_KEY', 'EXA_API_KEY', 'PERPLEXITY_API_KEY']);
-        
-        // Validate we have the required key
-        if (!envVars.ANTHROPIC_API_KEY) {
-          throw new Error('ANTHROPIC_API_KEY not configured. Add it to Netlify Environment Variables.');
-        }
-
-        update({ statusMessage: 'Starting research...' });
-
-        const result = await runVoCResearchPipeline(
-          { 
-            website, 
-            companyName, 
-            industry, 
-            competitors, 
-            targetCompanySize,
-            apiKeys: {
-              anthropic: envVars.ANTHROPIC_API_KEY || undefined,
-              exa: envVars.EXA_API_KEY || undefined,
-              perplexity: envVars.PERPLEXITY_API_KEY || undefined
-            }
-          },
-          jobId,
-          (msg) => update({ statusMessage: msg })
-        );
-        update({ status: 'completed', statusMessage: 'Complete', result });
-      } catch (error) {
-        console.error(`[VoC Research Job ${jobId}] Error:`, error);
-        update({
-          status: 'failed',
-          statusMessage: 'Failed',
-          error: { message: error instanceof Error ? error.message : 'Unknown error' }
-        });
-      }
-    })();
+    // Start the async pipeline (fire and forget)
+    void runJobAsync(jobId, { website, companyName, industry, competitors, targetCompanySize });
 
     return jsonResponse({ jobId }, { status: 202 });
   } catch (error) {
@@ -113,3 +59,57 @@ export const POST: APIRoute = async ({ request }) => {
   }
 };
 
+async function runJobAsync(
+  jobId: string,
+  input: { website: string; companyName: string; industry?: string; competitors: string[]; targetCompanySize: string }
+) {
+  const updateJob = async (updates: { status?: string; status_message?: string; result?: any; error?: any }) => {
+    if (!supabase) return;
+    await supabase
+      .from('voc_research_jobs')
+      .update({ ...updates, updated_at: new Date().toISOString() })
+      .eq('id', jobId);
+  };
+
+  try {
+    await updateJob({ status: 'running', status_message: 'Loading API keys...' });
+
+    // Get API keys
+    const envVars = getEnvVars(['ANTHROPIC_API_KEY', 'EXA_API_KEY', 'PERPLEXITY_API_KEY']);
+    
+    if (!envVars.ANTHROPIC_API_KEY) {
+      await updateJob({ 
+        status: 'failed', 
+        status_message: 'Failed',
+        error: { message: 'ANTHROPIC_API_KEY not configured. Add it to Netlify Environment Variables.' }
+      });
+      return;
+    }
+
+    await updateJob({ status_message: 'Starting research...' });
+
+    const result = await runVoCResearchPipeline(
+      { 
+        ...input,
+        apiKeys: {
+          anthropic: envVars.ANTHROPIC_API_KEY || undefined,
+          exa: envVars.EXA_API_KEY || undefined,
+          perplexity: envVars.PERPLEXITY_API_KEY || undefined
+        }
+      },
+      jobId,
+      async (msg) => {
+        await updateJob({ status_message: msg });
+      }
+    );
+
+    await updateJob({ status: 'completed', status_message: 'Complete', result });
+  } catch (error) {
+    console.error(`[VoC Research Job ${jobId}] Error:`, error);
+    await updateJob({
+      status: 'failed',
+      status_message: 'Failed',
+      error: { message: error instanceof Error ? error.message : 'Unknown error' }
+    });
+  }
+}
