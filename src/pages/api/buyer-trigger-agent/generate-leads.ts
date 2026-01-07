@@ -221,22 +221,24 @@ async function discoverCompaniesWithVoCSignals(criteria: {
 
     // Enrich and filter by company size
     const leads: any[] = [];
+    const targetTitles = icp.targetTitles || [];
     
     for (const result of filteredResults.slice(0, 30)) {
       const companyName = extractCompanyName(result.url, result.title || '');
       const domain = extractDomain(result.url);
       
-      // Quick enrichment from Perplexity if available
-      let enrichment = {
+      // Full enrichment from Perplexity (includes contacts)
+      let enrichment: CompanyEnrichment = {
         employees: 0,
         revenue: 'Unknown',
         location: 'Unknown',
-        description: result.text?.slice(0, 200) || ''
+        description: result.text?.slice(0, 200) || '',
+        contacts: []
       };
       
       if (perplexityApiKey) {
         try {
-          enrichment = await enrichCompanyWithPerplexity(companyName, domain, perplexityApiKey);
+          enrichment = await enrichCompanyWithPerplexity(companyName, domain, perplexityApiKey, targetTitles);
         } catch (e) {
           console.warn(`[VoC Leads] Enrichment failed for ${companyName}`);
         }
@@ -250,9 +252,14 @@ async function discoverCompaniesWithVoCSignals(criteria: {
         }
       }
 
-      // Score based on signal matches
+      // Score based on signal matches + contact availability
       const matchedSignals = findMatchingSignals(result.text || '', criteria.signalConfigurations || []);
-      const score = Math.min(100, 50 + (matchedSignals.length * 10));
+      let score = Math.min(100, 50 + (matchedSignals.length * 10));
+      
+      // Bonus for having contacts
+      if (enrichment.contacts.length > 0) {
+        score = Math.min(100, score + 5);
+      }
 
       leads.push({
         company: companyName,
@@ -261,7 +268,10 @@ async function discoverCompaniesWithVoCSignals(criteria: {
         location: enrichment.location,
         employees: enrichment.employees,
         revenue: enrichment.revenue,
+        industry: enrichment.industry,
+        founded: enrichment.founded,
         description: enrichment.description,
+        contacts: enrichment.contacts,
         score: score,
         signals: matchedSignals.map(s => ({
           type: s.type,
@@ -329,16 +339,42 @@ function extractDomain(url: string): string {
   }
 }
 
+interface Contact {
+  name: string;
+  title: string;
+  linkedIn?: string;
+}
+
+interface CompanyEnrichment {
+  employees: number;
+  revenue: string;
+  location: string;
+  description: string;
+  industry?: string;
+  founded?: string;
+  contacts: Contact[];
+}
+
 /**
- * Quick company enrichment using Perplexity
+ * Full company enrichment using Perplexity - includes contacts
  */
 async function enrichCompanyWithPerplexity(
   companyName: string,
   domain: string,
-  apiKey: string
-): Promise<{ employees: number; revenue: string; location: string; description: string }> {
+  apiKey: string,
+  targetTitles?: string[]
+): Promise<CompanyEnrichment> {
+  const defaultResult: CompanyEnrichment = {
+    employees: 0,
+    revenue: 'Unknown',
+    location: 'Unknown',
+    description: '',
+    contacts: []
+  };
+
   try {
-    const response = await fetch('https://api.perplexity.ai/chat/completions', {
+    // First call: Get company info
+    const companyResponse = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
@@ -348,31 +384,94 @@ async function enrichCompanyWithPerplexity(
         model: 'sonar',
         messages: [{
           role: 'user',
-          content: `Quick facts about ${companyName} (${domain}): employee count, headquarters location, estimated revenue, and one-sentence description. Format: EMPLOYEES: [number], LOCATION: [city], REVENUE: [amount], DESCRIPTION: [one sentence]`
+          content: `Company profile for ${companyName} (${domain}):
+Format exactly as:
+EMPLOYEES: [number]
+LOCATION: [city, state/country]
+REVENUE: [amount or estimate]
+INDUSTRY: [primary industry]
+FOUNDED: [year]
+DESCRIPTION: [one sentence about what they do]`
         }],
-        max_tokens: 200,
+        max_tokens: 250,
         temperature: 0.1
       })
     });
 
-    if (!response.ok) throw new Error('Perplexity API error');
+    if (!companyResponse.ok) throw new Error('Perplexity API error');
     
-    const data = await response.json();
-    const text = data.choices?.[0]?.message?.content || '';
+    const companyData = await companyResponse.json();
+    const companyText = companyData.choices?.[0]?.message?.content || '';
     
-    const employeesMatch = text.match(/EMPLOYEES:\s*(\d[\d,]*)/i);
-    const locationMatch = text.match(/LOCATION:\s*([^,\n]+)/i);
-    const revenueMatch = text.match(/REVENUE:\s*([^\n]+)/i);
-    const descMatch = text.match(/DESCRIPTION:\s*([^\n]+)/i);
+    const employeesMatch = companyText.match(/EMPLOYEES:\s*(\d[\d,]*)/i);
+    const locationMatch = companyText.match(/LOCATION:\s*([^\n]+)/i);
+    const revenueMatch = companyText.match(/REVENUE:\s*([^\n]+)/i);
+    const industryMatch = companyText.match(/INDUSTRY:\s*([^\n]+)/i);
+    const foundedMatch = companyText.match(/FOUNDED:\s*(\d{4})/i);
+    const descMatch = companyText.match(/DESCRIPTION:\s*([^\n]+)/i);
     
-    return {
+    const result: CompanyEnrichment = {
       employees: employeesMatch ? parseInt(employeesMatch[1].replace(/,/g, '')) : 0,
       location: locationMatch?.[1]?.trim() || 'Unknown',
       revenue: revenueMatch?.[1]?.trim() || 'Unknown',
-      description: descMatch?.[1]?.trim() || ''
+      industry: industryMatch?.[1]?.trim(),
+      founded: foundedMatch?.[1],
+      description: descMatch?.[1]?.trim() || '',
+      contacts: []
     };
-  } catch {
-    return { employees: 0, revenue: 'Unknown', location: 'Unknown', description: '' };
+
+    // Second call: Find key contacts (decision makers)
+    const titlesToFind = targetTitles?.length 
+      ? targetTitles.slice(0, 3).join(', ')
+      : 'CEO, Founder, VP Sales, Head of Growth';
+    
+    const contactsResponse = await fetch('https://api.perplexity.ai/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'sonar',
+        messages: [{
+          role: 'user',
+          content: `Who are the key executives at ${companyName} (${domain})? Looking for: ${titlesToFind}.
+List up to 3 people. Format each as:
+NAME: [full name] | TITLE: [job title] | LINKEDIN: [linkedin url if known, or "unknown"]`
+        }],
+        max_tokens: 300,
+        temperature: 0.1
+      })
+    });
+
+    if (contactsResponse.ok) {
+      const contactsData = await contactsResponse.json();
+      const contactsText = contactsData.choices?.[0]?.message?.content || '';
+      
+      // Parse contacts
+      const contactLines = contactsText.split('\n').filter((line: string) => line.includes('NAME:'));
+      for (const line of contactLines.slice(0, 3)) {
+        const nameMatch = line.match(/NAME:\s*([^|]+)/i);
+        const titleMatch = line.match(/TITLE:\s*([^|]+)/i);
+        const linkedInMatch = line.match(/LINKEDIN:\s*([^\s]+)/i);
+        
+        if (nameMatch && titleMatch) {
+          const linkedIn = linkedInMatch?.[1]?.trim();
+          result.contacts.push({
+            name: nameMatch[1].trim(),
+            title: titleMatch[1].trim(),
+            linkedIn: linkedIn && linkedIn !== 'unknown' && linkedIn.includes('linkedin') 
+              ? linkedIn 
+              : undefined
+          });
+        }
+      }
+    }
+
+    return result;
+  } catch (err) {
+    console.warn(`[Enrichment] Failed for ${companyName}:`, err);
+    return defaultResult;
   }
 }
 

@@ -36,6 +36,12 @@ interface VoCResearch {
   signalConfigurations: any[];
 }
 
+interface Contact {
+  name: string;
+  title: string;
+  linkedIn?: string;
+}
+
 interface Lead {
   company: string;
   domain?: string;
@@ -43,7 +49,10 @@ interface Lead {
   location: string;
   employees: number;
   revenue: string;
+  industry?: string;
+  founded?: string;
   description?: string;
+  contacts?: Contact[];
   score: number;
   primarySignal?: string;
   tags?: string[];
@@ -440,8 +449,76 @@ export default function BuyerTriggerAgent() {
                   </div>
                 )}
 
+                {/* Key Contacts */}
+                {lead.contacts && lead.contacts.length > 0 && (
+                  <div className="bta-lead-contacts">
+                    <div className="bta-contacts-label">Key Contacts:</div>
+                    <div className="bta-contacts-list">
+                      {lead.contacts.map((contact, i) => (
+                        <div key={i} className="bta-contact-item">
+                          <span className="bta-contact-name">{contact.name}</span>
+                          <span className="bta-contact-title">{contact.title}</span>
+                          {contact.linkedIn && (
+                            <a 
+                              href={contact.linkedIn}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bta-contact-linkedin"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              LinkedIn ↗
+                            </a>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {expandedLead === idx && (
                   <div className="bta-lead-details">
+                    {/* Company Profile */}
+                    <div className="bta-company-profile">
+                      <div className="bta-profile-label">Company Profile:</div>
+                      <div className="bta-profile-grid">
+                        {lead.industry && (
+                          <div className="bta-profile-item">
+                            <span className="bta-profile-key">Industry:</span>
+                            <span className="bta-profile-value">{lead.industry}</span>
+                          </div>
+                        )}
+                        {lead.founded && (
+                          <div className="bta-profile-item">
+                            <span className="bta-profile-key">Founded:</span>
+                            <span className="bta-profile-value">{lead.founded}</span>
+                          </div>
+                        )}
+                        {lead.employees > 0 && (
+                          <div className="bta-profile-item">
+                            <span className="bta-profile-key">Employees:</span>
+                            <span className="bta-profile-value">{lead.employees.toLocaleString()}</span>
+                          </div>
+                        )}
+                        {lead.revenue !== 'Unknown' && (
+                          <div className="bta-profile-item">
+                            <span className="bta-profile-key">Revenue:</span>
+                            <span className="bta-profile-value">{lead.revenue}</span>
+                          </div>
+                        )}
+                      </div>
+                      {lead.website && (
+                        <a 
+                          href={lead.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bta-profile-website"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          Visit Website →
+                        </a>
+                      )}
+                    </div>
+
                     {lead.sourceSnippet && (
                       <div className="bta-lead-snippet">
                         <div className="bta-snippet-label">Source Context:</div>
@@ -660,24 +737,75 @@ export default function BuyerTriggerAgent() {
 
           {step === 3 && analysis && (
             <div className="bta-step">
-              <h2>Choose buying signals to track</h2>
-              <p className="bta-subtitle">Select events that indicate a company is ready to buy:</p>
+              <h2>Configure buying signals</h2>
+              <p className="bta-subtitle">Edit, enable, or add custom signals that indicate readiness to buy:</p>
 
-              <div className="bta-signal-grid">
-                {analysis.recommendedSignals.map((signal: any) => (
-                  <label key={signal.id} className="bta-signal-card">
-                    <input
-                      type="checkbox"
-                      checked={data.signals.includes(signal.id)}
-                      onChange={() => toggleArrayItem('signals', signal.id)}
-                    />
-                    <div className="bta-signal-content">
-                      <strong>{signal.label}</strong>
-                      <p>{signal.reason}</p>
-                      {signal.priority === 'high' && <span className="bta-priority-badge">High Priority</span>}
+              <div className="bta-signal-editor">
+                <div className="bta-signal-list">
+                  {analysis.recommendedSignals.map((signal: any, idx: number) => (
+                    <div key={signal.id} className="bta-signal-edit-card">
+                      <div className="bta-signal-edit-header">
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
+                          <input
+                            type="checkbox"
+                            checked={data.signals.includes(signal.id)}
+                            onChange={() => toggleArrayItem('signals', signal.id)}
+                            style={{ width: '20px', height: '20px' }}
+                          />
+                          <input
+                            type="text"
+                            className="bta-signal-edit-name"
+                            value={signal.label}
+                            onChange={(e) => {
+                              const updated = [...analysis.recommendedSignals];
+                              updated[idx] = { ...signal, label: e.target.value };
+                              setAnalysis({ ...analysis, recommendedSignals: updated });
+                            }}
+                            placeholder="Signal name"
+                          />
+                        </label>
+                        {signal.priority === 'high' && (
+                          <span className="bta-priority-badge">High Priority</span>
+                        )}
+                      </div>
+                      <textarea
+                        className="bta-signal-edit-description"
+                        value={signal.reason}
+                        onChange={(e) => {
+                          const updated = [...analysis.recommendedSignals];
+                          updated[idx] = { ...signal, reason: e.target.value };
+                          setAnalysis({ ...analysis, recommendedSignals: updated });
+                        }}
+                        placeholder="Why this signal matters..."
+                        rows={2}
+                      />
                     </div>
-                  </label>
-                ))}
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  className="bta-add-signal-btn"
+                  onClick={() => {
+                    const newSignal = {
+                      id: `custom_${Date.now()}`,
+                      label: 'New Custom Signal',
+                      reason: 'Describe why this signal indicates buying intent...',
+                      priority: 'medium',
+                      enabled: true
+                    };
+                    setAnalysis({
+                      ...analysis,
+                      recommendedSignals: [...analysis.recommendedSignals, newSignal]
+                    });
+                    setData({
+                      ...data,
+                      signals: [...data.signals, newSignal.id]
+                    });
+                  }}
+                >
+                  + Add Custom Signal
+                </button>
               </div>
             </div>
           )}

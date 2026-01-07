@@ -942,3 +942,207 @@
   color: var(--graphite);
   margin-bottom: 16px;
 }
+
+/* Key Contacts Section */
+.bta-lead-contacts {
+  margin: 12px 0;
+  padding: 12px;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-radius: 8px;
+  border: 1px solid #bae6fd;
+}
+
+.bta-contacts-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #0369a1;
+  margin-bottom: 10px;
+}
+
+.bta-contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bta-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.bta-contact-name {
+  font-weight: 600;
+  color: var(--obsidian);
+}
+
+.bta-contact-title {
+  color: var(--smoke);
+  flex: 1;
+}
+
+.bta-contact-linkedin {
+  font-size: 12px;
+  font-weight: 500;
+  color: #0077b5;
+  text-decoration: none;
+  padding: 4px 8px;
+  background: rgba(0, 119, 181, 0.1);
+  border-radius: 4px;
+}
+
+.bta-contact-linkedin:hover {
+  background: rgba(0, 119, 181, 0.2);
+}
+
+/* Company Profile Section */
+.bta-company-profile {
+  margin-bottom: 16px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.bta-profile-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--smoke);
+  margin-bottom: 12px;
+}
+
+.bta-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 16px;
+  margin-bottom: 12px;
+}
+
+.bta-profile-item {
+  display: flex;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.bta-profile-key {
+  color: var(--smoke);
+}
+
+.bta-profile-value {
+  font-weight: 500;
+  color: var(--obsidian);
+}
+
+.bta-profile-website {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--signal-blue);
+  text-decoration: none;
+}
+
+.bta-profile-website:hover {
+  text-decoration: underline;
+}
+
+/* Editable Signals Section */
+.bta-signal-editor {
+  margin-top: 16px;
+}
+
+.bta-signal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.bta-signal-edit-card {
+  padding: 16px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.bta-signal-edit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.bta-signal-edit-name {
+  width: 100%;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+}
+
+.bta-signal-edit-description {
+  width: 100%;
+  font-size: 14px;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.bta-signal-remove-btn {
+  background: none;
+  border: none;
+  color: #dc2626;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.bta-signal-remove-btn:hover {
+  background: #fef2f2;
+  border-radius: 4px;
+}
+
+.bta-add-signal-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: #f8fafc;
+  border: 2px dashed #e5e7eb;
+  border-radius: 8px;
+  color: var(--smoke);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bta-add-signal-btn:hover {
+  border-color: var(--signal-blue);
+  color: var(--signal-blue);
+  background: rgba(37, 99, 235, 0.05);
+}
+
+@media (max-width: 640px) {
+  .bta-contact-item {
+    flex-wrap: wrap;
+  }
+  
+  .bta-contact-title {
+    width: 100%;
+    order: 3;
+  }
+  
+  .bta-profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
